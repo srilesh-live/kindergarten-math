@@ -3,63 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Interactive kindergarten math practice with addition, subtraction, multiplication, and division exercises">
+    <meta name="description" content="Interactive kindergarten math practice - Sign in to save progress or continue as guest">
     <meta name="author" content="Kindergarten Math App">
     <meta name="theme-color" content="#4a90e2">
     
-    <title>Kindergarten Math - Practice Arithmetic</title>
+    <title>Welcome - Kindergarten Math</title>
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="script.js" as="script">
-    
-    <!-- Favicon (optional) -->
-    <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg"> -->
+    <style>
+        /* Landing page specific styles */
+        .landing-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #5aa3f0 100%);
+            padding: 2rem;
+        }
+        
+        .landing-card {
+            background: var(--bg-color);
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .landing-logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .landing-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .landing-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        
+        .landing-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .landing-btn {
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .landing-btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .landing-btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+        }
+        
+        .landing-btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .landing-btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .landing-btn-guest {
+            background: var(--bg-color);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .landing-btn-guest:hover {
+            color: var(--text-color);
+            border-color: var(--text-secondary);
+        }
+        
+        .landing-features {
+            display: flex;
+            justify-content: space-around;
+            margin: 2rem 0;
+            padding: 1.5rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .landing-feature {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .landing-feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .landing-feature-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 640px) {
+            .landing-card {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .landing-title {
+                font-size: 2rem;
+            }
+            
+            .landing-subtitle {
+                font-size: 1rem;
+            }
+            
+            .landing-features {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .landing-btn {
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Dark theme support */
+        [data-theme="dark"] .landing-container {
+            background: linear-gradient(135deg, #2d3436 0%, #1a1a1a 100%);
+        }
+        
+        [data-theme="dark"] .landing-card {
+            border: 1px solid var(--border-color);
+        }
+    </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <nav class="sidebar-nav">
-            <a href="#" class="nav-item active" id="arithmetic-page">📊 Arithmetic</a>
-        </nav>
-
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
-
-        <!-- Page Content -->
-        <div class="page-content">
-            <div class="problem-container">
-                <div class="problem" id="math-problem">
-                    <span class="operand" id="operand1">5</span>
-                    <span class="operation" id="operation">+</span>
-                    <span class="operand" id="operand2">3</span>
-                    <span class="equals">=</span>
-                    <input 
-                        type="text" 
-                        id="answer-input" 
-                        class="answer-input" 
-                        inputmode="numeric"
-                        pattern="[0-9]*"
-                        autofocus
-                        autocomplete="off"
-                        maxlength="4"
-                    >
+    <div class="landing-container">
+        <div class="landing-card">
+            <div class="landing-logo">🧮</div>
+            <h1 class="landing-title">Kindergarten Math</h1>
+            <p class="landing-subtitle">
+                Practice arithmetic with interactive exercises designed for young learners
+            </p>
+            
+            <div class="landing-features">
+                <div class="landing-feature">
+                    <div class="landing-feature-icon">➕</div>
+                    <div class="landing-feature-text">Addition & Subtraction</div>
                 </div>
+                <div class="landing-feature">
+                    <div class="landing-feature-icon">✖️</div>
+                    <div class="landing-feature-text">Multiplication & Division</div>
+                </div>
+                <div class="landing-feature">
+                    <div class="landing-feature-icon">🎯</div>
+                    <div class="landing-feature-text">Progress Tracking</div>
+                </div>
+            </div>
+            
+            <div class="landing-actions">
+                <button class="landing-btn landing-btn-primary" id="landing-signin">
+                    🔐 Sign In
+                </button>
+                <button class="landing-btn landing-btn-secondary" id="landing-signup">
+                    ✨ Create Account
+                </button>
+                <button class="landing-btn landing-btn-guest" id="landing-guest">
+                    👤 Continue as Guest
+                </button>
+            </div>
+            
+            <div style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-secondary);">
+                <p><strong>Signed in users:</strong> Save progress, track statistics, sync across devices</p>
+                <p><strong>Guest mode:</strong> Practice immediately, no registration required</p>
             </div>
         </div>
     </div>
-    
-    <!-- Right Sidebar for Incorrect Answers -->
-    <div class="right-sidebar collapsed">
-        <div class="mistakes-list" id="mistakes-list">
-        </div>
-    </div>
-    
-    <!-- Authentication Modal -->
+
+    <!-- Authentication Modal (reused from main app) -->
     <div id="auth-modal" class="auth-modal">
         <div class="auth-modal-content">
             <span class="auth-modal-close" id="close-auth-modal">&times;</span>
@@ -87,7 +237,7 @@
             
             <!-- Register Form -->
             <div id="register-form-container" class="auth-form-container">
-                <h2>Sign Up</h2>
+                <h2>Create Account</h2>
                 <form id="register-form">
                     <div class="form-group">
                         <label for="register-email">Email:</label>
@@ -102,7 +252,7 @@
                         <input type="password" id="register-confirm-password" required minlength="6">
                     </div>
                     <div id="register-error" class="error-message"></div>
-                    <button type="submit">Sign Up</button>
+                    <button type="submit">Create Account</button>
                 </form>
                 <div class="auth-links">
                     <a href="#" id="switch-to-login">Already have an account? Sign in</a>
@@ -127,124 +277,214 @@
         </div>
     </div>
 
-    <!-- Status Bar -->
-    <div class="status-bar">
-        <div class="status-section sidebar-collapse-section">
-            <button class="collapse-btn sidebar-expanded" id="collapse-left-sidebar">«</button>
-        </div>
-        <div class="status-section user-section" id="user-section">
-            <!-- Authentication Buttons (shown when not logged in) -->
-            <div id="auth-buttons" class="auth-buttons">
-                <button id="show-login" class="auth-btn">Sign In</button>
-                <button id="show-register" class="auth-btn">Sign Up</button>
-            </div>
-            
-            <!-- User Info (shown when logged in) -->
-            <div id="user-info" class="user-info" style="display: none;">
-                <span id="user-email"></span>
-                <button id="logout-btn" class="logout-btn">Logout</button>
-            </div>
-            
-            <!-- Fallback user name display -->
-            <span id="user-name" style="display: none;">Guest User</span>
-        </div>
-        <div class="status-section current-page-section" id="current-page-section">
-            <span id="current-page">Arithmetic</span>
-        </div>
-        <div class="status-section spacer-section"></div>
-        <div class="status-section counter-section">
-            <span class="counter-display" id="counter-display">1/10</span>
-        </div>
-        <div class="status-section timer-section">
-            <span class="timer-display" id="timer-display">00:00</span>
-        </div>
-        <div class="status-section settings-section">
-            <button class="play-pause-btn" id="play-pause-btn" title="Pause timer">
-                <span class="play-pause-icon" id="play-pause-icon">⏸</span>
-            </button>
-            <button class="settings-btn" id="settings-btn">⚙</button>
-            <button class="theme-toggle-btn" id="theme-toggle">
-                <span class="theme-icon" id="theme-icon">☽</span>
-            </button>
-            <button class="collapse-btn sidebar-expanded" id="collapse-right-sidebar">!</button>
-        </div>
-    </div>
-
-    <!-- Configuration Panel -->
-    <div class="config-panel" id="config-panel">
-        <div class="settings-container">
-            <div class="settings-header">
-                <button class="close-btn" id="close-config">
-                    <svg width="12" height="12" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-width="1.2" d="M1 1l12 12M13 1L1 13"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="settings-content">
-                <div class="setting-group">
-                    <h3 class="group-title">Operations</h3>
-                    <div class="operation-selector">
-                        <button class="op-btn active" data-operation="addition">+</button>
-                        <button class="op-btn" data-operation="subtraction">−</button>
-                        <button class="op-btn" data-operation="multiplication">×</button>
-                        <button class="op-btn" data-operation="division">÷</button>
-                    </div>
-                </div>
-                
-                <div class="setting-group">
-                    <h3 class="group-title">Ranges</h3>
-                    <div class="range-grid">
-                        <div class="range-row">
-                            <label class="range-label">First</label>
-                            <div class="range-inputs">
-                                <input type="text" id="min-operand1" class="num-input" value="1" 
-                                       placeholder="Min" title="Minimum value (1-100)">
-                                <span class="range-separator">to</span>
-                                <input type="text" id="max-operand1" class="num-input" value="10" 
-                                       placeholder="Max" title="Maximum value (1-100)">
-                            </div>
-                        </div>
-                        <div class="range-row">
-                            <label class="range-label">Second</label>
-                            <div class="range-inputs">
-                                <input type="text" id="min-operand2" class="num-input" value="1" 
-                                       placeholder="Min" title="Minimum value (1-100)">
-                                <span class="range-separator">to</span>
-                                <input type="text" id="max-operand2" class="num-input" value="10" 
-                                       placeholder="Max" title="Maximum value (1-100)">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="setting-group">
-                    <h3 class="group-title">Questions</h3>
-                    <div class="range-row">
-                        <label class="range-label">Total</label>
-                        <div class="range-inputs">
-                            <input type="text" id="total-questions" class="num-input" value="10" 
-                                   placeholder="10-100" title="Total number of questions (10-100)" 
-                                   min="10" max="100">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Scripts -->
-    <!-- Load configuration first -->
     <script src="config.js"></script>
-    <script src="auth.js"></script>
-    <script src="user-data.js"></script>
-    <script src="script.js"></script>
-    <!-- <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js');
-            });
+    <script>
+        // Landing page authentication handler
+        class LandingAuth {
+            constructor() {
+                this.initializeAuth();
+                this.bindEvents();
+            }
+            
+            async initializeAuth() {
+                // Load authentication system
+                if (typeof window.APP_CONFIG === 'undefined') {
+                    console.error('APP_CONFIG not found');
+                    return;
+                }
+                
+                // Initialize Supabase if needed
+                if (typeof window.supabase === 'undefined') {
+                    await this.loadSupabaseScript();
+                }
+                
+                this.supabase = window.supabase.createClient(
+                    window.APP_CONFIG.supabase.url,
+                    window.APP_CONFIG.supabase.anonKey
+                );
+                
+                // Check if user is already authenticated
+                this.checkExistingAuth();
+            }
+            
+            async loadSupabaseScript() {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            }
+            
+            async checkExistingAuth() {
+                try {
+                    const { data: { user } } = await this.supabase.auth.getUser();
+                    if (user) {
+                        // User is already logged in, go directly to app
+                        this.redirectToApp(true);
+                    }
+                } catch (error) {
+                    console.log('No existing auth found');
+                }
+            }
+            
+            bindEvents() {
+                // Landing page buttons
+                document.getElementById('landing-signin')?.addEventListener('click', () => {
+                    this.showAuthModal('login');
+                });
+                
+                document.getElementById('landing-signup')?.addEventListener('click', () => {
+                    this.showAuthModal('register');
+                });
+                
+                document.getElementById('landing-guest')?.addEventListener('click', () => {
+                    this.redirectToApp(false);
+                });
+                
+                // Auth modal events
+                document.getElementById('close-auth-modal')?.addEventListener('click', () => {
+                    this.hideAuthModal();
+                });
+                
+                // Auth form events
+                document.getElementById('login-form')?.addEventListener('submit', (e) => {
+                    this.handleLogin(e);
+                });
+                
+                document.getElementById('register-form')?.addEventListener('submit', (e) => {
+                    this.handleRegister(e);
+                });
+                
+                // Form switching
+                document.getElementById('switch-to-register')?.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showAuthModal('register');
+                });
+                
+                document.getElementById('switch-to-login')?.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showAuthModal('login');
+                });
+            }
+            
+            showAuthModal(type) {
+                const modal = document.getElementById('auth-modal');
+                const forms = ['login-form-container', 'register-form-container', 'forgot-form-container'];
+                
+                // Hide all forms
+                forms.forEach(formId => {
+                    const form = document.getElementById(formId);
+                    if (form) form.style.display = 'none';
+                });
+                
+                // Show selected form
+                const selectedForm = document.getElementById(`${type}-form-container`);
+                if (selectedForm) {
+                    selectedForm.style.display = 'block';
+                    modal.style.display = 'flex';
+                }
+            }
+            
+            hideAuthModal() {
+                const modal = document.getElementById('auth-modal');
+                if (modal) modal.style.display = 'none';
+                this.clearErrors();
+            }
+            
+            async handleLogin(event) {
+                event.preventDefault();
+                
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                try {
+                    const { data, error } = await this.supabase.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+                    
+                    if (error) throw error;
+                    
+                    // Success - redirect to app
+                    this.redirectToApp(true);
+                    
+                } catch (error) {
+                    this.showError('login', error.message);
+                }
+            }
+            
+            async handleRegister(event) {
+                event.preventDefault();
+                
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-confirm-password').value;
+                
+                if (password !== confirmPassword) {
+                    this.showError('register', 'Passwords do not match');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    this.showError('register', 'Password must be at least 6 characters');
+                    return;
+                }
+                
+                try {
+                    const { data, error } = await this.supabase.auth.signUp({
+                        email,
+                        password
+                    });
+                    
+                    if (error) throw error;
+                    
+                    alert('Registration successful! Please check your email to verify your account, then sign in.');
+                    this.showAuthModal('login');
+                    
+                } catch (error) {
+                    this.showError('register', error.message);
+                }
+            }
+            
+            showError(formType, message) {
+                const errorDiv = document.getElementById(`${formType}-error`);
+                if (errorDiv) {
+                    errorDiv.textContent = message;
+                    errorDiv.style.display = 'block';
+                }
+            }
+            
+            clearErrors() {
+                const errorDivs = document.querySelectorAll('[id$="-error"]');
+                errorDivs.forEach(div => {
+                    div.style.display = 'none';
+                    div.textContent = '';
+                });
+            }
+            
+            redirectToApp(isAuthenticated) {
+                // Store auth state for the main app
+                sessionStorage.setItem('authMode', isAuthenticated ? 'authenticated' : 'guest');
+                
+                // Redirect to main app
+                window.location.href = 'app.html';
+            }
         }
-    </script> -->
+        
+        // Initialize landing auth when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new LandingAuth();
+        });
+        
+        // Theme support
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for saved theme or default to light
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        });
+    </script>
 </body>
 </html>

@@ -15,8 +15,8 @@ class AuthManager {
         this.supabase = null;
         this.currentUser = null;
         
-        // Set initial UI state immediately
-        this.updateUIForUnauthenticatedUser();
+        // Set initial UI state immediately (will be updated by checkAuthState)
+        this.updateUIForGuestUser();
         
         this.initializeSupabase();
         this.bindAuthEvents();
@@ -57,39 +57,8 @@ class AuthManager {
      * Bind authentication form events
      */
     bindAuthEvents() {
-        // Login form
-        document.getElementById('login-form')?.addEventListener('submit', this.handleLogin.bind(this));
-        
-        // Register form
-        document.getElementById('register-form')?.addEventListener('submit', this.handleRegister.bind(this));
-        
-        // Forgot password form
-        document.getElementById('forgot-form')?.addEventListener('submit', this.handleForgotPassword.bind(this));
-        
-        // Logout button
+        // Logout button (only one we need in the main app now)
         document.getElementById('logout-btn')?.addEventListener('click', this.handleLogout.bind(this));
-        
-        // Modal controls
-        document.getElementById('show-login')?.addEventListener('click', () => this.showModal('login'));
-        document.getElementById('show-register')?.addEventListener('click', () => this.showModal('register'));
-        document.getElementById('show-forgot')?.addEventListener('click', () => this.showModal('forgot'));
-        document.getElementById('close-auth-modal')?.addEventListener('click', this.hideModal.bind(this));
-        
-        // Switch between forms
-        document.getElementById('switch-to-register')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.showModal('register');
-        });
-        
-        document.getElementById('switch-to-login')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.showModal('login');
-        });
-        
-        document.getElementById('switch-to-forgot')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.showModal('forgot');
-        });
     }
 
     /**
@@ -98,116 +67,33 @@ class AuthManager {
     async checkAuthState() {
         if (!this.supabase) return;
         
+        // Check if user came from landing page
+        const authMode = sessionStorage.getItem('authMode');
+        
         try {
             const { data: { user } } = await this.supabase.auth.getUser();
-            if (user) {
+            if (user && authMode === 'authenticated') {
                 this.currentUser = user;
                 this.updateUIForAuthenticatedUser(user);
+            } else if (authMode === 'guest') {
+                this.updateUIForGuestUser();
             } else {
-                this.updateUIForUnauthenticatedUser();
+                // No auth mode set, redirect to landing page
+                window.location.href = 'index.html';
+                return;
             }
         } catch (error) {
             console.error('Auth state check failed:', error);
-            this.updateUIForUnauthenticatedUser();
+            // If there's an auth error and user expected to be authenticated, redirect to landing
+            if (authMode === 'authenticated') {
+                window.location.href = 'index.html';
+            } else {
+                this.updateUIForGuestUser();
+            }
         }
     }
 
-    /**
-     * Handle user login
-     */
-    async handleLogin(event) {
-        event.preventDefault();
-        
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-        
-        this.showLoading('login');
-        
-        try {
-            const { data, error } = await this.supabase.auth.signInWithPassword({
-                email,
-                password
-            });
-            
-            if (error) throw error;
-            
-            this.currentUser = data.user;
-            this.updateUIForAuthenticatedUser(data.user);
-            this.hideModal();
-            
-        } catch (error) {
-            this.showError('login', error.message);
-        } finally {
-            this.hideLoading('login');
-        }
-    }
 
-    /**
-     * Handle user registration
-     */
-    async handleRegister(event) {
-        event.preventDefault();
-        
-        const email = document.getElementById('register-email').value;
-        const password = document.getElementById('register-password').value;
-        const confirmPassword = document.getElementById('register-confirm-password').value;
-        
-        if (password !== confirmPassword) {
-            this.showError('register', 'Passwords do not match');
-            return;
-        }
-        
-        if (password.length < 6) {
-            this.showError('register', 'Password must be at least 6 characters');
-            return;
-        }
-        
-        this.showLoading('register');
-        
-        try {
-            const { data, error } = await this.supabase.auth.signUp({
-                email,
-                password
-            });
-            
-            if (error) throw error;
-            
-            this.showSuccess('Registration successful! Please check your email to verify your account.');
-            this.showModal('login');
-            
-        } catch (error) {
-            this.showError('register', error.message);
-        } finally {
-            this.hideLoading('register');
-        }
-    }
-
-    /**
-     * Handle forgot password
-     */
-    async handleForgotPassword(event) {
-        event.preventDefault();
-        
-        const email = document.getElementById('forgot-email').value;
-        
-        this.showLoading('forgot');
-        
-        try {
-            const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: 'https://math.xiva.us/reset-password'
-            });
-            
-            if (error) throw error;
-            
-            this.showSuccess('Password reset email sent! Please check your inbox.');
-            this.hideModal();
-            
-        } catch (error) {
-            this.showError('forgot', error.message);
-        } finally {
-            this.hideLoading('forgot');
-        }
-    }
 
     /**
      * Handle user logout
@@ -218,11 +104,16 @@ class AuthManager {
             if (error) throw error;
             
             this.currentUser = null;
-            this.updateUIForUnauthenticatedUser();
+            
+            // Clear session storage and redirect to landing page
+            sessionStorage.removeItem('authMode');
+            window.location.href = 'index.html';
             
         } catch (error) {
             console.error('Logout failed:', error);
-            this.showError('general', 'Logout failed');
+            // Even if logout fails, redirect to landing page for security
+            sessionStorage.removeItem('authMode');
+            window.location.href = 'index.html';
         }
     }
 
@@ -262,101 +153,35 @@ class AuthManager {
      * Update UI for authenticated user
      */
     updateUIForAuthenticatedUser(user) {
-        // Hide auth buttons, show user info
-        const authButtons = document.getElementById('auth-buttons');
         const userInfo = document.getElementById('user-info');
+        const guestInfo = document.getElementById('guest-info');
         const userEmail = document.getElementById('user-email');
         
-        if (authButtons) authButtons.style.display = 'none';
+        if (guestInfo) guestInfo.style.display = 'none';
         if (userInfo) userInfo.style.display = 'flex';
         if (userEmail) userEmail.textContent = user.email;
-        
-        // Update user name in status bar if exists
-        const userNameElement = document.getElementById('user-name');
-        if (userNameElement) {
-            userNameElement.textContent = user.email.split('@')[0];
-        }
     }
 
     /**
-     * Update UI for unauthenticated user
+     * Update UI for guest user
+     */
+    updateUIForGuestUser() {
+        const userInfo = document.getElementById('user-info');
+        const guestInfo = document.getElementById('guest-info');
+        
+        if (userInfo) userInfo.style.display = 'none';
+        if (guestInfo) guestInfo.style.display = 'flex';
+    }
+
+    /**
+     * Update UI for unauthenticated user (legacy - redirects to landing)
      */
     updateUIForUnauthenticatedUser() {
-        // Show auth buttons, hide user info
-        const authButtons = document.getElementById('auth-buttons');
-        const userInfo = document.getElementById('user-info');
-        const userEmail = document.getElementById('user-email');
-        
-        if (authButtons) authButtons.style.display = 'flex';
-        if (userInfo) userInfo.style.display = 'none';
-        
-        // Clear user email
-        if (userEmail) userEmail.textContent = '';
-        
-        // Update user name in status bar
-        const userNameElement = document.getElementById('user-name');
-        if (userNameElement) {
-            userNameElement.textContent = 'Guest User';
-        }
+        // In the new flow, unauthenticated users should go to landing page
+        window.location.href = 'index.html';
     }
 
-    /**
-     * Show loading state
-     */
-    showLoading(formType) {
-        const button = document.querySelector(`#${formType}-form button[type="submit"]`);
-        if (button) {
-            button.disabled = true;
-            button.textContent = 'Loading...';
-        }
-    }
 
-    /**
-     * Hide loading state
-     */
-    hideLoading(formType) {
-        const button = document.querySelector(`#${formType}-form button[type="submit"]`);
-        if (button) {
-            button.disabled = false;
-            const originalText = {
-                'login': 'Sign In',
-                'register': 'Sign Up',
-                'forgot': 'Send Reset Email'
-            };
-            button.textContent = originalText[formType] || 'Submit';
-        }
-    }
-
-    /**
-     * Show error message
-     */
-    showError(formType, message) {
-        const errorDiv = document.getElementById(`${formType}-error`);
-        if (errorDiv) {
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-        }
-    }
-
-    /**
-     * Show success message
-     */
-    showSuccess(message) {
-        // You can implement a toast notification or use the existing success display
-        console.log('Success:', message);
-        alert(message); // Replace with better notification system
-    }
-
-    /**
-     * Clear all error messages
-     */
-    clearErrors() {
-        const errorDivs = document.querySelectorAll('[id$="-error"]');
-        errorDivs.forEach(div => {
-            div.style.display = 'none';
-            div.textContent = '';
-        });
-    }
 
     /**
      * Get current user
