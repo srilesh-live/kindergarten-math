@@ -1,0 +1,22 @@
+# Global owners - these users will be requested for review on all PRs
+* @srilesh-live
+
+# Specific file ownership
+*.js @srilesh-live
+*.html @srilesh-live  
+*.css @srilesh-live
+*.md @srilesh-live
+
+# Configuration files require extra scrutiny
+config.js @srilesh-live
+auth.js @srilesh-live
+CNAME @srilesh-live
+
+# Deployment and CI files
+.github/ @srilesh-live
+*.yml @srilesh-live
+*.yaml @srilesh-live
+
+# Documentation
+README.md @srilesh-live
+DEPLOYMENT_*.md @srilesh-live

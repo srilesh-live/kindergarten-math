@@ -1,0 +1,106 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: |
+          npm install -g htmlhint stylelint jshint
+          
+      - name: HTML Validation
+        run: |
+          htmlhint index.html app.html || true
+          
+      - name: CSS Validation
+        run: |
+          stylelint styles.css || true
+          
+      - name: JavaScript Linting
+        run: |
+          jshint script.js auth.js user-data.js config.js || true
+          
+      - name: Security Scan
+        run: |
+          # Check for common security issues
+          echo "Scanning for hardcoded secrets..."
+          grep -r "password\|secret\|key" . --exclude-dir=.git --exclude="*.md" || true
+          
+      - name: File Size Check
+        run: |
+          # Ensure no files are too large
+          find . -type f -size +1M -not -path "./.git/*" | head -10
+          
+  lighthouse:
+    name: Performance & Accessibility
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli
+        
+      - name: Run Lighthouse CI
+        run: |
+          # Create a simple server for testing
+          python3 -m http.server 8080 &
+          sleep 5
+          lhci autorun --upload.target=temporary-public-storage || true
+          
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          
+      - name: Check for sensitive files
+        run: |
+          # Look for common sensitive file patterns
+          find . -name "*.key" -o -name "*.pem" -o -name "*.p12" -o -name "*.pfx" | head -5
+          
+  deployment-test:
+    name: Deployment Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Test static file serving
+        run: |
+          python3 -m http.server 8080 &
+          sleep 3
+          curl -f http://localhost:8080/index.html || exit 1
+          curl -f http://localhost:8080/app.html || exit 1
+          curl -f http://localhost:8080/styles.css || exit 1
