@@ -5,9 +5,13 @@
 
 class AuthManager {
     constructor() {
-        // Supabase configuration - replace with your actual Supabase project details
-        this.supabaseUrl = 'https://aajuzlivkbnmlyqjuxxf.supabase.co';
-        this.supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFhanV6bGl2a2JubWx5cWp1eHhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0NDAxNjMsImV4cCI6MjA3NzAxNjE2M30.zks4gHHsCn-Ebhe6dt7Q9FXXsMtq95wJ2oy7P9NrAJs';
+        // Load configuration from config.js
+        if (typeof window.APP_CONFIG === 'undefined') {
+            throw new Error('APP_CONFIG not found. Make sure config.js is loaded before auth.js');
+        }
+        
+        this.supabaseUrl = window.APP_CONFIG.supabase.url;
+        this.supabaseKey = window.APP_CONFIG.supabase.anonKey;
         this.supabase = null;
         this.currentUser = null;
         
