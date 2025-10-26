@@ -15,6 +15,9 @@ class AuthManager {
         this.supabase = null;
         this.currentUser = null;
         
+        // Set initial UI state immediately
+        this.updateUIForUnauthenticatedUser();
+        
         this.initializeSupabase();
         this.bindAuthEvents();
         this.checkAuthState();
@@ -216,7 +219,6 @@ class AuthManager {
             
             this.currentUser = null;
             this.updateUIForUnauthenticatedUser();
-            this.showSuccess('Logged out successfully!');
             
         } catch (error) {
             console.error('Logout failed:', error);
@@ -283,9 +285,13 @@ class AuthManager {
         // Show auth buttons, hide user info
         const authButtons = document.getElementById('auth-buttons');
         const userInfo = document.getElementById('user-info');
+        const userEmail = document.getElementById('user-email');
         
         if (authButtons) authButtons.style.display = 'flex';
         if (userInfo) userInfo.style.display = 'none';
+        
+        // Clear user email
+        if (userEmail) userEmail.textContent = '';
         
         // Update user name in status bar
         const userNameElement = document.getElementById('user-name');
