@@ -192,7 +192,7 @@ class AuthManager {
         
         try {
             const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin + '/reset-password'
+                redirectTo: 'https://math.xiva.us/reset-password'
             });
             
             if (error) throw error;
