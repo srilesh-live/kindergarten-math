@@ -131,7 +131,6 @@ class AuthManager {
             this.currentUser = data.user;
             this.updateUIForAuthenticatedUser(data.user);
             this.hideModal();
-            this.showSuccess('Login successful!');
             
         } catch (error) {
             this.showError('login', error.message);
