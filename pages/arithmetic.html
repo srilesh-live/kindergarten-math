@@ -10,7 +10,7 @@
     <title>Kindergarten Math - Practice Arithmetic</title>
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="script.js" as="script">
@@ -160,21 +160,22 @@
         </div>
     </div>
 
-    <!-- Menu Modal -->
-    <div class="menu-modal" id="menu-modal" style="display: none;">
-        <div class="menu-modal-content">
-            <div class="menu-item active">
-                <span>Arithmetic</span>
-            </div>
+    <!-- Menu Dropdown -->
+    <div class="menu-dropdown" id="menu-dropdown" style="display: none;">
+        <div class="menu-item active">
+            Arithmetic
+        </div>
+        <div class="menu-item" onclick="window.location.href='number-sequences.html'">
+            Number Sequences
         </div>
     </div>
 
     <!-- Scripts -->
     <!-- Load configuration first -->
-    <script src="config.js"></script>
-    <script src="auth.js"></script>
-    <script src="user-data.js"></script>
-    <script src="script.js"></script>
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/user-data.js"></script>
+    <script src="../assets/js/script.js"></script>
     <!-- <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {

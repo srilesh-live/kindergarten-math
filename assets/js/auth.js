@@ -86,14 +86,14 @@ class AuthManager {
                 this.updateUIForGuestUser();
             } else {
                 // No auth mode set, redirect to landing page
-                window.location.href = 'index.html';
+                window.location.href = '../index.html';
                 return;
             }
         } catch (error) {
             console.error('Auth state check failed:', error);
             // If there's an auth error and user expected to be authenticated, redirect to landing
             if (authMode === 'authenticated') {
-                window.location.href = 'index.html';
+                window.location.href = '../index.html';
             } else {
                 this.updateUIForGuestUser();
             }
@@ -114,13 +114,13 @@ class AuthManager {
             
             // Clear session storage and redirect to landing page
             sessionStorage.removeItem('authMode');
-            window.location.href = 'index.html';
+            window.location.href = '../index.html';
             
         } catch (error) {
             console.error('Logout failed:', error);
             // Even if logout fails, redirect to landing page for security
             sessionStorage.removeItem('authMode');
-            window.location.href = 'index.html';
+            window.location.href = '../index.html';
         }
     }
 
@@ -185,7 +185,7 @@ class AuthManager {
      */
     updateUIForUnauthenticatedUser() {
         // In the new flow, unauthenticated users should go to landing page
-        window.location.href = 'index.html';
+        window.location.href = '../index.html';
     }
 
 
@@ -231,7 +231,7 @@ class AuthManager {
         if (isGuest) {
             // For guest users, just redirect to landing page
             sessionStorage.removeItem('authMode');
-            window.location.href = 'index.html';
+            window.location.href = '../index.html';
         } else {
             // For authenticated users, perform logout
             await this.handleLogout();

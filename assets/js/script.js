@@ -240,7 +240,7 @@ class MathGame {
         this.elements.playPauseBtn?.addEventListener('click', this.toggleTimer.bind(this));
         
         // Menu button
-        document.getElementById('menu-btn')?.addEventListener('click', this.toggleMenu.bind(this));
+        document.getElementById('menu-btn')?.addEventListener('click', (e) => this.toggleMenu(e));
         
         // Configuration panel events
         this.bindConfigEvents();
@@ -1508,22 +1508,21 @@ class MathGame {
      * Toggle left sidebar collapse state
      */
     /**
-     * Toggle menu modal
+     * Toggle menu dropdown
      */
-    toggleMenu() {
-        const modal = document.getElementById('menu-modal');
-        if (modal) {
-            if (modal.style.display === 'flex') {
-                modal.style.display = 'none';
-            } else {
-                modal.style.display = 'flex';
-                // Close menu when clicking outside
+    toggleMenu(e) {
+        e.stopPropagation();
+        const dropdown = document.getElementById('menu-dropdown');
+        if (dropdown) {
+            const isVisible = dropdown.style.display === 'block';
+            dropdown.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                // Close dropdown when clicking outside
                 setTimeout(() => {
-                    const clickHandler = (e) => {
-                        if (!modal.contains(e.target)) {
-                            modal.style.display = 'none';
-                            document.removeEventListener('click', clickHandler);
-                        }
+                    const clickHandler = () => {
+                        dropdown.style.display = 'none';
+                        document.removeEventListener('click', clickHandler);
                     };
                     document.addEventListener('click', clickHandler);
                 }, 0);

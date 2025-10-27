@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Number sequences practice - Coming soon">
+    <meta name="author" content="Kindergarten Math App">
+    <meta name="theme-color" content="#1a1a1a">
+    
+    <title>Number Sequences - Kindergarten Math</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Content -->
+        <div class="page-content">
+            <div class="coming-soon-container">
+                <div class="coming-soon-content">
+                    <h1 class="coming-soon-title">Number Sequences</h1>
+                    <p class="coming-soon-message">Coming Soon</p>
+                    <p class="coming-soon-description">
+                        Pattern recognition and sequence completion exercises for young learners.
+                    </p>
+                    <button class="back-btn" onclick="window.location.href='arithmetic.html'">
+                        Back to Arithmetic
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-section menu-section">
+            <button class="menu-btn" id="menu-btn" title="Menu">☰</button>
+        </div>
+        <div class="status-section user-section" id="user-section">
+            <!-- User Info (shown when logged in) -->
+            <div id="user-info" class="user-info" style="display: none;">
+                <span id="user-email"></span>
+            </div>
+            
+            <!-- Guest User Display -->
+            <div id="guest-info" class="guest-info" style="display: none;">
+                <span>Guest</span>
+            </div>
+        </div>
+        <div class="status-section current-page-section" id="current-page-section">
+            <span id="current-page">Number Sequences</span>
+        </div>
+        <div class="status-section spacer-section"></div>
+        <div class="status-section settings-section">
+            <button class="theme-toggle-btn" id="theme-toggle">
+                <span class="theme-icon" id="theme-icon">☽</span>
+            </button>
+            <button class="exit-btn" id="exit-btn" title="Exit">⏻</button>
+        </div>
+    </div>
+
+    <!-- Menu Dropdown -->
+    <div class="menu-dropdown" id="menu-dropdown" style="display: none;">
+        <div class="menu-item" onclick="window.location.href='arithmetic.html'">
+            Arithmetic
+        </div>
+        <div class="menu-item active">
+            Number Sequences
+        </div>
+    </div>
+
+    <!-- Exit/Logout Confirmation Modal -->
+    <div class="exit-modal" id="exit-modal" style="display: none;">
+        <div class="exit-modal-content">
+            <div class="exit-modal-body">
+                <div id="exit-message" class="exit-message"></div>
+                <div class="exit-actions">
+                    <button class="exit-confirm-btn" id="confirm-exit">Confirm</button>
+                    <button class="exit-cancel-btn" id="cancel-exit">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        // Simple theme toggle for this page
+        document.getElementById('theme-toggle')?.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const icon = document.getElementById('theme-icon');
+            if (icon) icon.textContent = newTheme === 'dark' ? '☽' : '☀';
+        });
+
+        // Initialize theme
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const icon = document.getElementById('theme-icon');
+            if (icon) icon.textContent = savedTheme === 'dark' ? '☽' : '☀';
+        });
+
+        // Menu dropdown
+        document.getElementById('menu-btn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('menu-dropdown');
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            const dropdown = document.getElementById('menu-dropdown');
+            if (dropdown) dropdown.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
