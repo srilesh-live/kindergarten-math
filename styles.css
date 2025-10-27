@@ -1104,9 +1104,9 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 2rem;
-    margin-bottom: 2rem;
     width: 100%;
     max-width: 600px;
+    margin-top: 2rem;
 }
 
 .stat-item {
@@ -1150,6 +1150,7 @@ body {
     cursor: pointer;
     transition: var(--transition);
     box-shadow: var(--shadow-light);
+    order: -1; /* Move button to top */
 }
 
 .new-session-btn:hover {
@@ -1163,30 +1164,23 @@ body {
     box-shadow: var(--shadow-light);
 }
 
-/* Mistakes Summary */
-.mistakes-summary {
-    width: 100%;
-    max-width: 600px;
-    margin: 1.5rem 0;
+/* Mistakes Card */
+.mistakes-card {
+    grid-column: 1 / -1; /* Span full width */
+    text-align: left;
     padding: 1.5rem;
-    background: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+}
+
+.mistakes-card .stat-label {
     text-align: center;
+    margin-bottom: 1rem;
 }
 
-.mistakes-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-bottom: 0.75rem;
-}
-
-.mistakes-text {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
+.mistakes-content {
     font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--text-color);
 }
 
 /* Responsive status bar */
@@ -1221,6 +1215,11 @@ body {
     .statistics-display {
         padding: 1rem;
         min-height: 250px;
+    }
+    
+    .mistakes-content {
+        font-size: 0.8rem;
+        line-height: 1.6;
     }
     
     .new-session-btn {

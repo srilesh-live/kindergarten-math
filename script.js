@@ -927,18 +927,19 @@ class MathGame {
         const problemContainer = document.querySelector('.problem-container');
         if (!problemContainer) return;
 
-        // Generate mistakes summary
-        const mistakesHtml = this.mistakes.length > 0 ? `
-            <div class="mistakes-summary">
-                <div class="mistakes-title">Incorrect Answers:</div>
-                <div class="mistakes-text">${this.mistakes.map(mistake => 
-                    `${mistake.problem} = ${mistake.userAnswer} (correct: ${mistake.correctAnswer})`
-                ).join(', ')}</div>
+        // Generate mistakes card - only show if there are mistakes
+        const mistakesCard = this.mistakes.length > 0 ? `
+            <div class="stat-item mistakes-card">
+                <div class="stat-label">Incorrect Answers</div>
+                <div class="mistakes-content">${this.mistakes.map(mistake => 
+                    `${mistake.problem} = <span style="color: #ff6b6b">${mistake.userAnswer}</span> | <span style="color: #51cf66">${mistake.correctAnswer}</span>`
+                ).join('<br>')}</div>
             </div>
         ` : '';
 
         problemContainer.innerHTML = `
             <div class="statistics-display">
+                <button class="new-session-btn" onclick="window.mathGame.startNewSession()">Start New Session</button>
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-value">${totalQuestions}</div>
@@ -960,9 +961,8 @@ class MathGame {
                         <div class="stat-value">${minutes}:${seconds.toString().padStart(2, '0')}</div>
                         <div class="stat-label">Time</div>
                     </div>
+                    ${mistakesCard}
                 </div>
-                ${mistakesHtml}
-                <button class="new-session-btn" onclick="window.mathGame.startNewSession()">Start New Session</button>
             </div>
         `;
     }
