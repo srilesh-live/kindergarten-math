@@ -1,298 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Interactive kindergarten math practice - Sign in to save progress or continue as guest">
     <meta name="author" content="Kindergarten Math App">
-    <meta name="theme-color" content="#2a2a2a">
+    <meta name="theme-color" content="#1f2937">
     
     <title>Welcome - Kindergarten Math</title>
     
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#6b7280',
+                        background: '#111827',
+                        surface: '#1f2937',
+                        'surface-light': '#374151'
+                    },
+                    fontFamily: {
+                        'sans': ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
     
+    <!-- Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <!-- Minimal custom CSS for specific overrides -->
     <style>
-        /* Perfect Centering Landing Page - Minimal Design Philosophy */
-        
-        /* Reset for perfect viewport control */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        .material-icons {
+            font-size: inherit;
+            line-height: inherit;
         }
         
         html, body {
             height: 100%;
             overflow: hidden;
         }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-        }
-        
-        /* Theme Variables */
-        :root {
-            --landing-bg: #1a1a1a;
-            --landing-card-bg: #2a2a2a;
-            --landing-text: #ffffff;
-            --landing-text-secondary: #b0b0b0;
-            --landing-border: #404040;
-            --landing-btn-primary: #f5f5f5;
-            --landing-btn-secondary: #b0b0b0;
-            --landing-hover: #ffffff;
-        }
-        
-        [data-theme="light"] {
-            --landing-bg: #f5f5f5;
-            --landing-card-bg: #ffffff;
-            --landing-text: #1a1a1a;
-            --landing-text-secondary: #666666;
-            --landing-border: #e0e0e0;
-            --landing-btn-primary: #2a2a2a;
-            --landing-btn-secondary: #666666;
-            --landing-hover: #000000;
-        }
-        
-        /* Perfect Full-Viewport Centering Container */
-        .landing-viewport {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: var(--landing-bg);
-            display: grid;
-            place-items: center;
-            padding: 1rem;
-            overflow: hidden;
-        }
-        
-        /* Centered Card with Responsive Scaling */
-        .landing-card {
-            background: var(--landing-card-bg);
-            border: 1px solid var(--landing-border);
-            border-radius: 0.5rem;
-            padding: clamp(2rem, 5vw, 3rem);
-            width: min(90vw, 400px);
-            text-align: center;
-            transform: translateY(-2vh); /* Slightly offset for visual balance */
-        }
-        
-        .landing-title {
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            font-weight: 400;
-            color: var(--landing-text);
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.02em;
-        }
-        
-        .landing-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-top: 2rem;
-        }
-        
-        .landing-btn {
-            padding: clamp(0.75rem, 2vw, 0.875rem) 1.5rem;
-            border-radius: 0.25rem;
-            font-size: clamp(0.875rem, 2vw, 0.95rem);
-            font-weight: 400;
-            text-decoration: none;
-            transition: all 0.15s ease;
-            cursor: pointer;
-            border: 1px solid var(--landing-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 48px; /* Ensure touch-friendly size */
-        }
-        
-        .landing-btn-primary {
-            background: var(--landing-btn-primary);
-            color: var(--landing-card-bg);
-            border-color: var(--landing-btn-primary);
-        }
-        
-        .landing-btn-primary:hover {
-            background: var(--landing-hover);
-            border-color: var(--landing-hover);
-            transform: translateY(-1px);
-        }
-        
-        .landing-btn-secondary {
-            background: transparent;
-            color: var(--landing-btn-secondary);
-            border-color: var(--landing-btn-secondary);
-        }
-        
-        .landing-btn-secondary:hover {
-            background: var(--landing-btn-secondary);
-            color: var(--landing-card-bg);
-            transform: translateY(-1px);
-        }
-        
-        .landing-btn-guest {
-            background: transparent;
-            color: var(--landing-text-secondary);
-            border-color: var(--landing-border);
-            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
-        }
-        
-        .landing-btn-guest:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-1px);
-        }
-        
-        .landing-info {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--landing-border);
-            font-size: clamp(0.8rem, 1.8vw, 0.85rem);
-            color: var(--landing-text-secondary);
-            line-height: 1.4;
-        }
-        
-        /* Perfect Mobile/Tablet Optimization */
-        @media (max-height: 600px) {
-            .landing-card {
-                padding: 1.5rem;
-                transform: translateY(-1vh);
-            }
-            
-            .landing-title {
-                margin-bottom: 0.5rem;
-            }
-            
-            .landing-actions {
-                gap: 0.5rem;
-                margin-top: 1rem;
-            }
-            
-            .landing-info {
-                margin-top: 1rem;
-                padding-top: 1rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .landing-viewport {
-                padding: 0.5rem;
-            }
-            
-            .landing-card {
-                width: calc(100vw - 1rem);
-                min-height: auto;
-            }
-        }
-        
-        /* Landscape orientation optimization */
-        @media (orientation: landscape) and (max-height: 500px) {
-            .landing-card {
-                padding: 1rem 2rem;
-                transform: translateY(0);
-            }
-            
-            .landing-actions {
-                gap: 0.5rem;
-                margin-top: 1rem;
-            }
-            
-            .landing-info {
-                margin-top: 1rem;
-                padding-top: 0.75rem;
-            }
-        }
     </style>
 </head>
-<body>
-    <div class="landing-viewport">
-        <div class="landing-card">
-            <h1 class="landing-title">Kindergarten Math</h1>
+<body class="min-h-screen bg-background text-white font-sans overflow-hidden">
+    <!-- Landing Page with Perfect Centering -->
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-surface border border-gray-700 rounded-2xl p-8 md:p-10 shadow-2xl backdrop-blur-sm w-full max-w-md transform -translate-y-8 md:-translate-y-4">
+            <!-- Title -->
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-8 text-white tracking-tight">
+                Kindergarten Math
+            </h1>
             
-            <div class="landing-actions">
-                <button class="landing-btn landing-btn-primary" id="landing-signin">
+            <!-- Action Buttons -->
+            <div class="space-y-3 mb-6">
+                <button 
+                    id="landing-signin"
+                    class="w-full bg-white text-gray-900 font-semibold py-4 px-6 rounded-xl hover:bg-gray-100 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
                     Sign In
                 </button>
-                <button class="landing-btn landing-btn-secondary" id="landing-signup">
+                
+                <button 
+                    id="landing-signup"
+                    class="w-full bg-transparent text-gray-300 font-semibold py-4 px-6 rounded-xl border-2 border-gray-600 hover:bg-gray-600 hover:text-white transform hover:-translate-y-0.5 transition-all duration-200"
+                >
                     Create Account
                 </button>
-                <button class="landing-btn landing-btn-guest" id="landing-guest">
+                
+                <button 
+                    id="landing-guest"
+                    class="w-full bg-transparent text-gray-400 font-medium py-3 px-6 rounded-xl hover:bg-gray-800 hover:text-gray-200 transition-all duration-200 text-sm"
+                >
                     Continue as Guest
                 </button>
             </div>
             
-            <div class="landing-info">
-                Guests have temporary progress only.
+            <!-- Guest Info -->
+            <div class="pt-6 border-t border-gray-700 text-center text-sm text-gray-400 leading-relaxed">
+                Sign In for AI-driven insights & statistics
             </div>
         </div>
     </div>
 
-    <!-- Authentication Modal (reused from main app) -->
-    <div id="auth-modal" class="auth-modal">
-        <div class="auth-modal-content">
-            <span class="auth-modal-close" id="close-auth-modal">&times;</span>
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-surface border border-gray-700 rounded-2xl w-full max-w-md shadow-2xl transform transition-all">
+            <div class="flex justify-end p-4">
+                <button id="close-auth-modal" class="text-gray-400 hover:text-gray-200 text-2xl font-bold w-8 h-8 flex items-center justify-center hover:bg-gray-700 rounded-lg transition-colors">
+                    &times;
+                </button>
+            </div>
             
             <!-- Login Form -->
-            <div id="login-form-container" class="auth-form-container">
-                <h2>Sign In</h2>
-                <form id="login-form">
-                    <div class="form-group">
-                        <label for="login-email">Email:</label>
-                        <input type="email" id="login-email" required>
+            <div id="login-form-container" class="p-6 pt-0">
+                <h2 class="text-2xl font-bold text-white text-center mb-6">Sign In</h2>
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium text-gray-300 mb-2">Email:</label>
+                        <input 
+                            type="email" 
+                            id="login-email" 
+                            required
+                            class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="Enter your email"
+                        >
                     </div>
-                    <div class="form-group">
-                        <label for="login-password">Password:</label>
-                        <input type="password" id="login-password" required>
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium text-gray-300 mb-2">Password:</label>
+                        <input 
+                            type="password" 
+                            id="login-password" 
+                            required
+                            class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="Enter your password"
+                        >
                     </div>
-                    <div id="login-error" class="error-message"></div>
-                    <button type="submit">Sign In</button>
+                    <div id="login-error" class="text-red-400 text-sm"></div>
+                    <button 
+                        type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                    >
+                        Sign In
+                    </button>
                 </form>
-                <div class="auth-links">
-                    <a href="#" id="switch-to-register">Don't have an account? Sign up</a>
-                    <a href="#" id="switch-to-forgot">Forgot password?</a>
+                <div class="mt-6 space-y-2 text-center">
+                    <a href="#" id="switch-to-register" class="block text-sm text-blue-400 hover:text-blue-300 transition-colors">
+                        Don't have an account? Sign up
+                    </a>
+                    <a href="#" id="switch-to-forgot" class="block text-sm text-gray-400 hover:text-gray-300 transition-colors">
+                        Forgot password?
+                    </a>
                 </div>
             </div>
             
             <!-- Register Form -->
-            <div id="register-form-container" class="auth-form-container">
-                <h2>Create Account</h2>
-                <form id="register-form">
-                    <div class="form-group">
-                        <label for="register-email">Email:</label>
-                        <input type="email" id="register-email" required>
+            <div id="register-form-container" class="p-6 pt-0 hidden">
+                <h2 class="text-2xl font-bold text-white text-center mb-6">Create Account</h2>
+                <form id="register-form" class="space-y-4">
+                    <div>
+                        <label for="register-email" class="block text-sm font-medium text-gray-300 mb-2">Email:</label>
+                        <input 
+                            type="email" 
+                            id="register-email" 
+                            required
+                            class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="Enter your email"
+                        >
                     </div>
-                    <div class="form-group">
-                        <label for="register-password">Password:</label>
-                        <input type="password" id="register-password" required minlength="6">
+                    <div>
+                        <label for="register-password" class="block text-sm font-medium text-gray-300 mb-2">Password:</label>
+                        <input 
+                            type="password" 
+                            id="register-password" 
+                            required 
+                            minlength="6"
+                            class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="Minimum 6 characters"
+                        >
                     </div>
-                    <div class="form-group">
-                        <label for="register-confirm-password">Confirm Password:</label>
-                        <input type="password" id="register-confirm-password" required minlength="6">
+                    <div>
+                        <label for="register-confirm-password" class="block text-sm font-medium text-gray-300 mb-2">Confirm Password:</label>
+                        <input 
+                            type="password" 
+                            id="register-confirm-password" 
+                            required 
+                            minlength="6"
+                            class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="Confirm your password"
+                        >
                     </div>
-                    <div id="register-error" class="error-message"></div>
-                    <button type="submit">Create Account</button>
+                    <div id="register-error" class="text-red-400 text-sm"></div>
+                    <button 
+                        type="submit"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                    >
+                        Create Account
+                    </button>
                 </form>
-                <div class="auth-links">
-                    <a href="#" id="switch-to-login">Already have an account? Sign in</a>
+                <div class="mt-6 text-center">
+                    <a href="#" id="switch-to-login" class="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+                        Already have an account? Sign in
+                    </a>
                 </div>
             </div>
             
             <!-- Forgot Password Form -->
-            <div id="forgot-form-container" class="auth-form-container">
-                <h2>Reset Password</h2>
-                <form id="forgot-form">
-                    <div class="form-group">
-                        <label for="forgot-email">Email:</label>
-                        <input type="email" id="forgot-email" required>
+            <div id="forgot-form-container" class="p-6 pt-0 hidden">
+                <h2 class="text-2xl font-bold text-white text-center mb-6">Reset Password</h2>
+                <form id="forgot-form" class="space-y-4">
+                    <div>
+                        <label for="forgot-email" class="block text-sm font-medium text-gray-300 mb-2">Email:</label>
+                        <input 
+                            type="email" 
+                            id="forgot-email" 
+                            required
+                            class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="Enter your email address"
+                        >
                     </div>
-                    <div id="forgot-error" class="error-message"></div>
-                    <button type="submit">Send Reset Email</button>
+                    <div id="forgot-error" class="text-red-400 text-sm"></div>
+                    <button 
+                        type="submit"
+                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                    >
+                        Send Reset Email
+                    </button>
                 </form>
-                <div class="auth-links">
-                    <a href="#" id="switch-to-login">Back to sign in</a>
+                <div class="mt-6 text-center">
+                    <a href="#" id="switch-to-login" class="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+                        Back to sign in
+                    </a>
                 </div>
             </div>
         </div>
