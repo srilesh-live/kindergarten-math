@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kindergarten Math - Interactive learning activities for young learners">
+    <meta name="author" content="Kindergarten Math App">
+    <meta name="theme-color" content="#1a1a1a">
+    
+    <title>Kindergarten Math - Home</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="../assets/js/config.js" as="script">
+    
+    <!-- Favicon (optional) -->
+    <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg"> -->
+</head>
+<body>
+    <!-- Modern Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="home-btn" id="home-btn" onclick="window.location.href='home.html'" title="Home" aria-label="Go to home page" disabled style="opacity: 0.5;">
+                🏠
+            </button>
+            <button class="menu-btn" id="menu-btn" title="Menu" aria-label="Open menu">
+                <span class="menu-icon">☰</span>
+            </button>
+            <h1 class="app-title">Kindergarten Math</h1>
+        </div>
+        <div class="header-right">
+            <!-- User Info (shown when logged in) -->
+            <div id="user-info" class="user-info" style="display: none;">
+                <span id="user-email" class="user-email"></span>
+            </div>
+            
+            <!-- Guest User Display -->
+            <div id="guest-info" class="guest-info" style="display: none;">
+                <span class="user-label">Guest</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main home-main" role="main">
+        <div class="home-container">
+            <div class="welcome-section">
+                <h2>Welcome to Kindergarten Math!</h2>
+                <p>Choose an activity to start learning:</p>
+            </div>
+            
+            <div class="activities-grid">
+                <div class="activity-card" onclick="window.location.href='arithmetic.html'">
+                    <div class="activity-icon">🔢</div>
+                    <div class="activity-title">Arithmetic Practice</div>
+                    <div class="activity-description">Addition, subtraction, multiplication, and division exercises</div>
+                </div>
+                
+                <div class="activity-card coming-soon" onclick="showComingSoon('Number Sequences')">
+                    <div class="activity-icon">🔄</div>
+                    <div class="activity-title">Number Sequences</div>
+                    <div class="activity-description">Pattern recognition and sequence completion</div>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                
+                <!-- Placeholder for future activities -->
+                <div class="activity-card coming-soon" onclick="showComingSoon('Shapes & Geometry')">
+                    <div class="activity-icon">🔺</div>
+                    <div class="activity-title">Shapes & Geometry</div>
+                    <div class="activity-description">Basic shapes, colors, and spatial reasoning</div>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                
+                <div class="activity-card coming-soon" onclick="showComingSoon('Counting & Numbers')">
+                    <div class="activity-icon">📊</div>
+                    <div class="activity-title">Counting & Numbers</div>
+                    <div class="activity-description">Number recognition and counting practice</div>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modern Footer -->
+    <footer class="app-footer">
+        <!-- Removed current page section - moved to header -->
+        <div class="footer-center">
+            <span class="app-status">Ready to learn!</span>
+        </div>
+        <div class="footer-right">
+            <button class="settings-btn" id="settings-btn" title="Settings" aria-label="Open settings">
+                <span class="settings-icon">⚙</span>
+            </button>
+            <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme" aria-label="Switch between light and dark theme">
+                <span class="theme-icon" id="theme-icon">☽</span>
+            </button>
+            <button class="exit-btn" id="exit-btn" title="Exit" aria-label="Exit application">
+                <span class="exit-icon">⏻</span>
+            </button>
+        </div>
+    </footer>
+
+    <!-- Menu Dropdown -->
+    <div class="menu-dropdown" id="menu-dropdown" style="display: none;">
+        <div class="menu-item active">
+            Home
+        </div>
+        <div class="menu-item" onclick="window.location.href='arithmetic.html'">
+            Arithmetic Practice
+        </div>
+        <div class="menu-item" onclick="window.location.href='number-sequences.html'">
+            Number Sequences
+        </div>
+    </div>
+
+    <!-- Coming Soon Modal -->
+    <div class="coming-soon-modal" id="coming-soon-modal" style="display: none;">
+        <div class="coming-soon-content">
+            <div class="coming-soon-body">
+                <h3 id="coming-soon-title">Feature Coming Soon</h3>
+                <p id="coming-soon-message">This feature is currently under development and will be available in a future update.</p>
+                <button class="coming-soon-close" onclick="hideComingSoon()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/user-data.js"></script>
+    <script>
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTheme();
+            initializeUser();
+        });
+
+        // Menu functionality
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            toggleMenu();
+        });
+
+        function toggleMenu() {
+            const dropdown = document.getElementById('menu-dropdown');
+            const isVisible = dropdown.style.display !== 'none';
+            dropdown.style.display = isVisible ? 'none' : 'block';
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu-dropdown');
+            const menuBtn = document.getElementById('menu-btn');
+            
+            if (!menu.contains(event.target) && !menuBtn.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // Coming soon functionality
+        function showComingSoon(featureName) {
+            document.getElementById('coming-soon-title').textContent = featureName + ' - Coming Soon';
+            document.getElementById('coming-soon-message').textContent = 'The ' + featureName + ' feature is currently under development and will be available in a future update.';
+            document.getElementById('coming-soon-modal').style.display = 'block';
+        }
+
+        function hideComingSoon() {
+            document.getElementById('coming-soon-modal').style.display = 'none';
+        }
+
+        // Settings, theme toggle, and exit functionality
+        document.getElementById('settings-btn').addEventListener('click', function() {
+            alert('Settings panel coming soon!');
+        });
+
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            toggleTheme();
+        });
+
+        document.getElementById('exit-btn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to exit?')) {
+                window.close();
+            }
+        });
+    </script>
+</body>
+</html>

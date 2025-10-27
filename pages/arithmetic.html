@@ -22,10 +22,13 @@
     <!-- Modern Header -->
     <header class="app-header">
         <div class="header-left">
+            <button class="home-btn" id="home-btn" onclick="window.location.href='home.html'" title="Home" aria-label="Go to home page">
+                🏠
+            </button>
             <button class="menu-btn" id="menu-btn" title="Menu" aria-label="Open menu">
                 <span class="menu-icon">☰</span>
             </button>
-            <h1 class="app-title">Kindergarten Math</h1>
+            <h1 class="app-title">Arithmetic Practice</h1>
         </div>
         <div class="header-right">
             <!-- User Info (shown when logged in) -->
@@ -65,9 +68,7 @@
 
     <!-- Modern Footer -->
     <footer class="app-footer">
-        <div class="footer-left">
-            <span id="current-page" class="current-page">Arithmetic</span>
-        </div>
+        <!-- Removed current page section - moved to header -->
         <div class="footer-center">
             <span class="counter-display" id="counter-display">1/10</span>
             <span class="timer-display" id="timer-display">00:00</span>
@@ -168,11 +169,14 @@
 
     <!-- Menu Dropdown -->
     <div class="menu-dropdown" id="menu-dropdown" style="display: none;">
+        <div class="menu-item" onclick="window.location.href='home.html'">
+            🏠 Home
+        </div>
         <div class="menu-item active">
-            Arithmetic
+            🔢 Arithmetic Practice
         </div>
         <div class="menu-item" onclick="window.location.href='number-sequences.html'">
-            Number Sequences
+            🔄 Number Sequences
         </div>
     </div>
 

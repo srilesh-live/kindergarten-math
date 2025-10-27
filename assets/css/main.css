@@ -110,6 +110,31 @@ body {
     letter-spacing: -0.01em;
 }
 
+/* Home Button Styles */
+.home-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 0.25rem;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    margin-right: 0.5rem;
+    font-size: 1.125rem;
+}
+
+.home-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.home-btn:active {
+    background: rgba(255, 255, 255, 0.05);
+}
+
 .menu-btn {
     width: 2.5rem;
     height: 2.5rem;
@@ -157,6 +182,156 @@ body {
     position: relative;
 }
 
+/* Home Page Styles */
+.home-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    place-items: stretch; /* Override center placement for home page */
+    padding: 2rem;
+}
+
+.home-container {
+    width: 100%;
+    max-width: 800px;
+}
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.welcome-section h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.welcome-section p {
+    font-size: 1.125rem;
+    color: var(--text-muted);
+    margin-bottom: 0;
+}
+
+.activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.activity-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.activity-card:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.activity-card.coming-soon {
+    opacity: 0.7;
+}
+
+.activity-card.coming-soon:hover {
+    transform: translateY(-1px);
+}
+
+.activity-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.activity-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+}
+
+.activity-description {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.coming-soon-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: var(--warning-color);
+    color: var(--bg-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+}
+
+/* Coming Soon Modal Styles */
+.coming-soon-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.coming-soon-content {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    max-width: 400px;
+    margin: 1rem;
+    text-align: center;
+}
+
+.coming-soon-body h3 {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    font-size: 1.25rem;
+}
+
+.coming-soon-body p {
+    margin-bottom: 1.5rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.coming-soon-close {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.coming-soon-close:hover {
+    background: var(--primary-hover);
+}
+
 /* Footer Styles */  
 .app-footer {
     grid-area: footer;
@@ -166,17 +341,11 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 1rem;
-    min-height: 2.5rem; /* 40px - compact but touch friendly */
-    font-size: 0.75rem;
+    min-height: 3rem; /* Increased for larger buttons */
+    font-size: 0.875rem; /* Larger text for better readability */
     color: var(--status-bar-text);
     position: relative;
     z-index: 100;
-}
-
-.footer-left {
-    display: flex;
-    align-items: center;
-    min-width: 0; /* Allow flex shrinking */
 }
 
 .footer-center {
@@ -184,6 +353,8 @@ body {
     align-items: center;
     gap: 1rem;
     font-weight: 500;
+    flex: 1; /* Take available space */
+    justify-content: flex-start; /* Align to left since no footer-left */
 }
 
 .footer-right {
@@ -201,22 +372,23 @@ body {
     font-family: var(--font-mono);
     font-weight: 500;
     white-space: nowrap;
+    font-size: 0.9375rem; /* Larger for better readability */
 }
 
-/* Footer Button Styles */
+/* Footer Button Styles - 25% larger for better touch */
 .play-pause-btn, .settings-btn, .theme-toggle-btn, .exit-btn {
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem; /* 25% increase from 2rem */
+    height: 2.5rem; /* 25% increase from 2rem */
     background: transparent;
     border: none;
-    border-radius: 0.25rem;
+    border-radius: 0.375rem;
     color: var(--status-bar-text);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
-    font-size: 0.75rem;
+    font-size: 0.9375rem; /* 25% increase from 0.75rem */
 }
 
 .play-pause-btn:hover, .settings-btn:hover, .theme-toggle-btn:hover, .exit-btn:hover {
@@ -812,8 +984,8 @@ body {
     
     .app-footer {
         padding: 0 0.75rem;
-        min-height: 2.25rem;
-        font-size: 0.7rem;
+        min-height: 2.75rem;
+        font-size: 0.8125rem;
     }
     
     .footer-center {
@@ -891,9 +1063,9 @@ body {
     }
     
     .play-pause-btn, .settings-btn, .theme-toggle-btn, .exit-btn {
-        width: 2.25rem;
-        height: 2.25rem;
-        font-size: 0.7rem;
+        width: 2.375rem; /* Maintain proportions on mobile */
+        height: 2.375rem;
+        font-size: 0.875rem;
     }
     
     .header {
@@ -1720,40 +1892,41 @@ body {
     color: var(--text-color);
 }
 
-/* Menu Dropdown - Mobile-first VS Code Style */
+/* VS Code Style Menu Dropdown */
 .menu-dropdown {
-    position: absolute;
-    bottom: 2.5rem;
-    left: 0.5rem;
+    position: fixed;
+    top: 3rem; /* Position below header */
+    left: 0.75rem;
     background: var(--bg-color);
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    min-width: 160px;
-    max-width: calc(100vw - 1rem);
-}
-
-@media (max-width: 480px) {
-    .menu-dropdown {
-        left: 0.25rem;
-        min-width: 140px;
-    }
+    border-radius: 0.375rem; /* VS Code style rounded corners */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 2000;
+    min-width: 200px;
+    max-width: 280px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    overflow: hidden;
 }
 
 .menu-item {
-    padding: 0.6rem 1rem;
-    font-size: 0.8rem;
-    font-weight: 500;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 400;
     color: var(--text-color);
     cursor: pointer;
-    transition: var(--transition);
-    border-bottom: 1px solid var(--border-color);
-    display: block;
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+    background: transparent;
+    text-align: left;
+    width: 100%;
+    line-height: 1.4;
 }
 
-.menu-item:last-child {
-    border-bottom: none;
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .menu-item.active {
@@ -1761,8 +1934,34 @@ body {
     color: var(--bg-color);
 }
 
-.menu-item:hover:not(.active) {
+.menu-item.active:hover {
+    background: var(--primary-hover);
+}
+
+/* VS Code style separator */
+.menu-separator {
+    height: 1px;
     background: var(--border-color);
+    margin: 0.25rem 0;
+}
+
+/* Light theme support */
+[data-theme="light"] .menu-dropdown {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .menu-item:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+    .menu-dropdown {
+        left: 0.5rem;
+        right: 0.5rem;
+        min-width: auto;
+        max-width: calc(100vw - 1rem);
+    }
 }
 
 /* Coming Soon Page - Mobile-optimized */
