@@ -638,7 +638,7 @@ body {
 /* Timer Controls - Fixed Top Right of Page */
 .timer-controls {
     position: fixed;
-    top: 5rem;
+    top: 4rem;
     right: 1rem;
     display: flex;
     align-items: center;
@@ -648,7 +648,7 @@ body {
     border-radius: 0.75rem;
     padding: 0.75rem 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 100;
+    z-index: 200;
 }
 
 .timer-display {
@@ -908,10 +908,11 @@ body {
     
     .timer-controls {
         position: fixed;
-        top: 4rem;
+        top: 3.5rem;
         right: 0.5rem;
         padding: 0.5rem 0.75rem;
         gap: 0.75rem;
+        z-index: 200;
     }
     
     .timer-display {
