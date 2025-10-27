@@ -561,7 +561,7 @@ class MathGame {
             setTimeout(() => {
                 this.showingCorrectFeedback = false;
                 this.advanceToNextQuestion();
-            }, 2000);
+            }, 1000);
         } else {
             // Smart validation for multi-digit answers
             const correctAnswerStr = correctAnswer.toString();
@@ -620,13 +620,13 @@ class MathGame {
             clearTimeout(this.clearInputTimeout);
         }
         
-        // Set new timeout to clear input after 2 seconds
+        // Set new timeout to clear input after 1 second
         this.clearInputTimeout = setTimeout(() => {
             if (this.elements.answerInput) {
                 this.elements.answerInput.value = '';
                 this.setAnswerState('neutral');
             }
-        }, 2000);
+        }, 1000);
     }
 
     /**
@@ -1050,13 +1050,11 @@ class MathGame {
                         <div class="stat-label">Incorrect</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">${accuracy}%</div>
-                        <div class="stat-label">Accuracy</div>
-                    </div>
-                    <div class="stat-item">
                         <div class="stat-value">${minutes}:${seconds.toString().padStart(2, '0')}</div>
                         <div class="stat-label">Time</div>
                     </div>
+                </div>
+                <div class="mistakes-section">
                     ${mistakesCard}
                 </div>
             </div>
