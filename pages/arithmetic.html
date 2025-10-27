@@ -12,6 +12,9 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../assets/css/main.css">
     
+    <!-- Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
     <!-- Preload critical resources -->
     <link rel="preload" href="script.js" as="script">
     
@@ -23,10 +26,10 @@
     <header class="app-header">
         <div class="header-left">
             <button class="home-btn" id="home-btn" onclick="window.location.href='home.html'" title="Home" aria-label="Go to home page">
-                🏠
+                <span class="material-icons">home</span>
             </button>
             <button class="menu-btn" id="menu-btn" title="Menu" aria-label="Open menu">
-                <span class="menu-icon">☰</span>
+                <span class="material-icons">menu</span>
             </button>
             <h1 class="app-title">Arithmetic Practice</h1>
         </div>
@@ -46,6 +49,22 @@
     <!-- Main Content Area -->
     <main class="app-main arithmetic-main" role="main">
         <div class="arithmetic-container">
+            <!-- Timer Controls - Top Right -->
+            <div class="timer-controls">
+                <div class="timer-display" id="timer-display">00:00</div>
+                <div class="timer-buttons">
+                    <button class="timer-btn pause-btn" id="pause-btn" title="Pause" aria-label="Pause timer">
+                        <span class="material-icons">pause</span>
+                    </button>
+                    <button class="timer-btn stop-btn" id="stop-btn" title="Stop" aria-label="Stop session">
+                        <span class="material-icons">stop</span>
+                    </button>
+                    <button class="timer-btn restart-btn" id="restart-btn" title="Restart" aria-label="Restart session">
+                        <span class="material-icons">replay</span>
+                    </button>
+                </div>
+            </div>
+            
             <!-- Math Expression Grid -->
             <div class="math-expression" id="math-expression">
                 <div class="expression-row">
@@ -84,23 +103,16 @@
 
     <!-- Modern Footer -->
     <footer class="app-footer">
-        <!-- Removed current page section - moved to header -->
-        <div class="footer-center">
-            <span class="counter-display" id="counter-display">1/10</span>
-            <span class="timer-display" id="timer-display">00:00</span>
-        </div>
+        <!-- Removed counter and timer - moved to top right -->
         <div class="footer-right">
-            <button class="play-pause-btn" id="play-pause-btn" title="Pause timer" aria-label="Pause or resume timer">
-                <span class="play-pause-icon" id="play-pause-icon">⏸</span>
-            </button>
             <button class="settings-btn" id="settings-btn" title="Settings" aria-label="Open settings">
-                <span class="settings-icon">⚙</span>
+                <span class="material-icons">settings</span>
             </button>
             <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme" aria-label="Switch between light and dark theme">
-                <span class="theme-icon" id="theme-icon">☽</span>
+                <span class="material-icons theme-icon" id="theme-icon">dark_mode</span>
             </button>
             <button class="exit-btn" id="exit-btn" title="Exit" aria-label="Exit application">
-                <span class="exit-icon">⏻</span>
+                <span class="material-icons">power_settings_new</span>
             </button>
         </div>
     </footer>

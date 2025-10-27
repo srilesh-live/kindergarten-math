@@ -12,6 +12,9 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../assets/css/main.css">
     
+    <!-- Material Design Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
     <!-- Preload critical resources -->
     <link rel="preload" href="../assets/js/config.js" as="script">
     
@@ -23,10 +26,10 @@
     <header class="app-header">
         <div class="header-left">
             <button class="home-btn" id="home-btn" onclick="window.location.href='home.html'" title="Home" aria-label="Go to home page" disabled style="opacity: 0.5;">
-                🏠
+                <i class="material-icons">home</i>
             </button>
             <button class="menu-btn" id="menu-btn" title="Menu" aria-label="Open menu">
-                <span class="menu-icon">☰</span>
+                <i class="material-icons">menu</i>
             </button>
             <h1 class="app-title">Kindergarten Math</h1>
         </div>
@@ -91,13 +94,13 @@
         </div>
         <div class="footer-right">
             <button class="settings-btn" id="settings-btn" title="Settings" aria-label="Open settings">
-                <span class="settings-icon">⚙</span>
+                <i class="material-icons">settings</i>
             </button>
             <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme" aria-label="Switch between light and dark theme">
-                <span class="theme-icon" id="theme-icon">☽</span>
+                <i class="material-icons" id="theme-icon">dark_mode</i>
             </button>
             <button class="exit-btn" id="exit-btn" title="Exit" aria-label="Exit application">
-                <span class="exit-icon">⏻</span>
+                <i class="material-icons">power_settings_new</i>
             </button>
         </div>
     </footer>

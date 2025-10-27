@@ -75,7 +75,7 @@ class MathGame {
             this.timer.intervalId = setInterval(() => {
                 this.updateTimerDisplay();
             }, 1000);
-            this.updatePlayPauseButton();
+            this.updatePlayPauseIcon('pause');
             this.enableInput();
         }
     }
@@ -88,7 +88,7 @@ class MathGame {
             this.timer.isRunning = false;
             clearInterval(this.timer.intervalId);
             this.timer.elapsedTime = Date.now() - this.timer.startTime;
-            this.updatePlayPauseButton();
+            this.updatePlayPauseIcon('play_arrow');
             this.disableInput();
         }
     }
@@ -99,8 +99,12 @@ class MathGame {
     toggleTimer() {
         if (this.timer.isRunning) {
             this.pauseTimer();
+            this.disableInput();
+            this.updatePlayPauseIcon('play_arrow');
         } else {
             this.startTimer();
+            this.enableInput();
+            this.updatePlayPauseIcon('pause');
         }
     }
 
@@ -123,18 +127,62 @@ class MathGame {
     }
 
     /**
-     * Update the play/pause button appearance
+     * Update the play/pause button icon
      */
-    updatePlayPauseButton() {
-        if (this.elements.playPauseIcon && this.elements.playPauseBtn) {
-            if (this.timer.isRunning) {
-                this.elements.playPauseIcon.textContent = '⏸';
-                this.elements.playPauseBtn.title = 'Pause timer';
-            } else {
-                this.elements.playPauseIcon.textContent = '▶';
-                this.elements.playPauseBtn.title = 'Resume timer';
-            }
+    updatePlayPauseIcon(iconName) {
+        if (this.elements.playPauseIcon) {
+            this.elements.playPauseIcon.textContent = iconName;
         }
+    }
+
+    /**
+     * Disable input field when timer is paused
+     */
+    disableInput() {
+        if (this.elements.answerInput) {
+            this.elements.answerInput.disabled = true;
+            this.elements.answerInput.style.opacity = '0.5';
+        }
+    }
+
+    /**
+     * Enable input field when timer is running
+     */
+    enableInput() {
+        if (this.elements.answerInput) {
+            this.elements.answerInput.disabled = false;
+            this.elements.answerInput.style.opacity = '1';
+            this.elements.answerInput.focus();
+        }
+    }
+
+    /**
+     * Stop the current session and go to statistics
+     */
+    stopSession() {
+        this.pauseTimer();
+        this.completeSession();
+    }
+
+    /**
+     * Restart the current session
+     */
+    restartSession() {
+        // Reset timer
+        this.timer.elapsedTime = 0;
+        this.timer.isRunning = false;
+        clearInterval(this.timer.intervalId);
+        this.updateTimerDisplay();
+        
+        // Reset session data
+        this.resetQuestionStats();
+        this.clearAllMistakes();
+        
+        // Start new session
+        this.startTimer();
+        this.enableInput();
+        this.updatePlayPauseIcon('pause');
+        this.generateNewProblem();
     }
 
     /**
@@ -188,6 +236,8 @@ class MathGame {
             timerDisplay: 'timer-display',
             playPauseBtn: 'play-pause-btn',
             playPauseIcon: 'play-pause-icon',
+            stopBtn: 'stop-btn',
+            restartBtn: 'restart-btn',
             counterDisplay: 'counter-display',
             totalQuestions: 'total-questions',
             maxOperand2: 'max-operand2'
@@ -239,6 +289,8 @@ class MathGame {
         
         // Timer controls
         this.elements.playPauseBtn?.addEventListener('click', this.toggleTimer.bind(this));
+        this.elements.stopBtn?.addEventListener('click', this.stopSession.bind(this));
+        this.elements.restartBtn?.addEventListener('click', this.restartSession.bind(this));
         
         // Menu button
         document.getElementById('menu-btn')?.addEventListener('click', (e) => this.toggleMenu(e));
@@ -1344,10 +1396,10 @@ class MathGame {
         if (!this.elements.themeIcon) return;
 
         if (theme === 'dark') {
-            this.elements.themeIcon.textContent = '☀'; // Sun symbol for light mode toggle
+            this.elements.themeIcon.textContent = 'light_mode'; // Light mode icon for switching to light
             this.elements.themeIcon.title = 'Switch to Light Mode';
         } else {
-            this.elements.themeIcon.textContent = '☽'; // Moon symbol for dark mode toggle
+            this.elements.themeIcon.textContent = 'dark_mode'; // Dark mode icon for switching to dark
             this.elements.themeIcon.title = 'Switch to Dark Mode';
         }
     }

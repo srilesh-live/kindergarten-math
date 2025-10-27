@@ -13,7 +13,11 @@
     --text-muted: #888888;
     --border-color: #404040;
     --input-bg: #2a2a2a;
+    --input-border: #525252;
+    --input-text: #ffffff;
     --card-bg: #2a2a2a;
+    --footer-bg: #1e1e1e;
+    --hover-bg: rgba(255, 255, 255, 0.1);
     --header-height: 70px;
     --border-radius: 8px;
     --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -35,10 +39,14 @@
     --bg-color: #f8f9fa;
     --text-color: #1a1a1a;
     --text-secondary: #666;
-    --text-muted: #888888;
+    --text-muted: #666666;
     --border-color: #e0e0e0;
     --input-bg: #ffffff;
+    --input-border: #d1d5db;
+    --input-text: #1a1a1a;
     --card-bg: #ffffff;
+    --footer-bg: #f8f9fa;
+    --hover-bg: rgba(0, 0, 0, 0.05);
     --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
     --shadow-medium: 0 4px 12px rgba(42, 42, 42, 0.3);
     --status-bar-bg: #2d2d30;
@@ -463,15 +471,15 @@ body {
 /* Footer Styles */  
 .app-footer {
     grid-area: footer;
-    background: var(--status-bar-bg);
-    border-top: 1px solid var(--status-bar-border);
+    background: var(--footer-bg);
+    border-top: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 1rem;
     min-height: 3rem; /* Increased for larger buttons */
     font-size: 0.875rem; /* Larger text for better readability */
-    color: var(--status-bar-text);
+    color: var(--text-secondary);
     position: relative;
     z-index: 100;
 }
@@ -599,6 +607,7 @@ body {
     padding: 2rem 1rem;
     min-height: 100%;
     place-items: center; /* Override grid centering for custom layout */
+    position: relative;
 }
 
 .arithmetic-container {
@@ -608,6 +617,77 @@ body {
     width: 100%;
     max-width: 500px;
     gap: 3rem;
+    position: relative;
+}
+
+/* Timer Controls - Top Right */
+.timer-controls {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timer-display {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-color);
+    min-width: 4rem;
+    text-align: center;
+    font-family: var(--font-mono);
+}
+
+.timer-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.timer-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    transition: all 0.2s ease;
+}
+
+.timer-btn:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary-color);
+}
+
+.timer-btn.pause-btn:hover {
+    background: rgba(251, 191, 36, 0.1);
+    border-color: #f59e0b;
+    color: #f59e0b;
+}
+
+.timer-btn.stop-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.timer-btn.restart-btn:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
+.timer-btn .material-icons {
+    font-size: 1.125rem;
 }
 
 /* Math Expression - Vertical Stack Layout */
@@ -672,12 +752,12 @@ body {
     width: clamp(8rem, 25vw, 12rem);
     height: clamp(4rem, 10vw, 6rem);
     text-align: center;
-    border: 3px solid var(--border-color);
+    border: 2px solid var(--input-border);
     border-radius: 0.75rem;
     padding: 0;
     outline: none;
     background: var(--input-bg);
-    color: var(--text-color);
+    color: var(--input-text);
     line-height: 1;
     box-sizing: border-box;
     transition: all 0.2s ease;
@@ -725,22 +805,40 @@ body {
 /* Input States */
 .answer-input::placeholder {
     color: var(--text-muted);
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
 .answer-input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    background: var(--input-bg);
 }
 
-.answer-input.correct {
+/* Dark theme specific states */
+:root .answer-input.correct {
     border-color: #10b981;
-    background: rgba(16, 185, 129, 0.1);
+    background: rgba(16, 185, 129, 0.2);
+    color: #ffffff;
 }
 
-.answer-input.incorrect {
+:root .answer-input.incorrect {
     border-color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(239, 68, 68, 0.2);
+    color: #ffffff;
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Light theme specific states */
+[data-theme="light"] .answer-input.correct {
+    border-color: #059669;
+    background: rgba(5, 150, 105, 0.1);
+    color: #064e3b;
+}
+
+[data-theme="light"] .answer-input.incorrect {
+    border-color: #dc2626;
+    background: rgba(220, 38, 38, 0.1);
+    color: #991b1b;
     animation: shake 0.5s ease-in-out;
 }
 
@@ -790,6 +888,28 @@ body {
     .arithmetic-container {
         gap: 2rem;
         padding: 0 0.5rem;
+    }
+    
+    .timer-controls {
+        position: relative;
+        top: auto;
+        right: auto;
+        align-self: stretch;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    
+    .timer-display {
+        font-size: 1rem;
+    }
+    
+    .timer-btn {
+        width: 2rem;
+        height: 2rem;
+    }
+    
+    .timer-btn .material-icons {
+        font-size: 1rem;
     }
     
     .math-expression {

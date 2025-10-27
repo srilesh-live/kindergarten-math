@@ -11,16 +11,19 @@
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../assets/css/main.css">
+    
+    <!-- Material Design Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
     <!-- Modern Header -->
     <header class="app-header">
         <div class="header-left">
             <button class="home-btn" id="home-btn" onclick="window.location.href='home.html'" title="Home" aria-label="Go to home page">
-                🏠
+                <i class="material-icons">home</i>
             </button>
             <button class="menu-btn" id="menu-btn" title="Menu" aria-label="Open menu">
-                <span class="menu-icon">☰</span>
+                <i class="material-icons">menu</i>
             </button>
             <h1 class="app-title">Number Sequences</h1>
         </div>
@@ -63,7 +66,7 @@
         </div>
         <div class="footer-right">
             <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme" aria-label="Switch between light and dark theme">
-                <span class="theme-icon" id="theme-icon">☽</span>
+                <i class="material-icons" id="theme-icon">dark_mode</i>
             </button>
         </div>
     </footer>
@@ -73,13 +76,13 @@
     <!-- Menu Dropdown -->
     <div class="menu-dropdown" id="menu-dropdown" style="display: none;">
         <div class="menu-item" onclick="window.location.href='home.html'">
-            🏠 Home
+            <i class="material-icons">home</i> Home
         </div>
         <div class="menu-item" onclick="window.location.href='arithmetic.html'">
-            🔢 Arithmetic Practice
+            <i class="material-icons">calculate</i> Arithmetic Practice
         </div>
         <div class="menu-item active">
-            🔄 Number Sequences
+            <i class="material-icons">repeat</i> Number Sequences
         </div>
     </div>
 
