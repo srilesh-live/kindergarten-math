@@ -1,270 +1,268 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Interactive kindergarten math practice with addition, subtraction, multiplication, and division exercises">
-    <meta name="author" content="Kindergarten Math App">
-    <meta name="theme-color" content="#1a1a1a">
+    <meta name="description" content="Arithmetic Practice - Kindergarten Math">
+    <meta name="theme-color" content="#111827">
     
-    <title>Kindergarten Math - Practice Arithmetic</title>
+    <title>Arithmetic Practice - Kindergarten Math</title>
     
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="../assets/css/main.css?v=6">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'app-bg': '#0f172a',
+                        'app-surface': '#1e293b',
+                        'app-surface-light': '#334155',
+                        'app-border': '#475569',
+                        'app-text': '#f8fafc',
+                        'app-text-muted': '#cbd5e1',
+                        'app-text-dim': '#94a3b8'
+                    },
+                    fontFamily: {
+                        'system': ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'sans-serif'],
+                        'mono': ['SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
     
     <!-- Material Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="script.js" as="script">
-    
-    <!-- Favicon (optional) -->
-    <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg"> -->
+    <style>
+        /* Remove number input arrows */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+    </style>
 </head>
-<body>
-    <!-- Modern Header -->
-    <header class="app-header">
-        <div class="header-left">
-            <button class="home-btn" id="home-btn" onclick="window.location.href='home.html'" title="Home" aria-label="Go to home page">
-                <span class="material-icons">home</span>
+<body class="min-h-screen bg-app-bg text-app-text font-system antialiased">
+    <!-- Header -->
+    <header class="bg-app-surface border-b border-app-border px-4 py-3 flex items-center justify-between shadow-lg">
+        <div class="flex items-center space-x-3">
+            <button 
+                onclick="window.location.href='home.html'" 
+                class="p-2 rounded-lg hover:bg-app-surface-light text-app-text-muted hover:text-app-text transition-colors"
+                title="Back to Home"
+            >
+                <i class="material-icons text-lg">home</i>
             </button>
-            <button class="menu-btn" id="menu-btn" title="Menu" aria-label="Open menu">
-                <span class="material-icons">menu</span>
-            </button>
-            <h1 class="app-title">Basic arithmetic</h1>
+            
+            <div class="h-6 w-px bg-app-border"></div>
+            
+            <h1 class="text-xl font-semibold text-app-text">Basic Arithmetic</h1>
         </div>
-        <div class="header-right">
-            <!-- Header Action Buttons -->
-            <div class="header-actions">
-                <button class="settings-btn" id="settings-btn" title="Settings" aria-label="Open settings">
-                    <span class="material-icons">settings</span>
-                </button>
-                <button class="exit-btn" id="exit-btn" title="Exit" aria-label="Exit application">
-                    <span class="material-icons">power_settings_new</span>
-                </button>
+        
+        <div class="flex items-center space-x-2">
+            <!-- Timer -->
+            <div class="flex items-center space-x-2 px-3 py-1 bg-app-bg rounded-lg border border-app-border">
+                <i class="material-icons text-lg text-app-text-muted">timer</i>
+                <span id="timer-display" class="text-xl font-mono text-app-text-muted min-w-[4rem]">00:00</span>
             </div>
+            
+            <!-- Play/Pause -->
+            <button 
+                id="play-pause-btn"
+                class="p-2 rounded-lg hover:bg-app-surface-light text-app-text-muted hover:text-blue-400 transition-all"
+                title="Play/Pause"
+            >
+                <i class="material-icons text-lg" id="play-pause-icon">pause</i>
+            </button>
+            
+            <!-- Settings -->
+            <button 
+                id="settings-btn"
+                class="p-2 rounded-lg hover:bg-app-surface-light text-app-text-muted hover:text-app-text transition-colors"
+                title="Settings"
+            >
+                <i class="material-icons text-lg">settings</i>
+            </button>
+            
+            <!-- Exit -->
+            <button 
+                id="exit-btn"
+                class="p-2 rounded-lg hover:bg-app-surface-light text-app-text-muted hover:text-red-400 transition-all"
+                title="Exit Practice"
+            >
+                <i class="material-icons text-lg">close</i>
+            </button>
         </div>
     </header>
 
-    <!-- Timer Controls - Fixed Top Right of Page -->
-    <div class="timer-controls">
-        <div class="timer-display" id="timer-display">00:00</div>
-        <div class="timer-buttons">
-            <button class="timer-btn play-pause-btn" id="play-pause-btn" title="Pause" aria-label="Pause timer">
-                <span class="material-icons" id="play-pause-icon">pause</span>
-            </button>
-            <button class="timer-btn stop-btn" id="stop-btn" title="Stop" aria-label="Stop session">
-                <span class="material-icons">stop</span>
-            </button>
-            <button class="timer-btn restart-btn" id="restart-btn" title="Restart" aria-label="Restart session">
-                <span class="material-icons">replay</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Main Content Area -->
-    <main class="app-main arithmetic-main" role="main">
-        <div class="arithmetic-container">
-            <!-- Math Expression Grid -->
-            <div class="math-expression" id="math-expression">
-                <div class="expression-row">
-                    <span class="operand" id="operand1">5</span>
-                    <span class="operation" id="operation">+</span>
-                    <span class="operand" id="operand2">3</span>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col items-center justify-center p-6">
+        <!-- Math Expression -->
+        <div class="bg-app-surface border border-app-border rounded-3xl p-12 shadow-2xl mb-8 max-w-2xl w-full">
+            <div class="text-center">
+                <!-- Problem Display -->
+                <div class="flex items-center justify-center space-x-8 text-6xl md:text-7xl font-bold text-app-text mb-8">
+                    <span id="operand1">5</span>
+                    <span id="operator" class="text-app-text-muted">+</span>
+                    <span id="operand2">3</span>
+                    <span class="text-5xl md:text-6xl text-app-text-muted font-bold">=</span>
                 </div>
-                <div class="equals-row">
-                    <span class="equals">=</span>
-                </div>
-                <div class="answer-row">
+                
+                <!-- Answer Input -->
+                <div class="flex justify-center">
                     <input 
                         type="number" 
                         id="answer-input" 
-                        class="answer-input" 
-                        min="0"
-                        max="9999"
-                        step="1"
+                        class="w-48 h-24 text-7xl font-bold text-center bg-app-bg/50 border-2 border-app-border rounded-2xl text-app-text placeholder-app-text-dim focus:outline-none focus:ring-4 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-300 caret-blue-400"
+                        placeholder=""
                         autofocus
-                        autocomplete="off"
-                        placeholder="?"
-                        aria-label="Enter your answer"
                     >
                 </div>
             </div>
-            
-            <!-- Progress Indicator -->
-            <div class="progress-section">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill" style="width: 10%"></div>
-                </div>
-                <div class="progress-text" id="progress-text">Question 1 of 10</div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="w-full max-w-md mb-4">
+            <div class="flex items-center justify-between text-sm text-app-text-muted mb-2">
+                <span>Progress</span>
+                <span id="progress-text">1 of 10</span>
+            </div>
+            <div class="w-full bg-app-surface-light rounded-full h-2 border border-app-border">
+                <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500" style="width: 10%"></div>
+            </div>
+        </div>
+        
+        <!-- Score Display -->
+        <div class="flex items-center space-x-6 text-sm">
+            <div class="flex items-center space-x-2">
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span class="text-app-text-muted">Correct: <span id="correct-count" class="text-green-400 font-semibold">0</span></span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                <span class="text-app-text-muted">Incorrect: <span id="incorrect-count" class="text-red-400 font-semibold">0</span></span>
             </div>
         </div>
     </main>
 
-    <!-- Modern Footer -->
-    <footer class="app-footer">
-        <div class="footer-left">
-            <!-- User Info (shown when logged in) -->
-            <div id="user-info" class="user-info" style="display: none;">
-                <span id="user-email" class="user-email"></span>
-            </div>
-            
-            <!-- Guest User Display -->
-            <div id="guest-info" class="guest-info" style="display: none;">
-                <span class="user-label">Guest</span>
-            </div>
-        </div>
-    </footer>
-
-
-
-    <!-- Configuration Panel -->
-    <div class="config-panel" id="config-panel">
-        <div class="settings-container">
-            <div class="settings-header">
-                <h2 class="settings-title">Settings</h2>
-                <button class="settings-close-btn" id="settings-close-btn" aria-label="Close settings">
-                    <i class="material-icons">close</i>
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+        <div class="bg-app-surface border border-app-border rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden transform scale-90 transition-all duration-300">
+            <!-- Settings Header -->
+            <div class="flex items-center justify-between p-6 border-b border-app-border">
+                <h2 class="text-2xl font-semibold text-app-text">Settings</h2>
+                <button 
+                    id="settings-close-btn"
+                    class="p-2 rounded-lg hover:bg-app-surface-light text-app-text-muted hover:text-app-text transition-colors"
+                >
+                    <i class="material-icons text-xl">close</i>
                 </button>
             </div>
             
-            <div class="settings-body">
-                <!-- Left Navigation Pane -->
-                <div class="settings-nav">
-                    <div class="settings-nav-item active" data-section="general">
-                        <i class="material-icons">tune</i>
-                        <span>General</span>
-                    </div>
-                    <div class="settings-nav-item" data-section="appearance">
-                        <i class="material-icons">palette</i>
-                        <span>Appearance</span>
-                    </div>
-                    <div class="settings-nav-item" data-section="arithmetic">
-                        <i class="material-icons">calculate</i>
-                        <span>Arithmetic</span>
-                    </div>
-                    <div class="settings-nav-item" data-section="number-sequences">
-                        <i class="material-icons">format_list_numbered</i>
-                        <span>Number Sequences</span>
-                    </div>
+            <!-- Settings Body -->
+            <div class="flex h-96">
+                <!-- Left Navigation -->
+                <div class="w-64 bg-app-bg border-r border-app-border p-4">
+                    <nav class="space-y-1">
+                        <button class="settings-nav-item active w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors" data-section="general">
+                            <i class="material-icons text-lg">tune</i>
+                            <span>General</span>
+                        </button>
+                        <button class="settings-nav-item w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors" data-section="operations">
+                            <i class="material-icons text-lg">calculate</i>
+                            <span>Operations</span>
+                        </button>
+                        <button class="settings-nav-item w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors" data-section="difficulty">
+                            <i class="material-icons text-lg">trending_up</i>
+                            <span>Difficulty</span>
+                        </button>
+                    </nav>
                 </div>
                 
-                <!-- Right Content Pane -->
-                <div class="settings-content">
-                    <!-- General Section -->
-                    <div class="settings-section active" id="general-section">
-                        <div class="settings-section-header">
-                            <h3>General Settings</h3>
-                            <p>Configure general application preferences</p>
-                        </div>
-                        <div class="setting-group">
-                            <div class="setting-item">
-                                <div class="setting-info">
-                                    <label class="setting-label">Auto-save progress</label>
-                                    <span class="setting-description">Automatically save your progress during sessions</span>
+                <!-- Right Content -->
+                <div class="flex-1 p-6 overflow-y-auto">
+                    <!-- General Settings -->
+                    <div id="general-section" class="settings-section">
+                        <h3 class="text-xl font-semibold text-app-text mb-4">General Settings</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <label class="text-app-text font-medium">Sound Effects</label>
+                                    <p class="text-sm text-app-text-muted">Play sounds for correct/incorrect answers</p>
                                 </div>
-                                <div class="setting-control">
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="auto-save" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-app-surface-light peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-app-text font-medium mb-2">Number of Questions</label>
+                                <input 
+                                    type="number" 
+                                    id="total-questions" 
+                                    class="w-24 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                                    value="10" 
+                                    min="5" 
+                                    max="50"
+                                >
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Appearance Section -->
-                    <div class="settings-section" id="appearance-section">
-                        <div class="settings-section-header">
-                            <h3>Appearance</h3>
-                            <p>Customize the visual appearance of the application</p>
-                        </div>
-                        <div class="setting-group">
-                            <div class="setting-item">
-                                <div class="setting-info">
-                                    <label class="setting-label">Theme</label>
-                                    <span class="setting-description">Using Material Dark theme</span>
-                                </div>
-                                <div class="setting-control">
-                                    <span class="theme-status">Dark Theme (Fixed)</span>
-                                </div>
-                            </div>
+                    <!-- Operations Settings -->
+                    <div id="operations-section" class="settings-section hidden">
+                        <h3 class="text-xl font-semibold text-app-text mb-4">Operations</h3>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <button class="operation-btn active flex items-center justify-center space-x-2 p-4 bg-app-bg border-2 border-blue-500 rounded-xl text-blue-400 font-semibold transition-all hover:bg-blue-500/10" data-operation="addition">
+                                <span class="text-2xl">+</span>
+                                <span>Addition</span>
+                            </button>
+                            <button class="operation-btn flex items-center justify-center space-x-2 p-4 bg-app-bg border-2 border-app-border rounded-xl text-app-text-muted font-semibold transition-all hover:bg-app-surface-light hover:text-app-text hover:border-app-text-muted" data-operation="subtraction">
+                                <span class="text-2xl">−</span>
+                                <span>Subtraction</span>
+                            </button>
+                            <button class="operation-btn flex items-center justify-center space-x-2 p-4 bg-app-bg border-2 border-app-border rounded-xl text-app-text-muted font-semibold transition-all hover:bg-app-surface-light hover:text-app-text hover:border-app-text-muted" data-operation="multiplication">
+                                <span class="text-2xl">×</span>
+                                <span>Multiplication</span>
+                            </button>
+                            <button class="operation-btn flex items-center justify-center space-x-2 p-4 bg-app-bg border-2 border-app-border rounded-xl text-app-text-muted font-semibold transition-all hover:bg-app-surface-light hover:text-app-text hover:border-app-text-muted" data-operation="division">
+                                <span class="text-2xl">÷</span>
+                                <span>Division</span>
+                            </button>
                         </div>
                     </div>
                     
-                    <!-- Arithmetic Section -->
-                    <div class="settings-section" id="arithmetic-section">
-                        <div class="settings-section-header">
-                            <h3>Arithmetic Practice</h3>
-                            <p>Configure arithmetic practice settings</p>
-                        </div>
+                    <!-- Difficulty Settings -->
+                    <div id="difficulty-section" class="settings-section hidden">
+                        <h3 class="text-xl font-semibold text-app-text mb-4">Difficulty</h3>
                         
-                        <div class="setting-group">
-                            <div class="setting-item-full">
-                                <label class="setting-label">Operations</label>
-                                <div class="operation-selector">
-                                    <button class="op-btn active" data-operation="addition">+</button>
-                                    <button class="op-btn" data-operation="subtraction">−</button>
-                                    <button class="op-btn" data-operation="multiplication">×</button>
-                                    <button class="op-btn" data-operation="division">÷</button>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-app-text font-medium mb-3">First Number Range</label>
+                                <div class="flex items-center space-x-3">
+                                    <input type="number" id="min-operand1" class="w-20 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text text-center focus:outline-none focus:ring-2 focus:ring-blue-500" value="1" min="0" max="100">
+                                    <span class="text-app-text-muted">to</span>
+                                    <input type="number" id="max-operand1" class="w-20 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text text-center focus:outline-none focus:ring-2 focus:ring-blue-500" value="10" min="0" max="100">
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="setting-group">
-                            <div class="setting-item-full">
-                                <label class="setting-label">Number Ranges</label>
-                                <div class="range-grid">
-                                    <div class="range-row">
-                                        <label class="range-label">First Number</label>
-                                        <div class="range-inputs">
-                                            <input type="text" id="min-operand1" class="num-input" value="1" 
-                                                   placeholder="Min" title="Minimum value (1-100)">
-                                            <span class="range-separator">to</span>
-                                            <input type="text" id="max-operand1" class="num-input" value="10" 
-                                                   placeholder="Max" title="Maximum value (1-100)">
-                                        </div>
-                                    </div>
-                                    <div class="range-row">
-                                        <label class="range-label">Second Number</label>
-                                        <div class="range-inputs">
-                                            <input type="text" id="min-operand2" class="num-input" value="1" 
-                                                   placeholder="Min" title="Minimum value (1-100)">
-                                            <span class="range-separator">to</span>
-                                            <input type="text" id="max-operand2" class="num-input" value="10" 
-                                                   placeholder="Max" title="Maximum value (1-100)">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="setting-group">
-                            <div class="setting-item">
-                                <div class="setting-info">
-                                    <label class="setting-label">Total Questions</label>
-                                    <span class="setting-description">Number of questions per session (10-100)</span>
-                                </div>
-                                <div class="setting-control">
-                                    <input type="text" id="total-questions" class="setting-input" value="10" 
-                                           placeholder="10-100" title="Total number of questions (10-100)" 
-                                           min="10" max="100">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Number Sequences Section -->
-                    <div class="settings-section" id="number-sequences-section">
-                        <div class="settings-section-header">
-                            <h3>Number Sequences</h3>
-                            <p>Configure number sequence practice settings</p>
-                        </div>
-                        <div class="setting-group">
-                            <div class="setting-item">
-                                <div class="setting-info">
-                                    <label class="setting-label">Coming Soon</label>
-                                    <span class="setting-description">Number sequence settings will be available soon</span>
+                            
+                            <div>
+                                <label class="block text-app-text font-medium mb-3">Second Number Range</label>
+                                <div class="flex items-center space-x-3">
+                                    <input type="number" id="min-operand2" class="w-20 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text text-center focus:outline-none focus:ring-2 focus:ring-blue-500" value="1" min="0" max="100">
+                                    <span class="text-app-text-muted">to</span>
+                                    <input type="number" id="max-operand2" class="w-20 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text text-center focus:outline-none focus:ring-2 focus:ring-blue-500" value="10" min="0" max="100">
                                 </div>
                             </div>
                         </div>
@@ -272,51 +270,51 @@
                 </div>
             </div>
             
-            <div class="settings-footer">
-                <button class="settings-btn-cancel" id="cancel-settings">Cancel</button>
-                <button class="settings-btn-save" id="save-settings">Save Changes</button>
+            <!-- Settings Footer -->
+            <div class="flex items-center justify-end space-x-3 p-6 border-t border-app-border">
+                <button 
+                    id="settings-cancel-btn"
+                    class="px-6 py-2 text-app-text-muted hover:text-app-text transition-colors"
+                >
+                    Cancel
+                </button>
+                <button 
+                    id="settings-save-btn"
+                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                >
+                    Save Changes
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Exit/Logout Confirmation Modal -->
-    <div class="exit-modal" id="exit-modal" style="display: none;">
-        <div class="exit-modal-content">
-            <div class="exit-modal-body">
-                <div id="exit-message" class="exit-message"></div>
-                <div class="exit-actions">
-                    <button class="exit-confirm-btn" id="confirm-exit">Confirm</button>
-                    <button class="exit-cancel-btn" id="cancel-exit">Cancel</button>
+    <!-- Exit Confirmation Modal -->
+    <div id="exit-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+        <div class="bg-app-surface border border-app-border rounded-2xl p-6 w-full max-w-md transform scale-90 transition-all duration-300">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-red-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="material-icons text-2xl text-red-400">warning</i>
+                </div>
+                <h3 class="text-lg font-semibold text-app-text mb-2">Exit Practice?</h3>
+                <p class="text-app-text-muted text-sm mb-6">Your current progress will be lost if you exit now.</p>
+                <div class="flex space-x-3">
+                    <button 
+                        id="exit-cancel-btn"
+                        class="flex-1 px-4 py-2 text-app-text-muted hover:text-app-text transition-colors"
+                    >
+                        Cancel
+                    </button>
+                    <button 
+                        id="exit-confirm-btn"
+                        class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+                    >
+                        Exit
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Menu Dropdown -->
-    <div class="menu-dropdown" id="menu-dropdown" style="display: none;">
-        <div class="menu-item" onclick="window.location.href='home.html'">
-            🏠 Home
-        </div>
-        <div class="menu-item active">
-            🔢 Basic arithmetic
-        </div>
-        <div class="menu-item" onclick="window.location.href='number-sequences.html'">
-            🔄 Number Sequences
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <!-- Load configuration first -->
-    <script src="../assets/js/config.js"></script>
-    <script src="../assets/js/auth.js"></script>
-    <script src="../assets/js/user-data.js"></script>
     <script src="../assets/js/script.js"></script>
-    <!-- <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js');
-            });
-        }
-    </script> -->
 </body>
 </html>

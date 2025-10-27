@@ -1,259 +1,147 @@
 /**
- * Supabase Authentication Module
- * Handles user registration, login, logout, and password reset
+ * Clean Authentication System - Pure Tailwind Version
  */
 
-class AuthManager {
+class AuthSystem {
     constructor() {
-        // Load configuration from config.js
-        if (typeof window.APP_CONFIG === 'undefined') {
-            throw new Error('APP_CONFIG not found. Make sure config.js is loaded before auth.js');
-        }
+        this.modal = document.getElementById('auth-modal');
+        this.loginForm = document.getElementById('login-form');
+        this.registerForm = document.getElementById('register-form');
+        this.forgotForm = document.getElementById('forgot-form');
         
-        this.supabaseUrl = window.APP_CONFIG.supabase.url;
-        this.supabaseKey = window.APP_CONFIG.supabase.anonKey;
-        this.supabase = null;
-        this.currentUser = null;
-        
-        // Set initial UI state immediately (will be updated by checkAuthState)
-        this.updateUIForGuestUser();
-        
-        this.initializeSupabase();
-        this.bindAuthEvents();
-        this.checkAuthState();
+        this.initializeEvents();
     }
 
-    /**
-     * Initialize Supabase client
-     */
-    async initializeSupabase() {
-        try {
-            // Import Supabase from CDN
-            if (typeof window.supabase === 'undefined') {
-                await this.loadSupabaseScript();
+    initializeEvents() {
+        // Modal triggers
+        document.getElementById('login-btn').addEventListener('click', () => this.showModal('login'));
+        document.getElementById('register-btn').addEventListener('click', () => this.showModal('register'));
+        document.getElementById('modal-close').addEventListener('click', () => this.hideModal());
+        
+        // Form switching
+        document.getElementById('forgot-password-btn').addEventListener('click', () => this.switchForm('forgot'));
+        document.querySelector('#switch-to-register button').addEventListener('click', () => this.switchForm('register'));
+        document.querySelector('#switch-to-login button').addEventListener('click', () => this.switchForm('login'));
+        document.querySelector('#back-to-login button').addEventListener('click', () => this.switchForm('login'));
+        
+        // Form submissions
+        this.loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+        this.registerForm.addEventListener('submit', (e) => this.handleRegister(e));
+        this.forgotForm.addEventListener('submit', (e) => this.handleForgotPassword(e));
+        
+        // Close on backdrop click
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) this.hideModal();
+        });
+        
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !this.modal.classList.contains('invisible')) {
+                this.hideModal();
             }
-            
-            this.supabase = window.supabase.createClient(this.supabaseUrl, this.supabaseKey);
-            console.log('Supabase initialized successfully');
-        } catch (error) {
-            console.error('Failed to initialize Supabase:', error);
-        }
-    }
-
-    /**
-     * Load Supabase script dynamically
-     */
-    loadSupabaseScript() {
-        return new Promise((resolve, reject) => {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.appendChild(script);
         });
     }
 
-    /**
-     * Bind authentication form events
-     */
-    bindAuthEvents() {
-        // Logout button (only one we need in the main app now)
-        document.getElementById('logout-btn')?.addEventListener('click', this.handleLogout.bind(this));
-        
-        // Exit button for both guest and authenticated users
-        document.getElementById('exit-btn')?.addEventListener('click', this.showExitModal.bind(this));
-        
-        // Exit modal event listeners  
-        document.getElementById('cancel-exit')?.addEventListener('click', this.hideExitModal.bind(this));
-        document.getElementById('confirm-exit')?.addEventListener('click', this.handleExit.bind(this));
+    showModal(type = 'login') {
+        this.modal.classList.remove('opacity-0', 'invisible');
+        this.modal.querySelector('div').classList.remove('scale-90');
+        this.modal.querySelector('div').classList.add('scale-100');
+        this.switchForm(type);
     }
 
-    /**
-     * Check current authentication state
-     */
-    async checkAuthState() {
-        if (!this.supabase) return;
-        
-        // Check if user came from landing page
-        const authMode = sessionStorage.getItem('authMode');
-        
-        try {
-            const { data: { user } } = await this.supabase.auth.getUser();
-            if (user && authMode === 'authenticated') {
-                this.currentUser = user;
-                this.updateUIForAuthenticatedUser(user);
-            } else if (authMode === 'guest') {
-                this.updateUIForGuestUser();
-            } else {
-                // No auth mode set, redirect to landing page
-                window.location.href = '../index.html';
-                return;
-            }
-        } catch (error) {
-            console.error('Auth state check failed:', error);
-            // If there's an auth error and user expected to be authenticated, redirect to landing
-            if (authMode === 'authenticated') {
-                window.location.href = '../index.html';
-            } else {
-                this.updateUIForGuestUser();
-            }
-        }
-    }
-
-
-
-    /**
-     * Handle user logout
-     */
-    async handleLogout() {
-        try {
-            const { error } = await this.supabase.auth.signOut();
-            if (error) throw error;
-            
-            this.currentUser = null;
-            
-            // Clear session storage and redirect to landing page
-            sessionStorage.removeItem('authMode');
-            window.location.href = '../index.html';
-            
-        } catch (error) {
-            console.error('Logout failed:', error);
-            // Even if logout fails, redirect to landing page for security
-            sessionStorage.removeItem('authMode');
-            window.location.href = '../index.html';
-        }
-    }
-
-    /**
-     * Show authentication modal
-     */
-    showModal(type) {
-        const modal = document.getElementById('auth-modal');
-        const forms = ['login-form-container', 'register-form-container', 'forgot-form-container'];
-        
-        // Hide all forms
-        forms.forEach(formId => {
-            const form = document.getElementById(formId);
-            if (form) form.style.display = 'none';
-        });
-        
-        // Show selected form
-        const selectedForm = document.getElementById(`${type}-form-container`);
-        if (selectedForm) {
-            selectedForm.style.display = 'block';
-            modal.style.display = 'flex';
-        }
-    }
-
-    /**
-     * Hide authentication modal
-     */
     hideModal() {
-        const modal = document.getElementById('auth-modal');
-        if (modal) {
-            modal.style.display = 'none';
-        }
-        this.clearErrors();
+        this.modal.querySelector('div').classList.remove('scale-100');
+        this.modal.querySelector('div').classList.add('scale-90');
+        this.modal.classList.add('opacity-0', 'invisible');
+        
+        // Reset forms
+        setTimeout(() => {
+            this.loginForm.reset();
+            this.registerForm.reset();
+            this.forgotForm.reset();
+        }, 300);
     }
 
-    /**
-     * Update UI for authenticated user
-     */
-    updateUIForAuthenticatedUser(user) {
-        const userInfo = document.getElementById('user-info');
-        const guestInfo = document.getElementById('guest-info');
-        const userEmail = document.getElementById('user-email');
+    switchForm(type) {
+        // Hide all forms
+        this.loginForm.classList.add('hidden');
+        this.registerForm.classList.add('hidden');
+        this.forgotForm.classList.add('hidden');
         
-        if (guestInfo) guestInfo.style.display = 'none';
-        if (userInfo) userInfo.style.display = 'flex';
-        if (userEmail) userEmail.textContent = user.email;
-    }
-
-    /**
-     * Update UI for guest user
-     */
-    updateUIForGuestUser() {
-        const userInfo = document.getElementById('user-info');
-        const guestInfo = document.getElementById('guest-info');
+        // Hide all switch links
+        document.getElementById('switch-to-register').classList.add('hidden');
+        document.getElementById('switch-to-login').classList.add('hidden');
+        document.getElementById('back-to-login').classList.add('hidden');
         
-        if (userInfo) userInfo.style.display = 'none';
-        if (guestInfo) guestInfo.style.display = 'flex';
-    }
-
-    /**
-     * Update UI for unauthenticated user (legacy - redirects to landing)
-     */
-    updateUIForUnauthenticatedUser() {
-        // In the new flow, unauthenticated users should go to landing page
-        window.location.href = '../index.html';
-    }
-
-
-
-    /**
-     * Show exit confirmation modal
-     */
-    showExitModal() {
-        const modal = document.getElementById('exit-modal');
-        const message = document.getElementById('exit-message');
-        
-        const authMode = sessionStorage.getItem('authMode');
-        const isGuest = authMode === 'guest';
-        
-        if (message) {
-            message.textContent = isGuest 
-                ? 'Exit application?' 
-                : 'Sign out and return to welcome page?';
-        }
-        
-        if (modal) {
-            modal.style.display = 'flex';
+        // Show appropriate form and links
+        switch (type) {
+            case 'login':
+                document.getElementById('modal-title').textContent = 'Sign In';
+                this.loginForm.classList.remove('hidden');
+                document.getElementById('switch-to-register').classList.remove('hidden');
+                break;
+            case 'register':
+                document.getElementById('modal-title').textContent = 'Create Account';
+                this.registerForm.classList.remove('hidden');
+                document.getElementById('switch-to-login').classList.remove('hidden');
+                break;
+            case 'forgot':
+                document.getElementById('modal-title').textContent = 'Reset Password';
+                this.forgotForm.classList.remove('hidden');
+                document.getElementById('back-to-login').classList.remove('hidden');
+                break;
         }
     }
 
-    /**
-     * Hide exit confirmation modal
-     */
-    hideExitModal() {
-        const modal = document.getElementById('exit-modal');
-        if (modal) {
-            modal.style.display = 'none';
-        }
-    }
-
-    /**
-     * Handle exit/logout confirmation
-     */
-    async handleExit() {
-        const authMode = sessionStorage.getItem('authMode');
-        const isGuest = authMode === 'guest';
+    handleLogin(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const email = formData.get('email');
+        const password = formData.get('password');
         
-        if (isGuest) {
-            // For guest users, just redirect to landing page
-            sessionStorage.removeItem('authMode');
-            window.location.href = '../index.html';
-        } else {
-            // For authenticated users, perform logout
-            await this.handleLogout();
+        // Simulate login (replace with actual authentication)
+        console.log('Login attempt:', { email, password });
+        
+        // For demo purposes, always succeed
+        setTimeout(() => {
+            this.hideModal();
+            window.location.href = 'pages/home.html';
+        }, 500);
+    }
+
+    handleRegister(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const password = formData.get('password');
+        const confirmPassword = formData.get('confirmPassword');
+        
+        // Basic validation
+        if (password !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
         }
+        
+        // Simulate registration (replace with actual authentication)
+        console.log('Registration attempt:', { name, email, password });
+        
+        // For demo purposes, always succeed
+        setTimeout(() => {
+            this.hideModal();
+            window.location.href = 'pages/home.html';
+        }, 500);
     }
 
-    /**
-     * Get current user
-     */
-    getCurrentUser() {
-        return this.currentUser;
-    }
-
-    /**
-     * Check if user is authenticated
-     */
-    isAuthenticated() {
-        return !!this.currentUser;
+    handleForgotPassword(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const email = formData.get('email');
+        
+        // Simulate password reset (replace with actual functionality)
+        console.log('Password reset for:', email);
+        
+        alert('Password reset instructions have been sent to your email!');
+        this.switchForm('login');
     }
 }
-
-// Initialize auth manager when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.authManager = new AuthManager();
-});
