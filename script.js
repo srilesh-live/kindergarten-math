@@ -181,8 +181,6 @@ class MathGame {
             settingsBtn: 'settings-btn',
             themeIcon: 'theme-icon',
             pageTitle: 'page-title',
-            mistakesList: 'mistakes-list',
-            clearMistakesBtn: 'clear-mistakes',
             minOperand1: 'min-operand1',
             maxOperand1: 'max-operand1',
             minOperand2: 'min-operand2',
@@ -243,10 +241,8 @@ class MathGame {
         
         // Collapse buttons
         const collapseLeftBtn = document.getElementById('collapse-left-sidebar');
-        const collapseRightBtn = document.getElementById('collapse-right-sidebar');
         
         collapseLeftBtn?.addEventListener('click', this.toggleLeftSidebar.bind(this));
-        collapseRightBtn?.addEventListener('click', this.toggleRightSidebar.bind(this));
         
         // Configuration panel events
         this.bindConfigEvents();
@@ -931,6 +927,16 @@ class MathGame {
         const problemContainer = document.querySelector('.problem-container');
         if (!problemContainer) return;
 
+        // Generate mistakes summary
+        const mistakesHtml = this.mistakes.length > 0 ? `
+            <div class="mistakes-summary">
+                <div class="mistakes-title">Incorrect Answers:</div>
+                <div class="mistakes-text">${this.mistakes.map(mistake => 
+                    `${mistake.problem} = ${mistake.userAnswer} (correct: ${mistake.correctAnswer})`
+                ).join(', ')}</div>
+            </div>
+        ` : '';
+
         problemContainer.innerHTML = `
             <div class="statistics-display">
                 <div class="stats-grid">
@@ -955,6 +961,7 @@ class MathGame {
                         <div class="stat-label">Time</div>
                     </div>
                 </div>
+                ${mistakesHtml}
                 <button class="new-session-btn" onclick="window.mathGame.startNewSession()">Start New Session</button>
             </div>
         `;
@@ -1485,33 +1492,11 @@ class MathGame {
     }
 
     /**
-     * Update the mistakes display in the right sidebar
+     * Update the mistakes display - now simplified since we show mistakes only at the end
      */
     updateMistakesDisplay() {
-        if (!this.elements.mistakesList) return;
-        
-        const rightSidebar = document.querySelector('.right-sidebar');
-        
-        if (this.mistakes.length === 0) {
-            this.elements.mistakesList.innerHTML = '';
-            // Hide the sidebar when no mistakes
-            if (rightSidebar) {
-                rightSidebar.classList.add('collapsed');
-            }
-            return;
-        }
-        
-        // Show the sidebar when there are mistakes
-        if (rightSidebar) {
-            rightSidebar.classList.remove('collapsed');
-        }
-        
-        const mistakesHtml = this.mistakes.map((mistake) => {
-            const fullText = `${mistake.problem} = ${mistake.userAnswer}`;
-            return `<div class="mistake-item">${fullText}</div>`;
-        }).join('');
-        
-        this.elements.mistakesList.innerHTML = mistakesHtml;
+        // Mistakes are now displayed only in the final statistics
+        // No real-time display needed
     }
 
     /**
@@ -1528,27 +1513,6 @@ class MathGame {
     toggleLeftSidebar() {
         const sidebar = document.querySelector('.sidebar');
         const collapseBtn = document.getElementById('collapse-left-sidebar');
-        
-        if (sidebar && collapseBtn) {
-            sidebar.classList.toggle('collapsed');
-            
-            // Update button state classes for color indication
-            if (sidebar.classList.contains('collapsed')) {
-                collapseBtn.classList.remove('sidebar-expanded');
-                collapseBtn.classList.add('sidebar-collapsed');
-            } else {
-                collapseBtn.classList.remove('sidebar-collapsed');
-                collapseBtn.classList.add('sidebar-expanded');
-            }
-        }
-    }
-
-    /**
-     * Toggle right sidebar collapse state
-     */
-    toggleRightSidebar() {
-        const sidebar = document.querySelector('.right-sidebar');
-        const collapseBtn = document.getElementById('collapse-right-sidebar');
         
         if (sidebar && collapseBtn) {
             sidebar.classList.toggle('collapsed');

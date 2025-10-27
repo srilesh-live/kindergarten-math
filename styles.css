@@ -11,7 +11,6 @@
     --text-secondary: #b0b0b0;
     --border-color: #404040;
     --sidebar-width: 250px;
-    --right-sidebar-width: 220px;
     --header-height: 70px;
     --border-radius: 8px;
     --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -130,23 +129,6 @@ body {
     outline: none;
 }
 
-/* Modern Right Sidebar */
-.right-sidebar {
-    min-width: 8rem;
-    max-width: 16rem;
-    width: auto;
-    background: var(--bg-color);
-    border-left: 1px solid var(--border-color);
-    padding: 0 0 2rem 0;
-    flex-shrink: 0;
-    overflow-y: auto;
-    order: 3;
-    position: relative;
-    transition: var(--transition);
-    display: flex;
-    flex-direction: column;
-}
-
 /* Collapsed sidebar states */
 .sidebar.collapsed {
     width: 0;
@@ -155,40 +137,9 @@ body {
     overflow: hidden;
 }
 
-.right-sidebar.collapsed {
-    width: 0;
-    padding: 0;
-    border-left: none;
-    overflow: hidden;
-}
-
-
-
 /* Ensure main content has relative positioning for proper layout */
 .main-content {
     position: relative;
-}
-
-
-
-/* Minimal Mistakes List */
-.mistakes-list {
-    padding: 1rem;
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.mistake-item {
-    padding: 0.5rem 0;
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: var(--error-color);
-    line-height: 1.4;
-    text-align: center;
-    white-space: nowrap;
 }
 
 .mistake-time {
@@ -824,27 +775,6 @@ body {
         width: 180px;
     }
     
-    .right-sidebar {
-        width: 160px;
-    }
-    
-    .right-sidebar-header {
-        padding: 0 0.75rem 0.75rem;
-    }
-    
-    .mistakes-list {
-        padding: 0 0.75rem;
-    }
-    
-    .mistake-item {
-        padding: 0.5rem;
-        font-size: 0.8rem;
-    }
-    
-    .mistake-line {
-        gap: 0.25rem;
-    }
-    
     .mistake-display {
         font-size: 0.8rem;
     }
@@ -1231,6 +1161,32 @@ body {
 .new-session-btn:active {
     transform: translateY(0);
     box-shadow: var(--shadow-light);
+}
+
+/* Mistakes Summary */
+.mistakes-summary {
+    width: 100%;
+    max-width: 600px;
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+.mistakes-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+}
+
+.mistakes-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-family: var(--font-mono);
 }
 
 /* Responsive status bar */
