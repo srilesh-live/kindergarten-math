@@ -1091,26 +1091,10 @@ class MathGame {
      * Start a new session
      */
     startNewSession() {
-        // Restore the arithmetic container with new structure, preserving timer controls
+        // Restore the arithmetic container (timer controls are now outside this container)
         const arithmeticContainer = document.querySelector('.arithmetic-container');
         if (arithmeticContainer) {
             arithmeticContainer.innerHTML = `
-                <!-- Timer Controls - Top Right -->
-                <div class="timer-controls">
-                    <div class="timer-display" id="timer-display">00:00</div>
-                    <div class="timer-buttons">
-                        <button class="timer-btn play-pause-btn" id="play-pause-btn" title="Pause" aria-label="Pause timer">
-                            <span class="material-icons" id="play-pause-icon">pause</span>
-                        </button>
-                        <button class="timer-btn stop-btn" id="stop-btn" title="Stop" aria-label="Stop session">
-                            <span class="material-icons">stop</span>
-                        </button>
-                        <button class="timer-btn restart-btn" id="restart-btn" title="Restart" aria-label="Restart session">
-                            <span class="material-icons">replay</span>
-                        </button>
-                    </div>
-                </div>
-                
                 <!-- Math Expression Grid -->
                 <div class="math-expression" id="math-expression">
                     <div class="expression-row">

@@ -34,16 +34,6 @@
             <h1 class="app-title">Arithmetic Practice</h1>
         </div>
         <div class="header-right">
-            <!-- User Info (shown when logged in) -->
-            <div id="user-info" class="user-info" style="display: none;">
-                <span id="user-email" class="user-email"></span>
-            </div>
-            
-            <!-- Guest User Display -->
-            <div id="guest-info" class="guest-info" style="display: none;">
-                <span class="user-label">Guest</span>
-            </div>
-            
             <!-- Header Action Buttons -->
             <div class="header-actions">
                 <button class="settings-btn" id="settings-btn" title="Settings" aria-label="Open settings">
@@ -59,25 +49,25 @@
         </div>
     </header>
 
+    <!-- Timer Controls - Fixed Top Right of Page -->
+    <div class="timer-controls">
+        <div class="timer-display" id="timer-display">00:00</div>
+        <div class="timer-buttons">
+            <button class="timer-btn play-pause-btn" id="play-pause-btn" title="Pause" aria-label="Pause timer">
+                <span class="material-icons" id="play-pause-icon">pause</span>
+            </button>
+            <button class="timer-btn stop-btn" id="stop-btn" title="Stop" aria-label="Stop session">
+                <span class="material-icons">stop</span>
+            </button>
+            <button class="timer-btn restart-btn" id="restart-btn" title="Restart" aria-label="Restart session">
+                <span class="material-icons">replay</span>
+            </button>
+        </div>
+    </div>
+
     <!-- Main Content Area -->
     <main class="app-main arithmetic-main" role="main">
         <div class="arithmetic-container">
-            <!-- Timer Controls - Top Right -->
-            <div class="timer-controls">
-                <div class="timer-display" id="timer-display">00:00</div>
-                <div class="timer-buttons">
-                    <button class="timer-btn play-pause-btn" id="play-pause-btn" title="Pause" aria-label="Pause timer">
-                        <span class="material-icons" id="play-pause-icon">pause</span>
-                    </button>
-                    <button class="timer-btn stop-btn" id="stop-btn" title="Stop" aria-label="Stop session">
-                        <span class="material-icons">stop</span>
-                    </button>
-                    <button class="timer-btn restart-btn" id="restart-btn" title="Restart" aria-label="Restart session">
-                        <span class="material-icons">replay</span>
-                    </button>
-                </div>
-            </div>
-            
             <!-- Math Expression Grid -->
             <div class="math-expression" id="math-expression">
                 <div class="expression-row">
@@ -116,6 +106,17 @@
 
     <!-- Modern Footer -->
     <footer class="app-footer">
+        <div class="footer-left">
+            <!-- User Info (shown when logged in) -->
+            <div id="user-info" class="user-info" style="display: none;">
+                <span id="user-email" class="user-email"></span>
+            </div>
+            
+            <!-- Guest User Display -->
+            <div id="guest-info" class="guest-info" style="display: none;">
+                <span class="user-label">Guest</span>
+            </div>
+        </div>
         <div class="footer-center">
             <span class="app-status">Practice Mode</span>
         </div>

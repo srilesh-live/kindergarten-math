@@ -492,13 +492,20 @@ body {
     z-index: 100;
 }
 
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+}
+
 .footer-center {
     display: flex;
     align-items: center;
     gap: 1rem;
     font-weight: 500;
-    flex: 1; /* Take available space */
-    justify-content: flex-start; /* Align to left since no footer-left */
+    flex: 1;
+    justify-content: center;
 }
 
 .footer-right {
@@ -628,11 +635,11 @@ body {
     position: relative;
 }
 
-/* Timer Controls - Top Right */
+/* Timer Controls - Fixed Top Right of Page */
 .timer-controls {
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: fixed;
+    top: 5rem;
+    right: 1rem;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -641,6 +648,7 @@ body {
     border-radius: 0.75rem;
     padding: 0.75rem 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
 }
 
 .timer-display {
@@ -899,12 +907,11 @@ body {
     }
     
     .timer-controls {
-        position: relative;
-        top: auto;
-        right: auto;
-        align-self: stretch;
-        justify-content: space-between;
-        margin-bottom: 1rem;
+        position: fixed;
+        top: 4rem;
+        right: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        gap: 0.75rem;
     }
     
     .timer-display {
