@@ -462,7 +462,7 @@
                     
                     if (error) throw error;
                     
-                    alert('Registration successful! Please check your email to verify your account, then sign in.');
+                    window.ModalSystem?.showAlert('Registration successful! Please check your email to verify your account, then sign in.', 'Registration Complete');
                     this.showAuthModal('login');
                     
                 } catch (error) {

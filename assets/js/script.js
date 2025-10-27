@@ -1252,8 +1252,12 @@ class MathGame {
     /**
      * Show alert message (can be enhanced with custom modal)
      */
-    showAlert(message) {
-        alert(message);
+    showAlert(message, title = 'Notice') {
+        return window.ModalSystem?.showAlert(message, title) || alert(message);
+    }
+
+    showConfirm(message, title = 'Confirm') {
+        return window.ModalSystem?.showConfirm(message, title) || confirm(message);
     }
 
     /**

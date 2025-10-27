@@ -171,15 +171,16 @@
 
         // Settings, theme toggle, and exit functionality
         document.getElementById('settings-btn').addEventListener('click', function() {
-            alert('Settings panel coming soon!');
+            window.ModalSystem?.showAlert('Settings panel coming soon!', 'Settings');
         });
 
         document.getElementById('theme-toggle').addEventListener('click', function() {
             toggleTheme();
         });
 
-        document.getElementById('exit-btn').addEventListener('click', function() {
-            if (confirm('Are you sure you want to exit?')) {
+        document.getElementById('exit-btn').addEventListener('click', async function() {
+            const shouldExit = await window.ModalSystem?.showConfirm('Are you sure you want to exit?', 'Confirm Exit');
+            if (shouldExit) {
                 window.close();
             }
         });
