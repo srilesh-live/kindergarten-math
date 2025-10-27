@@ -43,6 +43,19 @@
             <div id="guest-info" class="guest-info" style="display: none;">
                 <span class="user-label">Guest</span>
             </div>
+            
+            <!-- Header Action Buttons -->
+            <div class="header-actions">
+                <button class="settings-btn" id="settings-btn" title="Settings" aria-label="Open settings">
+                    <span class="material-icons">settings</span>
+                </button>
+                <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme" aria-label="Switch between light and dark theme">
+                    <span class="material-icons theme-icon" id="theme-icon">dark_mode</span>
+                </button>
+                <button class="exit-btn" id="exit-btn" title="Exit" aria-label="Exit application">
+                    <span class="material-icons">power_settings_new</span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -53,8 +66,8 @@
             <div class="timer-controls">
                 <div class="timer-display" id="timer-display">00:00</div>
                 <div class="timer-buttons">
-                    <button class="timer-btn pause-btn" id="pause-btn" title="Pause" aria-label="Pause timer">
-                        <span class="material-icons">pause</span>
+                    <button class="timer-btn play-pause-btn" id="play-pause-btn" title="Pause" aria-label="Pause timer">
+                        <span class="material-icons" id="play-pause-icon">pause</span>
                     </button>
                     <button class="timer-btn stop-btn" id="stop-btn" title="Stop" aria-label="Stop session">
                         <span class="material-icons">stop</span>
@@ -103,17 +116,8 @@
 
     <!-- Modern Footer -->
     <footer class="app-footer">
-        <!-- Removed counter and timer - moved to top right -->
-        <div class="footer-right">
-            <button class="settings-btn" id="settings-btn" title="Settings" aria-label="Open settings">
-                <span class="material-icons">settings</span>
-            </button>
-            <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme" aria-label="Switch between light and dark theme">
-                <span class="material-icons theme-icon" id="theme-icon">dark_mode</span>
-            </button>
-            <button class="exit-btn" id="exit-btn" title="Exit" aria-label="Exit application">
-                <span class="material-icons">power_settings_new</span>
-            </button>
+        <div class="footer-center">
+            <span class="app-status">Practice Mode</span>
         </div>
     </footer>
 
@@ -123,11 +127,7 @@
     <div class="config-panel" id="config-panel">
         <div class="settings-container">
             <div class="settings-header">
-                <button class="close-btn" id="close-config">
-                    <svg width="12" height="12" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-width="1.2" d="M1 1l12 12M13 1L1 13"/>
-                    </svg>
-                </button>
+                <h2 class="settings-title">Settings</h2>
             </div>
             
             <div class="settings-content">
@@ -178,6 +178,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            
+            <div class="settings-footer">
+                <button class="settings-btn-cancel" id="cancel-settings">Cancel</button>
+                <button class="settings-btn-save" id="save-settings">Save</button>
             </div>
         </div>
     </div>

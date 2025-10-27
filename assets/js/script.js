@@ -309,10 +309,16 @@ class MathGame {
      * Bind configuration panel events
      */
     bindConfigEvents() {
-        // Close button
-        const closeBtn = document.getElementById('close-config');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', this.closeConfigWithApply.bind(this));
+        // Save and Cancel buttons
+        const saveBtn = document.getElementById('save-settings');
+        const cancelBtn = document.getElementById('cancel-settings');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', this.saveSettings.bind(this));
+        }
+        
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', this.cancelSettings.bind(this));
         }
 
         // Theme toggle
@@ -324,10 +330,13 @@ class MathGame {
         // Auto-apply on input changes
         this.bindAutoApplyEvents();
 
-        // Close config when clicking outside
+        // Prevent closing config when clicking outside - user must use Save/Cancel
         this.elements.configPanel?.addEventListener('click', (e) => {
-            if (e.target === this.elements.configPanel) {
-                this.closeConfigWithApply();
+            // Only allow interactions within the settings container
+            const settingsContainer = e.target.closest('.settings-container');
+            if (!settingsContainer && e.target === this.elements.configPanel) {
+                e.preventDefault();
+                e.stopPropagation();
             }
         });
     }
@@ -730,6 +739,23 @@ class MathGame {
     }
 
     /**
+     * Save settings and close configuration panel
+     */
+    saveSettings() {
+        this.applySettingsAutomatic();
+        this.hideConfig();
+    }
+
+    /**
+     * Cancel settings changes and close configuration panel
+     */
+    cancelSettings() {
+        // Reload the current config to form without applying changes
+        this.loadCurrentConfigToForm();
+        this.hideConfig();
+    }
+
+    /**
      * Bind auto-apply events to form elements
      */
     bindAutoApplyEvents() {
@@ -1065,10 +1091,26 @@ class MathGame {
      * Start a new session
      */
     startNewSession() {
-        // Restore the arithmetic container with new structure
+        // Restore the arithmetic container with new structure, preserving timer controls
         const arithmeticContainer = document.querySelector('.arithmetic-container');
         if (arithmeticContainer) {
             arithmeticContainer.innerHTML = `
+                <!-- Timer Controls - Top Right -->
+                <div class="timer-controls">
+                    <div class="timer-display" id="timer-display">00:00</div>
+                    <div class="timer-buttons">
+                        <button class="timer-btn play-pause-btn" id="play-pause-btn" title="Pause" aria-label="Pause timer">
+                            <span class="material-icons" id="play-pause-icon">pause</span>
+                        </button>
+                        <button class="timer-btn stop-btn" id="stop-btn" title="Stop" aria-label="Stop session">
+                            <span class="material-icons">stop</span>
+                        </button>
+                        <button class="timer-btn restart-btn" id="restart-btn" title="Restart" aria-label="Restart session">
+                            <span class="material-icons">replay</span>
+                        </button>
+                    </div>
+                </div>
+                
                 <!-- Math Expression Grid -->
                 <div class="math-expression" id="math-expression">
                     <div class="expression-row">

@@ -27,6 +27,7 @@
     --status-bar-text: #cccccc;
     --status-bar-accent: #2d2d30;
     --status-bar-border: #3e3e42;
+    --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
 }
 
@@ -71,7 +72,7 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: var(--font-main);
     background: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
@@ -114,6 +115,13 @@ body {
 .header-right {
     display: flex;
     align-items: center;
+    gap: 1rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .app-title {
@@ -353,8 +361,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1042,7 +1050,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.7);
     z-index: 1000;
     backdrop-filter: blur(8px);
 }
@@ -1067,9 +1075,18 @@ body {
 
 .settings-header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     padding: 1rem 1.25rem 0.5rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    font-family: var(--font-main);
 }
 
 .close-btn {
@@ -1102,6 +1119,48 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+}
+
+.settings-footer {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.settings-btn-cancel,
+.settings-btn-save {
+    flex: 1;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    font-family: var(--font-main);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.settings-btn-cancel {
+    background: transparent;
+    color: var(--text-secondary);
+}
+
+.settings-btn-cancel:hover {
+    background: var(--bg-hover);
+    color: var(--text-color);
+}
+
+.settings-btn-save {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    border-color: var(--primary-color);
+}
+
+.settings-btn-save:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
 }
 
 .setting-group {
@@ -2338,14 +2397,15 @@ body {
     border-color: var(--primary-color);
 }
 
-/* Exit/Logout Modal */
+/* Exit/Logout Modal - Matching Settings Style */
 .exit-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2353,46 +2413,60 @@ body {
 }
 
 .exit-modal-content {
-    background: var(--bg-color);
+    background: var(--bg-primary);
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 2rem;
-    max-width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    max-width: 320px;
     width: 90%;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.exit-modal-body {
+    padding: 1.5rem;
+    text-align: center;
 }
 
 .exit-message {
-    text-align: center;
     color: var(--text-color);
     margin-bottom: 1.5rem;
     font-size: 0.95rem;
     line-height: 1.4;
+    font-family: var(--font-main);
 }
 
 .exit-actions {
     display: flex;
     gap: 0.75rem;
-    justify-content: center;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
 }
 
 .exit-confirm-btn,
 .exit-cancel-btn {
-    padding: 0.5rem 1.25rem;
+    flex: 1;
+    padding: 0.625rem 1rem;
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border-radius: 0.375rem;
     cursor: pointer;
-    font-size: 0.9rem;
-    transition: var(--transition);
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-family: var(--font-main);
+    transition: all 0.15s ease;
 }
 
 .exit-confirm-btn {
-    background: #2a2a2a;
-    color: #ffffff;
+    background: var(--primary-color);
+    color: var(--bg-color);
+    border-color: var(--primary-color);
 }
 
 .exit-confirm-btn:hover {
-    background: #000000;
+    background: var(--accent-color);
+    border-color: var(--accent-color);
 }
 
 .exit-cancel-btn {
@@ -2401,7 +2475,7 @@ body {
 }
 
 .exit-cancel-btn:hover {
-    background: var(--border-color);
+    background: var(--bg-hover);
     color: var(--text-color);
 }
 
