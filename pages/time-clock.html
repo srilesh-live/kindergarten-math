@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Time & Clock Practice - Kindergarten Math">
+    <meta name="theme-color" content="#111827">
+    
+    <title>Time & Clock - Kindergarten Math</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'app-bg': '#0f172a',
+                        'app-surface': '#1e293b',
+                        'app-surface-light': '#334155',
+                        'app-border': '#475569',
+                        'app-text': '#f8fafc',
+                        'app-text-muted': '#cbd5e1',
+                        'app-text-dim': '#94a3b8'
+                    },
+                    fontFamily: {
+                        'system': ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'sans-serif'],
+                        'mono': ['SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body class="min-h-screen bg-app-bg text-app-text font-system antialiased">
+    <!-- Header -->
+    <header class="bg-app-surface border-b border-app-border px-4 py-3 flex items-center justify-between shadow-lg">
+        <div class="flex items-center space-x-3">
+            <button 
+                onclick="window.location.href='home.html'" 
+                class="p-2 rounded-lg hover:bg-app-surface-light text-app-text-muted hover:text-app-text transition-colors"
+                title="Back to Home"
+            >
+                <i class="material-icons text-lg">home</i>
+            </button>
+            
+            <div class="h-6 w-px bg-app-border"></div>
+            
+            <h1 class="text-xl font-semibold text-app-text">Time & Clock</h1>
+        </div>
+        
+        <div class="flex items-center space-x-2">
+            <!-- Timer -->
+            <div class="flex items-center space-x-2 px-3 py-1 bg-app-bg rounded-lg border border-app-border">
+                <i class="material-icons text-lg text-app-text-muted">timer</i>
+                <span id="timer-display" class="text-xl font-mono text-app-text-muted min-w-[4rem]">00:00</span>
+            </div>
+            
+            <!-- Play/Pause -->
+            <button 
+                id="play-pause-btn"
+                class="p-2 rounded-lg hover:bg-app-surface-light text-app-text-muted hover:text-blue-400 transition-all"
+                title="Play/Pause"
+            >
+                <i class="material-icons text-lg" id="play-pause-icon">pause</i>
+            </button>
+            
+            <!-- Settings -->
+            <button 
+                id="settings-btn"
+                class="p-2 rounded-lg hover:bg-app-surface-light text-app-text-muted hover:text-app-text transition-colors"
+                title="Settings"
+            >
+                <i class="material-icons text-lg">settings</i>
+            </button>
+            
+            <!-- Exit -->
+            <button 
+                id="exit-btn"
+                class="p-2 rounded-lg hover:bg-app-surface-light text-app-text-muted hover:text-red-400 transition-all"
+                title="Exit Practice"
+            >
+                <i class="material-icons text-lg">close</i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col items-center justify-center p-6">
+        <!-- Clock Exercise -->
+        <div class="bg-app-surface border border-app-border rounded-3xl p-12 shadow-2xl mb-8 max-w-4xl w-full">
+            <div class="text-center">
+                <!-- Instructions -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold text-app-text mb-2" id="question-title">What time is shown?</h2>
+                </div>
+                
+                <!-- Clock Display -->
+                <div class="flex items-center justify-center mb-8">
+                    <div class="relative w-64 h-64" id="analog-clock">
+                        <svg viewBox="0 0 200 200" class="w-full h-full">
+                            <!-- Clock face circle -->
+                            <circle cx="100" cy="100" r="95" fill="white" stroke="#9ca3af" stroke-width="3"/>
+                            
+                            <!-- Hour markers -->
+                            <g stroke="#374151">
+                                <!-- 5-minute markers (shown only in hard mode) -->
+                                <g id="minute-markers" style="display: none;">
+                                    <!-- 12 o'clock (0 min) -->
+                                    <line x1="100" y1="10" x2="100" y2="25" stroke-width="3"/>
+                                    <!-- 1 o'clock (5 min) -->
+                                    <line x1="150" y1="25" x2="143" y2="32" stroke-width="2"/>
+                                    <!-- 2 o'clock (10 min) -->
+                                    <line x1="175" y1="50" x2="168" y2="57" stroke-width="2"/>
+                                    <!-- 3 o'clock (15 min) -->
+                                    <line x1="190" y1="100" x2="175" y2="100" stroke-width="3"/>
+                                    <!-- 4 o'clock (20 min) -->
+                                    <line x1="175" y1="150" x2="168" y2="143" stroke-width="2"/>
+                                    <!-- 5 o'clock (25 min) -->
+                                    <line x1="150" y1="175" x2="143" y2="168" stroke-width="2"/>
+                                    <!-- 6 o'clock (30 min) -->
+                                    <line x1="100" y1="190" x2="100" y2="175" stroke-width="3"/>
+                                    <!-- 7 o'clock (35 min) -->
+                                    <line x1="50" y1="175" x2="57" y2="168" stroke-width="2"/>
+                                    <!-- 8 o'clock (40 min) -->
+                                    <line x1="25" y1="150" x2="32" y2="143" stroke-width="2"/>
+                                    <!-- 9 o'clock (45 min) -->
+                                    <line x1="10" y1="100" x2="25" y2="100" stroke-width="3"/>
+                                    <!-- 10 o'clock (50 min) -->
+                                    <line x1="25" y1="50" x2="32" y2="57" stroke-width="2"/>
+                                    <!-- 11 o'clock (55 min) -->
+                                    <line x1="50" y1="25" x2="57" y2="32" stroke-width="2"/>
+                                </g>
+                            </g>
+                            
+                            <!-- Numbers -->
+                            <g fill="#1f2937" font-family="Arial, sans-serif" font-weight="bold" text-anchor="middle" dominant-baseline="central">
+                                <!-- Major numbers (12, 3, 6, 9) - shown in medium and easy -->
+                                <g id="major-numbers">
+                                    <text x="100" y="20" font-size="18">12</text>
+                                    <text x="190" y="105" font-size="18">3</text>
+                                    <text x="100" y="185" font-size="18">6</text>
+                                    <text x="10" y="105" font-size="18">9</text>
+                                </g>
+                                
+                                <!-- Minor numbers (1, 2, 4, 5, 7, 8, 10, 11) - shown only in easy -->
+                                <g id="minor-numbers">
+                                    <text x="150" y="35" font-size="14">1</text>
+                                    <text x="180" y="65" font-size="14">2</text>
+                                    <text x="180" y="145" font-size="14">4</text>
+                                    <text x="150" y="175" font-size="14">5</text>
+                                    <text x="50" y="175" font-size="14">7</text>
+                                    <text x="20" y="145" font-size="14">8</text>
+                                    <text x="20" y="65" font-size="14">10</text>
+                                    <text x="50" y="35" font-size="14">11</text>
+                                </g>
+                            </g>
+                            
+                            <!-- Clock hands -->
+                            <g id="clock-hands">
+                                <!-- Hour hand -->
+                                <line id="hour-hand" x1="100" y1="100" x2="100" y2="50" 
+                                      stroke="#1f2937" stroke-width="5" stroke-linecap="round" 
+                                      style="cursor: move; transform-origin: 100px 100px;"/>
+                                
+                                <!-- Minute hand -->
+                                <line id="minute-hand" x1="100" y1="100" x2="100" y2="30" 
+                                      stroke="#4b5563" stroke-width="3" stroke-linecap="round" 
+                                      style="cursor: move; transform-origin: 100px 100px;"/>
+                                
+                                <!-- Center dot -->
+                                <circle cx="100" cy="100" r="5" fill="#1f2937"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Digital Time Display (for digital-to-analog questions) -->
+                <div id="digital-time-display" class="hidden mb-8">
+                    <div class="bg-gray-900 text-green-400 font-mono text-4xl px-6 py-3 rounded-lg border-2 border-gray-600 inline-block">
+                        <span id="digital-time">12:00</span>
+                    </div>
+                </div>
+                
+                <!-- Answer Section -->
+                <div class="space-y-6">
+                    <!-- Multiple Choice Answers -->
+                    <div id="multiple-choice-section" class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+                        <button class="choice-btn bg-app-bg border-2 border-app-border rounded-xl p-4 hover:border-blue-500 hover:bg-blue-500/10 transition-all" data-choice="A">
+                            <span class="text-2xl font-semibold">12:00</span>
+                        </button>
+                        <button class="choice-btn bg-app-bg border-2 border-app-border rounded-xl p-4 hover:border-blue-500 hover:bg-blue-500/10 transition-all" data-choice="B">
+                            <span class="text-2xl font-semibold">12:30</span>
+                        </button>
+                        <button class="choice-btn bg-app-bg border-2 border-app-border rounded-xl p-4 hover:border-blue-500 hover:bg-blue-500/10 transition-all" data-choice="C">
+                            <span class="text-2xl font-semibold">1:00</span>
+                        </button>
+                        <button class="choice-btn bg-app-bg border-2 border-app-border rounded-xl p-4 hover:border-blue-500 hover:bg-blue-500/10 transition-all" data-choice="D">
+                            <span class="text-2xl font-semibold">1:30</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Time Input Section -->
+                    <div id="time-input-section" class="hidden flex items-center justify-center space-x-4">
+                        <input type="number" id="hour-input" class="w-16 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text text-center text-2xl focus:outline-none focus:ring-2 focus:ring-blue-500" min="1" max="12" placeholder="12">
+                        <span class="text-2xl font-bold">:</span>
+                        <input type="number" id="minute-input" class="w-16 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text text-center text-2xl focus:outline-none focus:ring-2 focus:ring-blue-500" min="0" max="59" placeholder="00">
+                        <button id="submit-time-btn" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                            Submit
+                        </button>
+                    </div>
+                    
+                    <!-- Clock Setting Section -->
+                    <div id="clock-setting-section" class="hidden">
+                        <p class="text-app-text-muted mb-4">Click and drag the clock hands to set the time</p>
+                        <button id="submit-clock-btn" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                            Submit Time
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="w-full max-w-md mb-4">
+            <div class="flex items-center justify-between text-sm text-app-text-muted mb-2">
+                <span>Progress</span>
+                <span id="progress-text">1 of 10</span>
+            </div>
+            <div class="w-full bg-app-surface-light rounded-full h-2 border border-app-border">
+                <div id="progress-bar" class="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full transition-all duration-500" style="width: 10%"></div>
+            </div>
+        </div>
+        
+        <!-- Score Display -->
+        <div class="flex items-center space-x-6 text-sm">
+            <div class="flex items-center space-x-2">
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span class="text-app-text-muted">Correct: <span id="correct-count" class="text-green-400 font-semibold">0</span></span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                <span class="text-app-text-muted">Incorrect: <span id="incorrect-count" class="text-red-400 font-semibold">0</span></span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+        <div class="bg-app-surface border border-app-border rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden transform scale-90 transition-all duration-300">
+            <!-- Settings Header -->
+            <div class="flex items-center justify-between p-6 border-b border-app-border">
+                <h2 class="text-2xl font-semibold text-app-text">Settings</h2>
+                <button 
+                    id="settings-close-btn"
+                    class="p-2 rounded-lg hover:bg-app-surface-light text-app-text-muted hover:text-app-text transition-colors"
+                >
+                    <i class="material-icons text-xl">close</i>
+                </button>
+            </div>
+            
+            <!-- Settings Body -->
+            <div class="flex h-96">
+                <!-- Left Navigation -->
+                <div class="w-64 bg-app-bg border-r border-app-border p-4">
+                    <nav class="space-y-1">
+                        <button class="settings-nav-item active w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors" data-section="general">
+                            <i class="material-icons text-lg">tune</i>
+                            <span>General</span>
+                        </button>
+                        <button class="settings-nav-item w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors" data-section="difficulty">
+                            <i class="material-icons text-lg">trending_up</i>
+                            <span>Difficulty</span>
+                        </button>
+                        <button class="settings-nav-item w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors" data-section="exercises">
+                            <i class="material-icons text-lg">schedule</i>
+                            <span>Exercises</span>
+                        </button>
+                    </nav>
+                </div>
+                
+                <!-- Right Content -->
+                <div class="flex-1 p-6 overflow-y-auto">
+                    <!-- General Settings -->
+                    <div id="general-section" class="settings-section">
+                        <h3 class="text-xl font-semibold text-app-text mb-4">General Settings</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <label class="text-app-text font-medium">Sound Effects</label>
+                                    <p class="text-sm text-app-text-muted">Play sounds for correct/incorrect answers</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-app-surface-light peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                                </label>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-app-text font-medium mb-2">Number of Questions</label>
+                                <input 
+                                    type="number" 
+                                    id="total-questions" 
+                                    class="w-24 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text text-center focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
+                                    value="10" 
+                                    min="5" 
+                                    max="50"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Difficulty Settings -->
+                    <div id="difficulty-section" class="settings-section hidden">
+                        <h3 class="text-xl font-semibold text-app-text mb-4">Difficulty</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-app-text font-medium mb-3">Time Format</label>
+                                <select id="time-format" class="w-48 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                    <option value="hour">Hours only (1:00, 2:00)</option>
+                                    <option value="half-hour" selected>Half hours (1:00, 1:30)</option>
+                                    <option value="quarter">Quarter hours (1:00, 1:15, 1:30, 1:45)</option>
+                                    <option value="five-minute">5-minute intervals</option>
+                                    <option value="minute">Any minute</option>
+                                </select>
+                                <p class="text-sm text-app-text-muted mt-2">Time precision level</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-app-text font-medium mb-3">Clock Difficulty</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="radio" name="clock-difficulty" value="easy" class="w-4 h-4 text-purple-600 bg-app-bg border-app-border focus:ring-purple-500" checked>
+                                        <span class="text-app-text">Easy - All numbers shown</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="radio" name="clock-difficulty" value="medium" class="w-4 h-4 text-purple-600 bg-app-bg border-app-border focus:ring-purple-500">
+                                        <span class="text-app-text">Medium - Only 12, 3, 6, 9 shown</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="radio" name="clock-difficulty" value="hard" class="w-4 h-4 text-purple-600 bg-app-bg border-app-border focus:ring-purple-500">
+                                        <span class="text-app-text">Hard - Only 5-minute markers shown</span>
+                                    </label>
+                                </div>
+                                <p class="text-sm text-app-text-muted mt-2">Choose clock display style for difficulty level</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-app-text font-medium mb-3">Hour Range</label>
+                                <div class="flex items-center space-x-3">
+                                    <input type="number" id="min-hour" class="w-20 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text text-center focus:outline-none focus:ring-2 focus:ring-purple-500" value="1" min="1" max="12">
+                                    <span class="text-app-text-muted">to</span>
+                                    <input type="number" id="max-hour" class="w-20 px-3 py-2 bg-app-bg border border-app-border rounded-lg text-app-text text-center focus:outline-none focus:ring-2 focus:ring-purple-500" value="12" min="1" max="12">
+                                </div>
+                                <p class="text-sm text-app-text-muted mt-2">Range of hours to practice</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Exercise Types -->
+                    <div id="exercises-section" class="settings-section hidden">
+                        <h3 class="text-xl font-semibold text-app-text mb-4">Exercise Types</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="exercise-type-btn active bg-app-bg border-2 border-purple-500 rounded-xl p-4 cursor-pointer transition-all hover:bg-purple-500/10" data-type="read-analog">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-purple-600/20 rounded-lg flex items-center justify-center">
+                                        <i class="material-icons text-lg text-purple-400">schedule</i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-purple-400">Read Analog Clock</h4>
+                                        <p class="text-sm text-app-text-muted">What time does the clock show?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="exercise-type-btn bg-app-bg border-2 border-app-border rounded-xl p-4 cursor-pointer transition-all hover:bg-app-surface-light hover:text-app-text hover:border-app-text-muted" data-type="set-analog">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blue-600/20 rounded-lg flex items-center justify-center">
+                                        <i class="material-icons text-lg text-blue-400">touch_app</i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-app-text-muted">Set Analog Clock</h4>
+                                        <p class="text-sm text-app-text-muted">Move the hands to show the time</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="exercise-type-btn bg-app-bg border-2 border-app-border rounded-xl p-4 cursor-pointer transition-all hover:bg-app-surface-light hover:text-app-text hover:border-app-text-muted" data-type="digital-analog">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-green-600/20 rounded-lg flex items-center justify-center">
+                                        <i class="material-icons text-lg text-green-400">swap_horiz</i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-app-text-muted">Digital to Analog</h4>
+                                        <p class="text-sm text-app-text-muted">Match digital time to clock</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="exercise-type-btn bg-app-bg border-2 border-app-border rounded-xl p-4 cursor-pointer transition-all hover:bg-app-surface-light hover:text-app-text hover:border-app-text-muted" data-type="mixed">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-orange-600/20 rounded-lg flex items-center justify-center">
+                                        <i class="material-icons text-lg text-orange-400">shuffle</i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-app-text-muted">Mixed Exercises</h4>
+                                        <p class="text-sm text-app-text-muted">Random combination of all types</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Footer -->
+            <div class="flex items-center justify-end space-x-3 p-6 border-t border-app-border">
+                <button 
+                    id="settings-cancel-btn"
+                    class="px-6 py-2 text-app-text-muted hover:text-app-text transition-colors"
+                >
+                    Cancel
+                </button>
+                <button 
+                    id="settings-save-btn"
+                    class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors"
+                >
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exit Confirmation Modal -->
+    <div id="exit-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+        <div class="bg-app-surface border border-app-border rounded-2xl p-6 w-full max-w-md transform scale-90 transition-all duration-300">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-red-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="material-icons text-2xl text-red-400">warning</i>
+                </div>
+                <h3 class="text-lg font-semibold text-app-text mb-2">Exit Practice?</h3>
+                <p class="text-app-text-muted text-sm mb-6">Your current progress will be lost if you exit now.</p>
+                <div class="flex space-x-3">
+                    <button 
+                        id="exit-cancel-btn"
+                        class="flex-1 px-4 py-2 text-app-text-muted hover:text-app-text transition-colors"
+                    >
+                        Cancel
+                    </button>
+                    <button 
+                        id="exit-confirm-btn"
+                        class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+                    >
+                        Exit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div id="statistics-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+        <div class="bg-app-surface border border-app-border rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden transform scale-90 transition-all duration-300">
+            <!-- Statistics Header -->
+            <div class="bg-gradient-to-r from-purple-600/20 to-blue-600/20 border-b border-app-border p-6 text-center">
+                <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="material-icons text-3xl text-yellow-400">emoji_events</i>
+                </div>
+                <h2 class="text-2xl font-bold text-app-text mb-2">Practice Complete!</h2>
+                <p class="text-app-text-muted">Great time-telling skills! Here are your results:</p>
+            </div>
+            
+            <!-- Statistics Body -->
+            <div class="p-6 overflow-y-auto max-h-96">
+                <!-- Overall Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-app-bg rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-green-400 mb-1" id="stats-total">0</div>
+                        <div class="text-sm text-app-text-muted">Total Questions</div>
+                    </div>
+                    <div class="bg-app-bg rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-blue-400 mb-1" id="stats-correct">0</div>
+                        <div class="text-sm text-app-text-muted">Correct</div>
+                    </div>
+                    <div class="bg-app-bg rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-red-400 mb-1" id="stats-incorrect">0</div>
+                        <div class="text-sm text-app-text-muted">Incorrect</div>
+                    </div>
+                    <div class="bg-app-bg rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-purple-400 mb-1" id="stats-accuracy">0%</div>
+                        <div class="text-sm text-app-text-muted">Accuracy</div>
+                    </div>
+                </div>
+                
+                <!-- Time Stats -->
+                <div class="bg-app-bg rounded-xl p-4 mb-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <i class="material-icons text-app-text-muted">timer</i>
+                            <span class="text-app-text font-medium">Practice Time</span>
+                        </div>
+                        <span class="text-app-text-muted" id="stats-time">00:00</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-app-text-muted text-sm">Average per question</span>
+                        <span class="text-app-text-muted text-sm" id="stats-avg-time">00:00</span>
+                    </div>
+                </div>
+                
+                <!-- Incorrect Answers Section -->
+                <div id="incorrect-section" class="hidden">
+                    <h3 class="text-lg font-semibold text-app-text mb-4 flex items-center space-x-2">
+                        <i class="material-icons text-red-400">error_outline</i>
+                        <span>Review Incorrect Answers</span>
+                    </h3>
+                    <div id="incorrect-list" class="space-y-3">
+                        <!-- Incorrect answers will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- Perfect Score Message -->
+                <div id="perfect-score" class="hidden text-center py-6">
+                    <div class="text-6xl mb-4">🕐</div>
+                    <h3 class="text-xl font-bold text-purple-400 mb-2">Perfect Time Master!</h3>
+                    <p class="text-app-text-muted">You read every time correctly! Amazing clock skills!</p>
+                </div>
+            </div>
+            
+            <!-- Statistics Footer -->
+            <div class="border-t border-app-border p-6 bg-app-bg/50">
+                <div class="flex space-x-3">
+                    <button 
+                        id="stats-practice-again"
+                        class="flex-1 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors"
+                    >
+                        Practice Again
+                    </button>
+                    <button 
+                        id="stats-home"
+                        class="flex-1 px-6 py-3 bg-app-surface-light hover:bg-slate-600 text-app-text rounded-lg font-medium transition-colors"
+                    >
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/time-clock.js"></script>
+</body>
+</html>

@@ -235,7 +235,6 @@ class SequenceGame {
                     this.handleInputNavigation(e);
                 }
             });
-            input.addEventListener('blur', (e) => this.validateInput(e));
         });
         
         // Focus on first input
@@ -307,11 +306,16 @@ class SequenceGame {
     handleCorrectInput(inputElement, index) {
         this.answeredPositions.add(index);
         this.markInputCorrect(inputElement);
+        // Check if all positions are answered
+        setTimeout(() => this.checkAllAnswers(), 100);
     }
     
     handleIncorrectInput(inputElement, index, userAnswer) {
+        this.answeredPositions.add(index); // Track incorrect answers too
         const correctAnswer = this.currentSequence.correctAnswers[index];
         this.markInputIncorrect(inputElement, correctAnswer);
+        // Check if all positions are answered
+        setTimeout(() => this.checkAllAnswers(), 100);
     }
     
     markInputCorrect(inputElement) {
@@ -462,35 +466,30 @@ class SequenceGame {
         const totalTime = Math.floor((Date.now() - this.startTime) / 1000);
         const avgTime = Math.floor(totalTime / this.totalQuestions);
         const accuracy = Math.round((this.correctAnswers / this.totalQuestions) * 100);
-        
-        // Update statistics
-        document.getElementById('stats-total').textContent = this.totalQuestions;
-        document.getElementById('stats-correct').textContent = this.correctAnswers;
-        document.getElementById('stats-incorrect').textContent = this.incorrectAnswers;
-        document.getElementById('stats-accuracy').textContent = `${accuracy}%`;
-        
-        const minutes = Math.floor(totalTime / 60);
-        const seconds = totalTime % 60;
-        document.getElementById('stats-time').textContent = 
-            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        
-        const avgMinutes = Math.floor(avgTime / 60);
-        const avgSeconds = avgTime % 60;
-        document.getElementById('stats-avg-time').textContent = 
-            `${avgMinutes.toString().padStart(2, '0')}:${avgSeconds.toString().padStart(2, '0')}`;
-        
-        // Show incorrect answers or perfect score
-        if (this.incorrectProblems.length > 0) {
-            this.displayIncorrectAnswers();
-            document.getElementById('incorrect-section').classList.remove('hidden');
-            document.getElementById('perfect-score').classList.add('hidden');
-        } else {
-            document.getElementById('incorrect-section').classList.add('hidden');
-            document.getElementById('perfect-score').classList.remove('hidden');
-        }
-        
-        // Show statistics modal
-        this.showStatistics();
+
+        // Prepare statistics data for the statistics page
+        const statisticsData = {
+            gameType: 'Number Sequences',
+            totalQuestions: this.totalQuestions,
+            correctAnswers: this.correctAnswers,
+            incorrectAnswers: this.incorrectAnswers,
+            totalTime: totalTime,
+            averageTime: avgTime,
+            accuracy: accuracy,
+            incorrectProblems: this.incorrectProblems.map(problem => ({
+                question: `Sequence: ${problem.sequence.map((num, idx) => 
+                    problem.missingIndices.includes(idx) ? '___' : num
+                ).join(', ')} (Step: ${problem.step})`,
+                userAnswer: Object.values(problem.userAnswers).join(', '),
+                correctAnswer: Object.values(problem.correctAnswers).join(', ')
+            }))
+        };
+
+        // Save statistics to localStorage
+        localStorage.setItem('gameStatistics', JSON.stringify(statisticsData));
+
+        // Navigate to statistics page
+        window.location.href = 'statistics.html';
     }
     
     displayIncorrectAnswers() {

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Game Statistics - Kindergarten Math">
+    <meta name="theme-color" content="#111827">
+    
+    <title>Game Statistics - Kindergarten Math</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'app-bg': '#0f172a',
+                        'app-surface': '#1e293b',
+                        'app-surface-light': '#334155',
+                        'app-border': '#475569',
+                        'app-text': '#f8fafc',
+                        'app-text-muted': '#cbd5e1',
+                        'app-text-dim': '#94a3b8'
+                    },
+                    fontFamily: {
+                        'system': ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'sans-serif'],
+                        'mono': ['SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body class="bg-app-bg text-app-text font-system min-h-screen">
+    <!-- Background Pattern -->
+    <div class="fixed inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-pink-900/20"></div>
+    <div class="fixed inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(120,119,198,0.3),transparent_50%)] "></div>
+    <div class="fixed inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(139,92,246,0.2),transparent_50%)]"></div>
+    
+    <!-- Content -->
+    <div class="relative min-h-screen flex flex-col items-center justify-center p-4">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <div class="flex items-center justify-center mb-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <i class="material-icons text-3xl text-white">analytics</i>
+                </div>
+            </div>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
+                Game Complete!
+            </h1>
+            <p class="text-app-text-muted text-lg" id="game-title">Great job on your practice session!</p>
+        </header>
+
+        <!-- Statistics Cards -->
+        <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Questions -->
+            <div class="bg-app-surface/50 backdrop-blur-sm border border-app-border rounded-2xl p-6 text-center">
+                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <i class="material-icons text-2xl text-blue-400">quiz</i>
+                </div>
+                <div class="text-3xl font-bold text-app-text mb-1" id="stats-total">10</div>
+                <div class="text-sm text-app-text-muted">Total Questions</div>
+            </div>
+
+            <!-- Correct Answers -->
+            <div class="bg-app-surface/50 backdrop-blur-sm border border-app-border rounded-2xl p-6 text-center">
+                <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <i class="material-icons text-2xl text-green-400">check_circle</i>
+                </div>
+                <div class="text-3xl font-bold text-green-400 mb-1" id="stats-correct">8</div>
+                <div class="text-sm text-app-text-muted">Correct</div>
+            </div>
+
+            <!-- Accuracy -->
+            <div class="bg-app-surface/50 backdrop-blur-sm border border-app-border rounded-2xl p-6 text-center">
+                <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <i class="material-icons text-2xl text-purple-400">target</i>
+                </div>
+                <div class="text-3xl font-bold text-purple-400 mb-1" id="stats-accuracy">80%</div>
+                <div class="text-sm text-app-text-muted">Accuracy</div>
+            </div>
+
+            <!-- Total Time -->
+            <div class="bg-app-surface/50 backdrop-blur-sm border border-app-border rounded-2xl p-6 text-center">
+                <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <i class="material-icons text-2xl text-orange-400">timer</i>
+                </div>
+                <div class="text-3xl font-bold text-orange-400 mb-1" id="stats-time">02:45</div>
+                <div class="text-sm text-app-text-muted">Total Time</div>
+            </div>
+        </div>
+
+        <!-- Performance Message -->
+        <div class="w-full max-w-2xl mb-8" id="performance-section">
+            <div class="bg-app-surface/50 backdrop-blur-sm border border-app-border rounded-2xl p-6 text-center" id="performance-card">
+                <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="material-icons text-3xl text-white" id="performance-icon">star</i>
+                </div>
+                <h3 class="text-2xl font-bold text-app-text mb-2" id="performance-title">Good Job!</h3>
+                <p class="text-app-text-muted" id="performance-message">Keep practicing to improve your skills!</p>
+            </div>
+        </div>
+
+        <!-- Incorrect Problems Section -->
+        <div class="w-full max-w-4xl mb-8" id="incorrect-section">
+            <div class="bg-app-surface/50 backdrop-blur-sm border border-app-border rounded-2xl p-6">
+                <h3 class="text-xl font-bold text-app-text mb-4 flex items-center">
+                    <i class="material-icons text-red-400 mr-2">error</i>
+                    Questions to Review
+                </h3>
+                <div id="incorrect-list" class="space-y-3">
+                    <!-- Incorrect problems will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Perfect Score Section -->
+        <div class="w-full max-w-2xl mb-8 hidden" id="perfect-score">
+            <div class="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-2xl p-6 text-center">
+                <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="material-icons text-4xl text-white">emoji_events</i>
+                </div>
+                <h3 class="text-2xl font-bold text-green-400 mb-2">Perfect Score!</h3>
+                <p class="text-app-text-muted">Excellent work! You got all questions correct!</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button id="practice-again-btn" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-app-bg">
+                <i class="material-icons mr-2 text-lg">replay</i>
+                Practice Again
+            </button>
+            <button id="home-btn" class="px-8 py-3 bg-app-surface hover:bg-app-surface-light border border-app-border text-app-text rounded-xl font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-app-border focus:ring-offset-2 focus:ring-offset-app-bg">
+                <i class="material-icons mr-2 text-lg">home</i>
+                Home
+            </button>
+        </div>
+    </div>
+
+    <script src="../assets/js/statistics.js"></script>
+</body>
+</html>

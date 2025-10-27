@@ -131,19 +131,17 @@
 
                 <!-- Time & Clock -->
                 <div class="bg-app-surface border border-app-border rounded-2xl p-6 hover:border-cyan-500/50 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer group"
-                     onclick="showComingSoon()">
-                    <div class="relative">
-                        <div class="w-16 h-16 bg-cyan-600/20 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-cyan-600/30 transition-colors">
-                            <i class="material-icons text-2xl text-cyan-400">access_time</i>
-                        </div>
-                        <span class="absolute -top-2 -right-2 bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded-full border border-yellow-500/30">
-                            Soon
-                        </span>
+                     onclick="window.location.href='time-clock.html'">
+                    <div class="w-16 h-16 bg-cyan-600/20 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-cyan-600/30 transition-colors">
+                        <i class="material-icons text-2xl text-cyan-400">access_time</i>
                     </div>
                     <h3 class="text-xl font-semibold text-app-text mb-2">Time & Clock</h3>
                     <p class="text-app-text-muted text-sm mb-4">Learn to read time and understand clocks</p>
-                    <div class="flex items-center text-app-text-dim text-sm">
-                        <span>Coming Soon</span>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center text-cyan-400 text-sm group-hover:text-cyan-300">
+                            <span>Start Practice</span>
+                            <i class="material-icons text-lg ml-1">arrow_forward</i>
+                        </div>
                     </div>
                 </div>
 
