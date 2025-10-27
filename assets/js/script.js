@@ -19,6 +19,7 @@ class MathGame {
         this.elements = {};
         this.mistakes = [];
         this.mistakePatterns = new Map(); // Cache for mistake patterns
+        this.showingCorrectFeedback = false; // Flag to preserve correct answer visual feedback
         
         // Question tracking
         this.questionStats = {
@@ -446,7 +447,7 @@ class MathGame {
         if (this.elements.operand2) this.elements.operand2.textContent = operand2;
         if (this.elements.operation) this.elements.operation.textContent = symbol;
         
-        // Reset input and feedback
+        // Reset input and feedback (but preserve visual feedback timing)
         this.resetAnswerInput();
         
         // Focus on input for better UX
@@ -464,7 +465,10 @@ class MathGame {
         
         if (this.elements.answerInput) {
             this.elements.answerInput.value = '';
-            this.elements.answerInput.className = 'answer-input';
+            // Only reset visual state if we're not showing correct answer feedback
+            if (!this.showingCorrectFeedback) {
+                this.elements.answerInput.className = 'answer-input';
+            }
         }
     }
 
@@ -497,7 +501,15 @@ class MathGame {
         if (userAnswer === correctAnswer) {
             this.setAnswerState('correct');
             this.recordCorrectAnswer();
-            this.scheduleNextProblem();
+            
+            // Set flag to preserve visual feedback
+            this.showingCorrectFeedback = true;
+            
+            // Clear the flag and advance after showing feedback
+            setTimeout(() => {
+                this.showingCorrectFeedback = false;
+                this.advanceToNextQuestion();
+            }, 2000);
         } else {
             // Smart validation for multi-digit answers
             const correctAnswerStr = correctAnswer.toString();
@@ -544,13 +556,8 @@ class MathGame {
     }
 
     /**
-     * Schedule the next problem after a delay
+     * Schedule the next problem after a delay (deprecated - now handled inline)
      */
-    scheduleNextProblem() {
-        setTimeout(() => {
-            this.advanceToNextQuestion();
-        }, 2000);
-    }
 
     /**
      * Schedule clearing the input field after incorrect answer (2 seconds)
@@ -962,8 +969,8 @@ class MathGame {
      * Display statistics in the main content area
      */
     displayStatistics(totalQuestions, correctAnswers, incorrectAnswers, accuracy, minutes, seconds) {
-        const problemContainer = document.querySelector('.problem-container');
-        if (!problemContainer) return;
+        const arithmeticContainer = document.querySelector('.arithmetic-container');
+        if (!arithmeticContainer) return;
 
         // Generate mistakes card - only show if there are mistakes
         const mistakesCard = this.mistakes.length > 0 ? `
@@ -974,7 +981,7 @@ class MathGame {
             </div>
         ` : '';
 
-        problemContainer.innerHTML = `
+        arithmeticContainer.innerHTML = `
             <div class="statistics-display">
                 <button class="new-session-btn" onclick="window.mathGame.startNewSession()">Start New Session</button>
                 <div class="stats-grid">
@@ -1008,25 +1015,42 @@ class MathGame {
      * Start a new session
      */
     startNewSession() {
-        // Restore the problem container
-        const problemContainer = document.querySelector('.problem-container');
-        if (problemContainer) {
-            problemContainer.innerHTML = `
-                <div class="problem" id="math-problem">
-                    <span class="operand" id="operand1">5</span>
-                    <span class="operation" id="operation">+</span>
-                    <span class="operand" id="operand2">3</span>
-                    <span class="equals">=</span>
-                    <input 
-                        type="text" 
-                        id="answer-input" 
-                        class="answer-input" 
-                        inputmode="numeric"
-                        pattern="[0-9]*"
-                        autofocus
-                        autocomplete="off"
-                        maxlength="4"
-                    >
+        // Restore the arithmetic container with new structure
+        const arithmeticContainer = document.querySelector('.arithmetic-container');
+        if (arithmeticContainer) {
+            arithmeticContainer.innerHTML = `
+                <!-- Math Expression Grid -->
+                <div class="math-expression" id="math-expression">
+                    <div class="expression-row">
+                        <span class="operand" id="operand1">5</span>
+                        <span class="operation" id="operation">+</span>
+                        <span class="operand" id="operand2">3</span>
+                    </div>
+                    <div class="equals-row">
+                        <span class="equals">=</span>
+                    </div>
+                    <div class="answer-row">
+                        <input 
+                            type="number" 
+                            id="answer-input" 
+                            class="answer-input" 
+                            min="0"
+                            max="9999"
+                            step="1"
+                            autofocus
+                            autocomplete="off"
+                            placeholder="?"
+                            aria-label="Enter your answer"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Progress Indicator -->
+                <div class="progress-section">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 10%"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text">Question 1 of 10</div>
                 </div>
             `;
         }
