@@ -89,6 +89,7 @@
             <button class="theme-toggle-btn" id="theme-toggle">
                 <span class="theme-icon" id="theme-icon">☽</span>
             </button>
+            <button class="exit-btn" id="exit-btn" title="Exit">⏻</button>
         </div>
     </div>
 
@@ -150,6 +151,22 @@
                                    min="10" max="100">
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exit/Logout Confirmation Modal -->
+    <div class="exit-modal" id="exit-modal" style="display: none;">
+        <div class="exit-modal-content">
+            <div class="exit-modal-header">
+                <span class="exit-modal-close" id="close-exit-modal">&times;</span>
+            </div>
+            <div class="exit-modal-body">
+                <div id="exit-message" class="exit-message"></div>
+                <div class="exit-actions">
+                    <button class="exit-confirm-btn" id="confirm-exit">Confirm</button>
+                    <button class="exit-cancel-btn" id="cancel-exit">Cancel</button>
                 </div>
             </div>
         </div>

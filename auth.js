@@ -59,6 +59,14 @@ class AuthManager {
     bindAuthEvents() {
         // Logout button (only one we need in the main app now)
         document.getElementById('logout-btn')?.addEventListener('click', this.handleLogout.bind(this));
+        
+        // Exit button for both guest and authenticated users
+        document.getElementById('exit-btn')?.addEventListener('click', this.showExitModal.bind(this));
+        
+        // Exit modal event listeners
+        document.getElementById('close-exit-modal')?.addEventListener('click', this.hideExitModal.bind(this));
+        document.getElementById('cancel-exit')?.addEventListener('click', this.hideExitModal.bind(this));
+        document.getElementById('confirm-exit')?.addEventListener('click', this.handleExit.bind(this));
     }
 
     /**
@@ -182,6 +190,54 @@ class AuthManager {
     }
 
 
+
+    /**
+     * Show exit confirmation modal
+     */
+    showExitModal() {
+        const modal = document.getElementById('exit-modal');
+        const message = document.getElementById('exit-message');
+        
+        const authMode = sessionStorage.getItem('authMode');
+        const isGuest = authMode === 'guest';
+        
+        if (message) {
+            message.textContent = isGuest 
+                ? 'Exit application?' 
+                : 'Sign out and return to welcome page?';
+        }
+        
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+
+    /**
+     * Hide exit confirmation modal
+     */
+    hideExitModal() {
+        const modal = document.getElementById('exit-modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    /**
+     * Handle exit/logout confirmation
+     */
+    async handleExit() {
+        const authMode = sessionStorage.getItem('authMode');
+        const isGuest = authMode === 'guest';
+        
+        if (isGuest) {
+            // For guest users, just redirect to landing page
+            sessionStorage.removeItem('authMode');
+            window.location.href = 'index.html';
+        } else {
+            // For authenticated users, perform logout
+            await this.handleLogout();
+        }
+    }
 
     /**
      * Get current user

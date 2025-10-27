@@ -929,10 +929,9 @@ class MathGame {
 
         // Generate mistakes card - only show if there are mistakes
         const mistakesCard = this.mistakes.length > 0 ? `
-            <div class="stat-item mistakes-card">
-                <div class="stat-label">Incorrect Answers</div>
+            <div class="mistakes-card">
                 <div class="mistakes-content">${this.mistakes.map(mistake => 
-                    `${mistake.problem} = <span style="color: #ff6b6b">${mistake.userAnswer}</span> | <span style="color: #51cf66">${mistake.correctAnswer}</span>`
+                    `${mistake.problem} = <span style="color: #ff6b6b">${mistake.userAnswer}</span> → <span style="color: #51cf66">${mistake.correctAnswer}</span>`
                 ).join('<br>')}</div>
             </div>
         ` : '';

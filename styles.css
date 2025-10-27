@@ -1043,7 +1043,8 @@ body {
 .status-bar .settings-btn,
 .status-bar .theme-toggle-btn,
 .status-bar .collapse-btn,
-.status-bar .play-pause-btn {
+.status-bar .play-pause-btn,
+.status-bar .exit-btn {
     background: transparent;
     color: var(--status-bar-text);
     border: none;
@@ -1062,14 +1063,16 @@ body {
 .status-bar .settings-btn:hover,
 .status-bar .theme-toggle-btn:hover,
 .status-bar .play-pause-btn:hover,
-.status-bar .collapse-btn:hover {
+.status-bar .collapse-btn:hover,
+.status-bar .exit-btn:hover {
     background: rgba(255, 255, 255, 0.1);
 }
 
 .status-bar .settings-btn:active,
 .status-bar .theme-toggle-btn:active,
 .status-bar .play-pause-btn:active,
-.status-bar .collapse-btn:active {
+.status-bar .collapse-btn:active,
+.status-bar .exit-btn:active {
     background: rgba(255, 255, 255, 0.05);
 }
 
@@ -1140,8 +1143,8 @@ body {
 }
 
 .new-session-btn {
-    background: var(--primary-color);
-    color: white;
+    background: #2a2a2a;
+    color: #ffffff;
     border: none;
     padding: 0.75rem 2rem;
     border-radius: var(--border-radius);
@@ -1154,7 +1157,7 @@ body {
 }
 
 .new-session-btn:hover {
-    background: var(--primary-hover);
+    background: #000000;
     transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
 }
@@ -1166,14 +1169,18 @@ body {
 
 /* Mistakes Card */
 .mistakes-card {
-    grid-column: 1 / -1; /* Span full width */
-    text-align: left;
+    display: inline-block;
+    margin-top: 1.5rem;
     padding: 1.5rem;
+    background: var(--bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
 }
 
-.mistakes-card .stat-label {
-    text-align: center;
-    margin-bottom: 1rem;
+.mistakes-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-light);
 }
 
 .mistakes-content {
@@ -1511,4 +1518,90 @@ body {
 
 [data-theme="light"] .form-group input:focus {
     border-color: var(--primary-color);
+}
+
+/* Exit/Logout Modal */
+.exit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.exit-modal-content {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    max-width: 300px;
+    width: 90%;
+    position: relative;
+}
+
+.exit-modal-header {
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+.exit-modal-close {
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    background: none;
+    line-height: 1;
+}
+
+.exit-modal-close:hover {
+    color: var(--text-color);
+}
+
+.exit-message {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.exit-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.exit-confirm-btn,
+.exit-cancel-btn {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.exit-confirm-btn {
+    background: #2a2a2a;
+    color: #ffffff;
+}
+
+.exit-confirm-btn:hover {
+    background: #000000;
+}
+
+.exit-cancel-btn {
+    background: transparent;
+    color: var(--text-secondary);
+}
+
+.exit-cancel-btn:hover {
+    background: var(--border-color);
+    color: var(--text-color);
 }
