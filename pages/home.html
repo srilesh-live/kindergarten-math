@@ -96,9 +96,6 @@
             <button class="settings-btn" id="settings-btn" title="Settings" aria-label="Open settings">
                 <i class="material-icons">settings</i>
             </button>
-            <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme" aria-label="Switch between light and dark theme">
-                <i class="material-icons" id="theme-icon">dark_mode</i>
-            </button>
             <button class="exit-btn" id="exit-btn" title="Exit" aria-label="Exit application">
                 <i class="material-icons">power_settings_new</i>
             </button>
@@ -177,9 +174,7 @@
             window.ModalSystem?.showAlert('Settings panel coming soon!', 'Settings');
         });
 
-        document.getElementById('theme-toggle').addEventListener('click', function() {
-            toggleTheme();
-        });
+        // Theme toggle removed - using dark theme only
 
         document.getElementById('exit-btn').addEventListener('click', async function() {
             const shouldExit = await window.ModalSystem?.showConfirm('Are you sure you want to exit?', 'Confirm Exit');

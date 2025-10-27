@@ -103,16 +103,8 @@
     <script src="../assets/js/config.js"></script>
     <script src="../assets/js/auth.js"></script>
     <script>
-        // Simple theme toggle for this page
-        document.getElementById('theme-toggle')?.addEventListener('click', () => {
-            const current = document.documentElement.getAttribute('data-theme') || 'dark';
-            const newTheme = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            const icon = document.getElementById('theme-icon');
-            if (icon) icon.textContent = newTheme === 'dark' ? '☽' : '☀';
-        });
+        // Theme fixed to dark mode
+        document.documentElement.setAttribute('data-theme', 'dark');
 
         // Initialize theme
         document.addEventListener('DOMContentLoaded', () => {

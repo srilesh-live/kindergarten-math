@@ -32,30 +32,6 @@
 }
 
 /* Light theme override */
-[data-theme="light"] {
-    --primary-color: #2a2a2a;
-    --primary-hover: #000000;
-    --success-color: #4a4a4a;
-    --error-color: #1a1a1a;
-    --bg-color: #f8f9fa;
-    --text-color: #1a1a1a;
-    --text-secondary: #666;
-    --text-muted: #666666;
-    --border-color: #e0e0e0;
-    --input-bg: #ffffff;
-    --input-border: #d1d5db;
-    --input-text: #1a1a1a;
-    --card-bg: #ffffff;
-    --footer-bg: #f8f9fa;
-    --hover-bg: rgba(0, 0, 0, 0.05);
-    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --shadow-medium: 0 4px 12px rgba(42, 42, 42, 0.3);
-    --status-bar-bg: #2d2d30;
-    --status-bar-text: #cccccc;
-    --status-bar-accent: #3e3e42;
-    --status-bar-border: #414145;
-}
-
 /* Reset and base styles */
 *,
 *::before,
@@ -527,7 +503,7 @@ body {
 }
 
 /* Footer Button Styles - 25% larger for better touch */
-.play-pause-btn, .settings-btn, .theme-toggle-btn, .exit-btn {
+.play-pause-btn, .settings-btn, .exit-btn {
     width: 2.5rem; /* 25% increase from 2rem */
     height: 2.5rem; /* 25% increase from 2rem */
     background: transparent;
@@ -542,11 +518,11 @@ body {
     font-size: 0.9375rem; /* 25% increase from 0.75rem */
 }
 
-.play-pause-btn:hover, .settings-btn:hover, .theme-toggle-btn:hover, .exit-btn:hover {
+.play-pause-btn:hover, .settings-btn:hover, .exit-btn:hover {
     background: rgba(255, 255, 255, 0.1);
 }
 
-.play-pause-btn:active, .settings-btn:active, .theme-toggle-btn:active, .exit-btn:active {
+.play-pause-btn:active, .settings-btn:active, .exit-btn:active {
     background: rgba(255, 255, 255, 0.05);
 }
 
@@ -560,35 +536,7 @@ body {
 }
 
 /* Light Theme Support for Header/Footer */
-[data-theme="light"] .app-header {
-    border-bottom-color: var(--border-color);
-}
-
-[data-theme="light"] .menu-btn:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-[data-theme="light"] .menu-btn:active {
-    background: rgba(0, 0, 0, 0.05);
-}
-
-[data-theme="light"] .app-footer {
-    border-top-color: var(--status-bar-border);
-}
-
-[data-theme="light"] .play-pause-btn:hover, 
-[data-theme="light"] .settings-btn:hover, 
-[data-theme="light"] .theme-toggle-btn:hover, 
-[data-theme="light"] .exit-btn:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-[data-theme="light"] .play-pause-btn:active, 
-[data-theme="light"] .settings-btn:active, 
-[data-theme="light"] .theme-toggle-btn:active, 
-[data-theme="light"] .exit-btn:active {
-    background: rgba(0, 0, 0, 0.05);
-}
+/* Light theme styles removed - using dark theme only */
 
 .mistake-time {
     font-size: 0.7rem;
@@ -597,20 +545,12 @@ body {
     flex-shrink: 0;
 }
 
-[data-theme="light"] .mistake-time {
-    color: #777;
-}
-
 .no-mistakes {
     text-align: center;
     color: #999;
     font-style: italic;
     padding: 2rem 1rem;
     font-size: 0.875rem;
-}
-
-[data-theme="light"] .no-mistakes {
-    color: #666;
 }
 
 /* Arithmetic Page Optimized Layout */
@@ -845,18 +785,7 @@ body {
 }
 
 /* Light theme specific states */
-[data-theme="light"] .answer-input.correct {
-    border-color: #059669;
-    background: rgba(5, 150, 105, 0.1);
-    color: #064e3b;
-}
-
-[data-theme="light"] .answer-input.incorrect {
-    border-color: #dc2626;
-    background: rgba(220, 38, 38, 0.1);
-    color: #991b1b;
-    animation: shake 0.5s ease-in-out;
-}
+/* Light theme answer input styles removed - using dark theme only */
 
 /* Subtle animations */
 @keyframes shake {
@@ -1146,7 +1075,7 @@ body {
     height: 100% !important;
 }
 
-[data-theme="dark"] .config-panel .settings-container .settings-body .settings-nav {
+.config-panel .settings-container .settings-body .settings-nav {
     background: #2d2d2d !important;
 }
 
@@ -1176,11 +1105,11 @@ body {
     color: white !important;
 }
 
-[data-theme="dark"] .config-panel .settings-container .settings-body .settings-nav .settings-nav-item {
+.config-panel .settings-container .settings-body .settings-nav .settings-nav-item {
     color: #cccccc !important;
 }
 
-[data-theme="dark"] .config-panel .settings-container .settings-body .settings-nav .settings-nav-item:hover {
+.config-panel .settings-container .settings-body .settings-nav .settings-nav-item:hover {
     background: #3c3c3c !important;
     color: white !important;
 }
@@ -1199,7 +1128,7 @@ body {
     height: 100% !important;
 }
 
-[data-theme="dark"] .config-panel .settings-container .settings-body .settings-content {
+.config-panel .settings-container .settings-body .settings-content {
     background: #1e1e1e !important;
 }
 
@@ -1276,24 +1205,11 @@ body {
     background: #2980b9;
 }
 
-/* Theme Toggle in Settings */
-.setting-control .theme-toggle-btn {
-    width: 32px;
-    height: 32px;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    color: var(--text-color);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.1s ease;
-}
-
-.setting-control .theme-toggle-btn:hover {
-    background: var(--bg-hover);
-    border-color: var(--primary-color);
+/* Theme Toggle removed - using dark theme only */
+.theme-status {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-style: italic;
 }
 
 /* Responsive Design */
@@ -1572,21 +1488,11 @@ input:checked + .toggle-slider:before {
     transition: var(--transition);
 }
 
-[data-theme="light"] .range-input {
-    background: rgba(255, 255, 255, 0.015);
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
 .range-input:focus {
     outline: none;
     border-color: var(--text-color);
     background: rgba(0, 0, 0, 0.04);
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
-}
-
-[data-theme="light"] .range-input:focus {
-    background: rgba(255, 255, 255, 0.04);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
 }
 
 /* Buttons */
@@ -1630,32 +1536,7 @@ input:checked + .toggle-slider:before {
     background: #5a6268;
 }
 
-.theme-toggle-btn {
-    width: 2.5rem;
-    height: 2.5rem;
-    background: transparent;
-    color: var(--text-color);
-    border: none;
-    border-radius: var(--border-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.theme-toggle-btn:hover {
-    color: var(--primary-color);
-}
-
-.theme-toggle-btn:focus {
-    outline: none;
-}
-
-.theme-icon {
-    font-size: 1rem;
-}
+/* Theme toggle styles removed - using dark theme only */
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -1752,7 +1633,7 @@ input:checked + .toggle-slider:before {
         gap: 0.125rem;
     }
     
-    .play-pause-btn, .settings-btn, .theme-toggle-btn, .exit-btn {
+    .play-pause-btn, .settings-btn, .exit-btn {
         width: 2.375rem; /* Maintain proportions on mobile */
         height: 2.375rem;
         font-size: 0.875rem;
@@ -1846,7 +1727,7 @@ input:checked + .toggle-slider:before {
         font-size: 0.65rem;
     }
     
-    .play-pause-btn, .settings-btn, .theme-toggle-btn, .exit-btn {
+    .play-pause-btn, .settings-btn, .exit-btn {
         width: 1.75rem;
         height: 1.75rem;
         font-size: 0.65rem;
@@ -1887,10 +1768,6 @@ input:checked + .toggle-slider:before {
         --text-color: #000;
     }
     
-    [data-theme="light"] {
-        --border-color: #fff;
-        --text-color: #fff;
-    }
 }
 
 /* Old responsive styles removed - using new VS Code style responsive design */
@@ -2030,7 +1907,7 @@ input:checked + .toggle-slider:before {
 }
 
 .status-bar .settings-btn:hover,
-.status-bar .theme-toggle-btn:hover,
+.status-bar 
 .status-bar .play-pause-btn:hover,
 .status-bar .exit-btn:hover,
 .status-bar .menu-btn:hover {
@@ -2038,7 +1915,7 @@ input:checked + .toggle-slider:before {
 }
 
 .status-bar .settings-btn:active,
-.status-bar .theme-toggle-btn:active,
+.status-bar 
 .status-bar .play-pause-btn:active,
 .status-bar .exit-btn:active,
 .status-bar .menu-btn:active {
@@ -2046,7 +1923,7 @@ input:checked + .toggle-slider:before {
 }
 
 .status-bar .settings-btn:focus,
-.status-bar .theme-toggle-btn:focus,
+.status-bar 
 .status-bar .play-pause-btn:focus,
 .status-bar .collapse-btn:focus {
     outline: none;
@@ -2480,19 +2357,7 @@ body {
 }
 
 /* Dark theme support for auth components */
-[data-theme="light"] .auth-modal-content {
-    background: #2d2d2d;
-    border: 1px solid #404040;
-}
-
-[data-theme="light"] .form-group input {
-    background: #404040;
-    border-color: #555;
-}
-
-[data-theme="light"] .form-group input:focus {
-    border-color: var(--primary-color);
-}
+/* Light theme auth modal styles removed - using dark theme only */
 
 /* Exit/Logout Modal - Matching Settings Style */
 .exit-modal {
@@ -2630,13 +2495,7 @@ body {
 }
 
 /* Light theme support */
-[data-theme="light"] .menu-dropdown {
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-}
-
-[data-theme="light"] .menu-item:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
+/* Light theme menu dropdown styles removed - using dark theme only */
 
 /* Mobile responsive */
 @media (max-width: 480px) {

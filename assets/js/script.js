@@ -50,7 +50,7 @@ class MathGame {
     async init() {
         try {
             await this.loadSettings();
-            await this.loadTheme();
+            this.initializeTheme();
             await this.loadMistakePatterns();
             this.initializeElements();
             this.initializeStatusBar();
@@ -230,7 +230,6 @@ class MathGame {
             feedback: 'feedback',
             configPanel: 'config-panel',
             settingsBtn: 'settings-btn',
-            themeIcon: 'theme-icon',
             pageTitle: 'page-title',
             minOperand1: 'min-operand1',
             maxOperand1: 'max-operand1',
@@ -323,11 +322,7 @@ class MathGame {
             cancelBtn.addEventListener('click', this.cancelSettings.bind(this));
         }
 
-        // Theme toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', this.toggleTheme.bind(this));
-        }
+        // Theme toggle removed - using dark theme only
 
         // Settings navigation
         this.setupSettingsNavigation();
@@ -1445,65 +1440,10 @@ class MathGame {
     }
 
     /**
-     * Toggle between light and dark themes
+     * Initialize dark theme (fixed)
      */
-    toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        
-        this.setTheme(newTheme);
-        this.saveTheme(newTheme);
-    }
-
-    /**
-     * Set theme and update UI
-     */
-    setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        this.updateThemeToggle(theme);
-    }
-
-    /**
-     * Update theme toggle button appearance
-     */
-    updateThemeToggle(theme) {
-        if (!this.elements.themeIcon) return;
-
-        if (theme === 'dark') {
-            this.elements.themeIcon.textContent = 'light_mode'; // Light mode icon for switching to light
-            this.elements.themeIcon.title = 'Switch to Light Mode';
-        } else {
-            this.elements.themeIcon.textContent = 'dark_mode'; // Dark mode icon for switching to dark
-            this.elements.themeIcon.title = 'Switch to Dark Mode';
-        }
-    }
-
-    /**
-     * Load theme from localStorage
-     */
-    async loadTheme() {
-        try {
-            const savedTheme = localStorage.getItem('mathGameTheme') || 'dark';
-            
-            // Set theme after DOM is ready
-            setTimeout(() => {
-                this.setTheme(savedTheme);
-            }, 0);
-            
-        } catch (error) {
-            console.error('Failed to load theme:', error);
-        }
-    }
-
-    /**
-     * Save theme to localStorage
-     */
-    saveTheme(theme) {
-        try {
-            localStorage.setItem('mathGameTheme', theme);
-        } catch (error) {
-            console.error('Failed to save theme:', error);
-        }
+    initializeTheme() {
+        document.documentElement.setAttribute('data-theme', 'dark');
     }
 
     /**
