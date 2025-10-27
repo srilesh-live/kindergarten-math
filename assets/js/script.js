@@ -19,7 +19,10 @@ class ArithmeticGame {
             currentQuestion: 1,
             totalQuestions: 10,
             correctAnswers: 0,
-            incorrectAnswers: 0
+            incorrectAnswers: 0,
+            incorrectProblems: [], // Store details of incorrect answers
+            startTime: null,
+            endTime: null
         };
         
         this.timer = {
@@ -37,6 +40,7 @@ class ArithmeticGame {
         this.initializeElements();
         this.bindEvents();
         this.generateNewProblem();
+        this.questionStats.startTime = Date.now();
         this.startTimer();
         this.updateDisplay();
     }
@@ -164,9 +168,20 @@ class ArithmeticGame {
         const value = e.target.value;
         if (value !== '' && !isNaN(value)) {
             const userAnswer = parseInt(value);
-            if (userAnswer === this.currentProblem.answer) {
+            const expectedAnswer = this.currentProblem.answer;
+            const expectedString = expectedAnswer.toString();
+            const expectedDigits = expectedString.length;
+            const userDigits = value.length;
+            
+            // Check if the partial answer is wrong (doesn't match the beginning of expected answer)
+            if (!expectedString.startsWith(value)) {
+                // Wrong digit(s) entered - immediate feedback
+                this.checkAnswer();
+            } else if (userDigits >= expectedDigits) {
+                // Full number entered - check complete answer
                 this.checkAnswer();
             }
+            // Otherwise, partial correct answer - keep waiting for more digits
         }
     }
 
@@ -184,6 +199,9 @@ class ArithmeticGame {
         this.setInputState('correct');
         this.questionStats.correctAnswers++;
         
+        // Play success beep sound
+        this.playSuccessBeep();
+        
         setTimeout(() => {
             this.nextQuestion();
         }, 1000);
@@ -193,13 +211,26 @@ class ArithmeticGame {
         this.setInputState('incorrect');
         this.questionStats.incorrectAnswers++;
         
+        // Record the incorrect problem details
+        this.questionStats.incorrectProblems.push({
+            operand1: this.currentProblem.operand1,
+            operand2: this.currentProblem.operand2,
+            operator: this.currentProblem.operatorSymbol,
+            correctAnswer: this.currentProblem.answer,
+            userAnswer: parseInt(this.elements.answerInput.value) || 'No answer',
+            questionNumber: this.questionStats.currentQuestion
+        });
+        
+        // Play error beep sound
+        this.playErrorBeep();
+        
         // Shake animation using Tailwind
         this.elements.answerInput.classList.add('animate-pulse');
+        
+        // Auto-proceed to next question after delay (like correct answers)
         setTimeout(() => {
             this.elements.answerInput.classList.remove('animate-pulse');
-            this.setInputState('neutral');
-            this.elements.answerInput.value = '';
-            this.elements.answerInput.focus();
+            this.nextQuestion();
         }, 1000);
     }
 
@@ -240,9 +271,8 @@ class ArithmeticGame {
 
     endPractice() {
         this.pauseTimer();
-        // Show completion message or redirect
-        alert(`Practice completed! Score: ${this.questionStats.correctAnswers}/${this.questionStats.totalQuestions}`);
-        window.location.href = 'home.html';
+        this.questionStats.endTime = Date.now();
+        this.showStatistics();
     }
 
     updateDisplay() {
@@ -388,6 +418,153 @@ class ArithmeticGame {
         this.updateDisplay();
         
         this.hideSettings();
+    }
+
+    showStatistics() {
+        const modal = document.getElementById('statistics-modal');
+        const totalTime = this.questionStats.endTime - this.questionStats.startTime;
+        const minutes = Math.floor(totalTime / 60000);
+        const seconds = Math.floor((totalTime % 60000) / 1000);
+        const avgTimePerQuestion = totalTime / this.questionStats.totalQuestions;
+        const avgMinutes = Math.floor(avgTimePerQuestion / 60000);
+        const avgSeconds = Math.floor((avgTimePerQuestion % 60000) / 1000);
+        
+        // Update overall stats
+        document.getElementById('stats-total').textContent = this.questionStats.totalQuestions;
+        document.getElementById('stats-correct').textContent = this.questionStats.correctAnswers;
+        document.getElementById('stats-incorrect').textContent = this.questionStats.incorrectAnswers;
+        
+        const accuracy = this.questionStats.totalQuestions > 0 
+            ? Math.round((this.questionStats.correctAnswers / this.questionStats.totalQuestions) * 100)
+            : 0;
+        document.getElementById('stats-accuracy').textContent = `${accuracy}%`;
+        
+        // Update time stats
+        document.getElementById('stats-time').textContent = 
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        document.getElementById('stats-avg-time').textContent = 
+            `${avgMinutes.toString().padStart(2, '0')}:${avgSeconds.toString().padStart(2, '0')}`;
+        
+        // Show incorrect answers or perfect score message
+        if (this.questionStats.incorrectAnswers === 0) {
+            document.getElementById('perfect-score').classList.remove('hidden');
+            document.getElementById('incorrect-section').classList.add('hidden');
+        } else {
+            document.getElementById('perfect-score').classList.add('hidden');
+            document.getElementById('incorrect-section').classList.remove('hidden');
+            this.populateIncorrectAnswers();
+        }
+        
+        // Bind events for statistics modal buttons
+        document.getElementById('stats-practice-again').onclick = () => {
+            window.location.reload();
+        };
+        document.getElementById('stats-home').onclick = () => {
+            window.location.href = 'home.html';
+        };
+        
+        // Show modal
+        modal.classList.remove('opacity-0', 'invisible');
+        modal.querySelector('div').classList.remove('scale-90');
+        modal.querySelector('div').classList.add('scale-100');
+    }
+
+    populateIncorrectAnswers() {
+        const incorrectList = document.getElementById('incorrect-list');
+        incorrectList.innerHTML = '';
+        
+        this.questionStats.incorrectProblems.forEach((problem, index) => {
+            const problemDiv = document.createElement('div');
+            problemDiv.className = 'bg-red-900/20 border border-red-700/30 rounded-lg p-4';
+            
+            problemDiv.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-app-text-muted">Q${problem.questionNumber}</span>
+                        <div class="text-lg font-mono font-bold text-app-text">
+                            ${problem.operand1} ${problem.operator} ${problem.operand2} = ${problem.correctAnswer}
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm text-app-text-muted">Your answer:</div>
+                        <div class="text-lg font-bold text-red-400">${problem.userAnswer}</div>
+                    </div>
+                </div>
+            `;
+            
+            incorrectList.appendChild(problemDiv);
+        });
+    }
+
+    // Sound effect methods
+    playSuccessBeep() {
+        try {
+            // Create a pleasant success tone (two ascending notes)
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // First note (C5 - 523.25 Hz)
+            const oscillator1 = audioContext.createOscillator();
+            const gainNode1 = audioContext.createGain();
+            
+            oscillator1.connect(gainNode1);
+            gainNode1.connect(audioContext.destination);
+            
+            oscillator1.type = 'sine';
+            oscillator1.frequency.setValueAtTime(523.25, audioContext.currentTime);
+            
+            gainNode1.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+            
+            oscillator1.start(audioContext.currentTime);
+            oscillator1.stop(audioContext.currentTime + 0.15);
+            
+            // Second note (E5 - 659.25 Hz) 
+            setTimeout(() => {
+                const oscillator2 = audioContext.createOscillator();
+                const gainNode2 = audioContext.createGain();
+                
+                oscillator2.connect(gainNode2);
+                gainNode2.connect(audioContext.destination);
+                
+                oscillator2.type = 'sine';
+                oscillator2.frequency.setValueAtTime(659.25, audioContext.currentTime);
+                
+                gainNode2.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                
+                oscillator2.start(audioContext.currentTime);
+                oscillator2.stop(audioContext.currentTime + 0.2);
+            }, 100);
+            
+        } catch (error) {
+            console.log('Audio not supported:', error);
+        }
+    }
+
+    playErrorBeep() {
+        try {
+            // Create a gentle error tone (descending notes)
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.3);
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+            
+        } catch (error) {
+            console.log('Audio not supported:', error);
+        }
     }
 }
 

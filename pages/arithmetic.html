@@ -108,20 +108,17 @@
         <!-- Math Expression -->
         <div class="bg-app-surface border border-app-border rounded-3xl p-12 shadow-2xl mb-8 max-w-2xl w-full">
             <div class="text-center">
-                <!-- Problem Display -->
-                <div class="flex items-center justify-center space-x-8 text-6xl md:text-7xl font-bold text-app-text mb-8">
+                <!-- Problem Display with Inline Input -->
+                <div class="flex items-baseline justify-center space-x-6 text-6xl md:text-7xl font-bold text-app-text">
                     <span id="operand1">5</span>
                     <span id="operator" class="text-app-text-muted">+</span>
                     <span id="operand2">3</span>
                     <span class="text-5xl md:text-6xl text-app-text-muted font-bold">=</span>
-                </div>
-                
-                <!-- Answer Input -->
-                <div class="flex justify-center">
+                    <!-- Answer Input Inline -->
                     <input 
                         type="number" 
                         id="answer-input" 
-                        class="w-48 h-24 text-7xl font-bold text-center bg-app-bg/50 border-2 border-app-border rounded-2xl text-app-text placeholder-app-text-dim focus:outline-none focus:ring-4 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-300 caret-blue-400"
+                        class="w-40 text-6xl md:text-7xl font-bold text-center leading-none bg-app-bg/50 border-2 border-app-border rounded-2xl text-app-text placeholder-app-text-dim focus:outline-none focus:ring-4 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-300 caret-blue-400"
                         placeholder=""
                         autofocus
                     >
@@ -309,6 +306,94 @@
                         class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
                     >
                         Exit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div id="statistics-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+        <div class="bg-app-surface border border-app-border rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden transform scale-90 transition-all duration-300">
+            <!-- Statistics Header -->
+            <div class="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-b border-app-border p-6 text-center">
+                <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="material-icons text-3xl text-yellow-400">emoji_events</i>
+                </div>
+                <h2 class="text-2xl font-bold text-app-text mb-2">Practice Complete!</h2>
+                <p class="text-app-text-muted">Great job! Here are your results:</p>
+            </div>
+            
+            <!-- Statistics Body -->
+            <div class="p-6 overflow-y-auto max-h-96">
+                <!-- Overall Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-app-bg rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-blue-400 mb-1" id="stats-total">0</div>
+                        <div class="text-sm text-app-text-muted">Total Questions</div>
+                    </div>
+                    <div class="bg-app-bg rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-green-400 mb-1" id="stats-correct">0</div>
+                        <div class="text-sm text-app-text-muted">Correct</div>
+                    </div>
+                    <div class="bg-app-bg rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-red-400 mb-1" id="stats-incorrect">0</div>
+                        <div class="text-sm text-app-text-muted">Incorrect</div>
+                    </div>
+                    <div class="bg-app-bg rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-purple-400 mb-1" id="stats-accuracy">0%</div>
+                        <div class="text-sm text-app-text-muted">Accuracy</div>
+                    </div>
+                </div>
+                
+                <!-- Time Stats -->
+                <div class="bg-app-bg rounded-xl p-4 mb-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <i class="material-icons text-app-text-muted">timer</i>
+                            <span class="text-app-text font-medium">Practice Time</span>
+                        </div>
+                        <span class="text-app-text-muted" id="stats-time">00:00</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-app-text-muted text-sm">Average per question</span>
+                        <span class="text-app-text-muted text-sm" id="stats-avg-time">00:00</span>
+                    </div>
+                </div>
+                
+                <!-- Incorrect Answers Section -->
+                <div id="incorrect-section" class="hidden">
+                    <h3 class="text-lg font-semibold text-app-text mb-4 flex items-center space-x-2">
+                        <i class="material-icons text-red-400">error_outline</i>
+                        <span>Review Incorrect Answers</span>
+                    </h3>
+                    <div id="incorrect-list" class="space-y-3">
+                        <!-- Incorrect answers will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- Perfect Score Message -->
+                <div id="perfect-score" class="hidden text-center py-6">
+                    <div class="text-6xl mb-4">🎉</div>
+                    <h3 class="text-xl font-bold text-green-400 mb-2">Perfect Score!</h3>
+                    <p class="text-app-text-muted">You got every question right! Excellent work!</p>
+                </div>
+            </div>
+            
+            <!-- Statistics Footer -->
+            <div class="border-t border-app-border p-6 bg-app-bg/50">
+                <div class="flex space-x-3">
+                    <button 
+                        id="stats-practice-again"
+                        class="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                    >
+                        Practice Again
+                    </button>
+                    <button 
+                        id="stats-home"
+                        class="flex-1 px-6 py-3 bg-app-surface-light hover:bg-slate-600 text-app-text rounded-lg font-medium transition-colors"
+                    >
+                        Back to Home
                     </button>
                 </div>
             </div>
