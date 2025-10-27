@@ -13,52 +13,59 @@
     <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Page Content -->
-        <div class="page-content">
-            <div class="coming-soon-container">
-                <div class="coming-soon-content">
-                    <h1 class="coming-soon-title">Number Sequences</h1>
-                    <p class="coming-soon-message">Coming Soon</p>
-                    <p class="coming-soon-description">
-                        Pattern recognition and sequence completion exercises for young learners.
-                    </p>
-                    <button class="back-btn" onclick="window.location.href='arithmetic.html'">
-                        Back to Arithmetic
-                    </button>
-                </div>
-            </div>
+    <!-- Modern Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="menu-btn" id="menu-btn" title="Menu" aria-label="Open menu">
+                <span class="menu-icon">☰</span>
+            </button>
+            <h1 class="app-title">Kindergarten Math</h1>
         </div>
-    </div>
-
-    <!-- Status Bar -->
-    <div class="status-bar">
-        <div class="status-section menu-section">
-            <button class="menu-btn" id="menu-btn" title="Menu">☰</button>
-        </div>
-        <div class="status-section user-section" id="user-section">
+        <div class="header-right">
             <!-- User Info (shown when logged in) -->
             <div id="user-info" class="user-info" style="display: none;">
-                <span id="user-email"></span>
+                <span id="user-email" class="user-email"></span>
             </div>
             
             <!-- Guest User Display -->
             <div id="guest-info" class="guest-info" style="display: none;">
-                <span>Guest</span>
+                <span class="user-label">Guest</span>
             </div>
         </div>
-        <div class="status-section current-page-section" id="current-page-section">
-            <span id="current-page">Number Sequences</span>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main" role="main">
+        <div class="coming-soon-container">
+            <div class="coming-soon-content">
+                <h1 class="coming-soon-title">Number Sequences</h1>
+                <p class="coming-soon-message">Coming Soon</p>
+                <p class="coming-soon-description">
+                    Pattern recognition and sequence completion exercises for young learners.
+                </p>
+                <button class="back-btn" onclick="window.location.href='arithmetic.html'">
+                    Back to Arithmetic
+                </button>
+            </div>
         </div>
-        <div class="status-section spacer-section"></div>
-        <div class="status-section settings-section">
-            <button class="theme-toggle-btn" id="theme-toggle">
+    </main>
+
+    <!-- Modern Footer -->
+    <footer class="app-footer">
+        <div class="footer-left">
+            <span id="current-page" class="current-page">Number Sequences</span>
+        </div>
+        <div class="footer-center">
+            <span class="status-message">Coming Soon</span>
+        </div>
+        <div class="footer-right">
+            <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme" aria-label="Switch between light and dark theme">
                 <span class="theme-icon" id="theme-icon">☽</span>
             </button>
-            <button class="exit-btn" id="exit-btn" title="Exit">⏻</button>
         </div>
-    </div>
+    </footer>
+
+
 
     <!-- Menu Dropdown -->
     <div class="menu-dropdown" id="menu-dropdown" style="display: none;">

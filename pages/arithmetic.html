@@ -19,70 +19,76 @@
     <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg"> -->
 </head>
 <body>
-    <!-- Main Content -->
-    <div class="main-content">
-
-        <!-- Page Content -->
-        <div class="page-content">
-            <div class="problem-container">
-                <div class="problem" id="math-problem">
-                    <span class="operand" id="operand1">5</span>
-                    <span class="operation" id="operation">+</span>
-                    <span class="operand" id="operand2">3</span>
-                    <span class="equals">=</span>
-                    <input 
-                        type="text" 
-                        id="answer-input" 
-                        class="answer-input" 
-                        inputmode="numeric"
-                        pattern="[0-9]*"
-                        autofocus
-                        autocomplete="off"
-                        maxlength="4"
-                    >
-                </div>
-            </div>
+    <!-- Modern Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="menu-btn" id="menu-btn" title="Menu" aria-label="Open menu">
+                <span class="menu-icon">☰</span>
+            </button>
+            <h1 class="app-title">Kindergarten Math</h1>
         </div>
-    </div>
-
-
-    <!-- Status Bar -->
-    <div class="status-bar">
-        <div class="status-section menu-section">
-            <button class="menu-btn" id="menu-btn" title="Menu">☰</button>
-        </div>
-        <div class="status-section user-section" id="user-section">
+        <div class="header-right">
             <!-- User Info (shown when logged in) -->
             <div id="user-info" class="user-info" style="display: none;">
-                <span id="user-email"></span>
+                <span id="user-email" class="user-email"></span>
             </div>
             
             <!-- Guest User Display -->
             <div id="guest-info" class="guest-info" style="display: none;">
-                <span>Guest</span>
+                <span class="user-label">Guest</span>
             </div>
         </div>
-        <div class="status-section current-page-section" id="current-page-section">
-            <span id="current-page">Arithmetic</span>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main" role="main">
+        <div class="problem-container">
+            <div class="problem" id="math-problem">
+                <span class="operand" id="operand1">5</span>
+                <span class="operation" id="operation">+</span>
+                <span class="operand" id="operand2">3</span>
+                <span class="equals">=</span>
+                <input 
+                    type="text" 
+                    id="answer-input" 
+                    class="answer-input" 
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    autofocus
+                    autocomplete="off"
+                    maxlength="4"
+                    aria-label="Enter your answer"
+                >
+            </div>
         </div>
-        <div class="status-section spacer-section"></div>
-        <div class="status-section counter-section">
+    </main>
+
+    <!-- Modern Footer -->
+    <footer class="app-footer">
+        <div class="footer-left">
+            <span id="current-page" class="current-page">Arithmetic</span>
+        </div>
+        <div class="footer-center">
             <span class="counter-display" id="counter-display">1/10</span>
-        </div>
-        <div class="status-section timer-section">
             <span class="timer-display" id="timer-display">00:00</span>
         </div>
-        <div class="status-section settings-section">
-            <button class="play-pause-btn" id="play-pause-btn" title="Pause timer">
+        <div class="footer-right">
+            <button class="play-pause-btn" id="play-pause-btn" title="Pause timer" aria-label="Pause or resume timer">
                 <span class="play-pause-icon" id="play-pause-icon">⏸</span>
             </button>
-            <button class="settings-btn" id="settings-btn">⚙</button>
-            <button class="theme-toggle-btn" id="theme-toggle">
+            <button class="settings-btn" id="settings-btn" title="Settings" aria-label="Open settings">
+                <span class="settings-icon">⚙</span>
+            </button>
+            <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme" aria-label="Switch between light and dark theme">
                 <span class="theme-icon" id="theme-icon">☽</span>
             </button>
-            <button class="exit-btn" id="exit-btn" title="Exit">⏻</button>
+            <button class="exit-btn" id="exit-btn" title="Exit" aria-label="Exit application">
+                <span class="exit-icon">⏻</span>
+            </button>
         </div>
-    </div>
+    </footer>
+
+
 
     <!-- Configuration Panel -->
     <div class="config-panel" id="config-panel">
