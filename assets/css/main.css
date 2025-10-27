@@ -564,6 +564,42 @@ body {
     justify-content: center;
 }
 
+/* Hide number input spinner arrows for clean appearance */
+.answer-input::-webkit-outer-spin-button,
+.answer-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox - hide number input spinner */
+.answer-input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Mobile-specific optimizations for number input */
+@media (hover: none) and (pointer: coarse) {
+    .answer-input {
+        /* Larger touch target on touch devices */
+        min-height: 4rem;
+        min-width: 8rem;
+        
+        /* Prevent zoom on focus in iOS Safari */
+        font-size: max(2rem, 16px);
+        
+        /* Better touch feedback */
+        -webkit-tap-highlight-color: rgba(59, 130, 246, 0.2);
+        touch-action: manipulation;
+    }
+    
+    .answer-input:focus {
+        /* Enhanced focus state for touch devices */
+        border-width: 4px;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+    }
+}
+
 /* Input States */
 .answer-input::placeholder {
     color: var(--text-muted);

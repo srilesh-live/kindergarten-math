@@ -58,14 +58,14 @@
                 </div>
                 <div class="answer-row">
                     <input 
-                        type="text" 
+                        type="number" 
                         id="answer-input" 
                         class="answer-input" 
-                        inputmode="numeric"
-                        pattern="[0-9]*"
+                        min="0"
+                        max="9999"
+                        step="1"
                         autofocus
                         autocomplete="off"
-                        maxlength="4"
                         placeholder="?"
                         aria-label="Enter your answer"
                     >

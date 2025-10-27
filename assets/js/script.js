@@ -304,8 +304,19 @@ class MathGame {
             clearTimeout(this.clearInputTimeout);
         }
         
-        // Validate input - only allow numbers
-        const value = e.target.value.replace(/[^0-9]/g, '');
+        // For number inputs, handle validation carefully
+        let value = e.target.value;
+        
+        // Remove any non-numeric characters (except minus for negative numbers if needed)
+        // For kindergarten math, we typically only need positive integers
+        value = value.replace(/[^0-9]/g, '');
+        
+        // Limit to reasonable length (4 digits should be enough for kindergarten math)
+        if (value.length > 4) {
+            value = value.substring(0, 4);
+        }
+        
+        // Update the input value if it was changed
         if (value !== e.target.value) {
             e.target.value = value;
         }
@@ -464,11 +475,20 @@ class MathGame {
         if (!this.currentProblem || !this.elements.answerInput) return;
 
         const userInput = this.elements.answerInput.value.trim();
-        const userAnswer = parseInt(userInput);
+        
+        // For number inputs, handle both string and numeric values
+        let userAnswer;
+        if (this.elements.answerInput.type === 'number') {
+            // Number inputs return empty string when invalid, valueAsNumber returns NaN
+            userAnswer = this.elements.answerInput.valueAsNumber;
+        } else {
+            userAnswer = parseInt(userInput);
+        }
+        
         const correctAnswer = this.currentProblem.answer;
         
-        // Handle empty input
-        if (!userInput || isNaN(userAnswer)) {
+        // Handle empty input or invalid numbers
+        if (!userInput || isNaN(userAnswer) || userAnswer < 0) {
             this.setAnswerState('neutral');
             return;
         }
