@@ -19,14 +19,6 @@
     <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg"> -->
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <nav class="sidebar-nav">
-            <a href="#" class="nav-item active" id="arithmetic-page">📊 Arithmetic</a>
-        </nav>
-
-    </div>
-
     <!-- Main Content -->
     <div class="main-content">
 
@@ -56,19 +48,18 @@
 
     <!-- Status Bar -->
     <div class="status-bar">
-        <div class="status-section sidebar-collapse-section">
-            <button class="collapse-btn sidebar-expanded" id="collapse-left-sidebar">«</button>
+        <div class="status-section menu-section">
+            <button class="menu-btn" id="menu-btn" title="Menu">☰</button>
         </div>
         <div class="status-section user-section" id="user-section">
             <!-- User Info (shown when logged in) -->
             <div id="user-info" class="user-info" style="display: none;">
                 <span id="user-email"></span>
-                <button id="logout-btn" class="logout-btn">Logout</button>
             </div>
             
             <!-- Guest User Display -->
             <div id="guest-info" class="guest-info" style="display: none;">
-                <span>Guest User</span>
+                <span>Guest</span>
             </div>
         </div>
         <div class="status-section current-page-section" id="current-page-section">
@@ -159,15 +150,21 @@
     <!-- Exit/Logout Confirmation Modal -->
     <div class="exit-modal" id="exit-modal" style="display: none;">
         <div class="exit-modal-content">
-            <div class="exit-modal-header">
-                <span class="exit-modal-close" id="close-exit-modal">&times;</span>
-            </div>
             <div class="exit-modal-body">
                 <div id="exit-message" class="exit-message"></div>
                 <div class="exit-actions">
                     <button class="exit-confirm-btn" id="confirm-exit">Confirm</button>
                     <button class="exit-cancel-btn" id="cancel-exit">Cancel</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Modal -->
+    <div class="menu-modal" id="menu-modal" style="display: none;">
+        <div class="menu-modal-content">
+            <div class="menu-item active">
+                <span>Arithmetic</span>
             </div>
         </div>
     </div>

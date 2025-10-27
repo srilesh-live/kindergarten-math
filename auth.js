@@ -63,8 +63,7 @@ class AuthManager {
         // Exit button for both guest and authenticated users
         document.getElementById('exit-btn')?.addEventListener('click', this.showExitModal.bind(this));
         
-        // Exit modal event listeners
-        document.getElementById('close-exit-modal')?.addEventListener('click', this.hideExitModal.bind(this));
+        // Exit modal event listeners  
         document.getElementById('cancel-exit')?.addEventListener('click', this.hideExitModal.bind(this));
         document.getElementById('confirm-exit')?.addEventListener('click', this.handleExit.bind(this));
     }

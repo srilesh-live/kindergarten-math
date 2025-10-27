@@ -239,10 +239,8 @@ class MathGame {
         // Timer controls
         this.elements.playPauseBtn?.addEventListener('click', this.toggleTimer.bind(this));
         
-        // Collapse buttons
-        const collapseLeftBtn = document.getElementById('collapse-left-sidebar');
-        
-        collapseLeftBtn?.addEventListener('click', this.toggleLeftSidebar.bind(this));
+        // Menu button
+        document.getElementById('menu-btn')?.addEventListener('click', this.toggleMenu.bind(this));
         
         // Configuration panel events
         this.bindConfigEvents();
@@ -1509,20 +1507,26 @@ class MathGame {
     /**
      * Toggle left sidebar collapse state
      */
-    toggleLeftSidebar() {
-        const sidebar = document.querySelector('.sidebar');
-        const collapseBtn = document.getElementById('collapse-left-sidebar');
-        
-        if (sidebar && collapseBtn) {
-            sidebar.classList.toggle('collapsed');
-            
-            // Update button state classes for color indication
-            if (sidebar.classList.contains('collapsed')) {
-                collapseBtn.classList.remove('sidebar-expanded');
-                collapseBtn.classList.add('sidebar-collapsed');
+    /**
+     * Toggle menu modal
+     */
+    toggleMenu() {
+        const modal = document.getElementById('menu-modal');
+        if (modal) {
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
             } else {
-                collapseBtn.classList.remove('sidebar-collapsed');
-                collapseBtn.classList.add('sidebar-expanded');
+                modal.style.display = 'flex';
+                // Close menu when clicking outside
+                setTimeout(() => {
+                    const clickHandler = (e) => {
+                        if (!modal.contains(e.target)) {
+                            modal.style.display = 'none';
+                            document.removeEventListener('click', clickHandler);
+                        }
+                    };
+                    document.addEventListener('click', clickHandler);
+                }, 0);
             }
         }
     }
