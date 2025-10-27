@@ -1250,7 +1250,7 @@ class MathGame {
      * Toggle between light and dark themes
      */
     toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         
         this.setTheme(newTheme);
@@ -1285,7 +1285,7 @@ class MathGame {
      */
     async loadTheme() {
         try {
-            const savedTheme = localStorage.getItem('mathGameTheme') || 'light';
+            const savedTheme = localStorage.getItem('mathGameTheme') || 'dark';
             
             // Set theme after DOM is ready
             setTimeout(() => {

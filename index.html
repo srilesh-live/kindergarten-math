@@ -16,17 +16,6 @@
         /* Landing page specific styles - Minimal black & gray theme
            Design preference: Use shades of black/gray, minimal text/graphics */
         :root {
-            --landing-bg: #f5f5f5;
-            --landing-card-bg: #ffffff;
-            --landing-text: #1a1a1a;
-            --landing-text-secondary: #666666;
-            --landing-border: #e0e0e0;
-            --landing-btn-primary: #2a2a2a;
-            --landing-btn-secondary: #666666;
-            --landing-hover: #000000;
-        }
-        
-        [data-theme="dark"] {
             --landing-bg: #1a1a1a;
             --landing-card-bg: #2a2a2a;
             --landing-text: #ffffff;
@@ -35,6 +24,17 @@
             --landing-btn-primary: #f5f5f5;
             --landing-btn-secondary: #b0b0b0;
             --landing-hover: #ffffff;
+        }
+        
+        [data-theme="light"] {
+            --landing-bg: #f5f5f5;
+            --landing-card-bg: #ffffff;
+            --landing-text: #1a1a1a;
+            --landing-text-secondary: #666666;
+            --landing-border: #e0e0e0;
+            --landing-btn-primary: #2a2a2a;
+            --landing-btn-secondary: #666666;
+            --landing-hover: #000000;
         }
         
         .landing-container {
@@ -450,8 +450,8 @@
         
         // Theme support
         document.addEventListener('DOMContentLoaded', () => {
-            // Check for saved theme or default to light
-            const savedTheme = localStorage.getItem('theme') || 'light';
+            // Check for saved theme or default to dark
+            const savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
         });
     </script>

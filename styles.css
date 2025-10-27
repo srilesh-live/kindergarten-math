@@ -1,7 +1,31 @@
-/* Updated: 2025-10-26 - Minimal black & gray theme alignment
+/* Updated: 2025-10-26 - Dark theme as default
    Design preference: Use shades of black/gray, minimal text/graphics */
-/* CSS Variables for theming */
+/* CSS Variables for theming - Dark theme as default */
 :root {
+    --primary-color: #f5f5f5;
+    --primary-hover: #ffffff;
+    --success-color: #b0b0b0;
+    --error-color: #ffffff;
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --text-secondary: #b0b0b0;
+    --border-color: #404040;
+    --sidebar-width: 250px;
+    --right-sidebar-width: 220px;
+    --header-height: 70px;
+    --border-radius: 8px;
+    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-medium: 0 4px 12px rgba(245, 245, 245, 0.1);
+    --transition: all 0.2s ease;
+    --status-bar-bg: #1e1e1e;
+    --status-bar-text: #cccccc;
+    --status-bar-accent: #2d2d30;
+    --status-bar-border: #3e3e42;
+    --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+}
+
+/* Light theme override */
+[data-theme="light"] {
     --primary-color: #2a2a2a;
     --primary-hover: #000000;
     --success-color: #4a4a4a;
@@ -10,33 +34,12 @@
     --text-color: #1a1a1a;
     --text-secondary: #666;
     --border-color: #e0e0e0;
-    --sidebar-width: 250px;
-    --right-sidebar-width: 220px;
-    --header-height: 70px;
-    --border-radius: 8px;
     --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --shadow-medium: 0 4px 12px rgba(74, 144, 226, 0.3);
-    --transition: all 0.2s ease;
+    --shadow-medium: 0 4px 12px rgba(42, 42, 42, 0.3);
     --status-bar-bg: #2d2d30;
     --status-bar-text: #cccccc;
     --status-bar-accent: #3e3e42;
     --status-bar-border: #414145;
-    --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-}
-
-/* Dark theme variables */
-[data-theme="dark"] {
-    --primary-color: #f5f5f5;
-    --success-color: #b0b0b0;
-    --error-color: #ffffff;
-    --bg-color: #1a1a1a;
-    --text-color: #ffffff;
-    --text-secondary: #b0b0b0;
-    --border-color: #404040;
-    --status-bar-bg: #1e1e1e;
-    --status-bar-text: #cccccc;
-    --status-bar-accent: #2d2d30;
-    --status-bar-border: #3e3e42;
 }
 
 /* Reset and base styles */
@@ -195,7 +198,7 @@ body {
     flex-shrink: 0;
 }
 
-[data-theme="dark"] .mistake-time {
+[data-theme="light"] .mistake-time {
     color: #777;
 }
 
@@ -207,7 +210,7 @@ body {
     font-size: 0.875rem;
 }
 
-[data-theme="dark"] .no-mistakes {
+[data-theme="light"] .no-mistakes {
     color: #666;
 }
 
@@ -300,7 +303,7 @@ body {
     box-sizing: border-box;
 }
 
-[data-theme="dark"] .answer-input {
+[data-theme="light"] .answer-input {
     background: #2d2d2d;
 }
 
@@ -381,7 +384,7 @@ body {
     color: var(--text-color);
 }
 
-[data-theme="dark"] .close-btn:hover {
+[data-theme="light"] .close-btn:hover {
     background: rgba(255, 255, 255, 0.05);
 }
 
@@ -446,7 +449,7 @@ body {
     border-color: #000;
 }
 
-[data-theme="dark"] .op-btn.active {
+[data-theme="light"] .op-btn.active {
     background: #fff;
     color: #000;
     border-color: #fff;
@@ -535,7 +538,7 @@ body {
     margin: 0;
 }
 
-[data-theme="dark"] .config-section-hint {
+[data-theme="light"] .config-section-hint {
     color: #999;
 }
 
@@ -584,7 +587,7 @@ body {
     user-select: none;
 }
 
-[data-theme="dark"] .operation-btn {
+[data-theme="light"] .operation-btn {
     color: var(--text-color);
     background: rgba(255, 255, 255, 0.015);
     border-color: rgba(255, 255, 255, 0.1);
@@ -609,7 +612,7 @@ body {
     border-color: var(--text-color);
 }
 
-[data-theme="dark"] .operation-btn:hover {
+[data-theme="light"] .operation-btn:hover {
     background: rgba(255, 255, 255, 0.04);
     border-color: rgba(255, 255, 255, 0.15);
 }
@@ -652,7 +655,7 @@ body {
     border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
-[data-theme="dark"] .operand-group {
+[data-theme="light"] .operand-group {
     background: rgba(255, 255, 255, 0.008);
     border-color: rgba(255, 255, 255, 0.03);
 }
@@ -678,7 +681,7 @@ body {
     transition: var(--transition);
 }
 
-[data-theme="dark"] .range-input {
+[data-theme="light"] .range-input {
     background: rgba(255, 255, 255, 0.015);
     border-color: rgba(255, 255, 255, 0.1);
 }
@@ -690,7 +693,7 @@ body {
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
 }
 
-[data-theme="dark"] .range-input:focus {
+[data-theme="light"] .range-input:focus {
     background: rgba(255, 255, 255, 0.04);
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
 }
@@ -940,7 +943,7 @@ body {
         --text-color: #000;
     }
     
-    [data-theme="dark"] {
+    [data-theme="light"] {
         --border-color: #fff;
         --text-color: #fff;
     }
@@ -1541,16 +1544,16 @@ body {
 }
 
 /* Dark theme support for auth components */
-[data-theme="dark"] .auth-modal-content {
+[data-theme="light"] .auth-modal-content {
     background: #2d2d2d;
     border: 1px solid #404040;
 }
 
-[data-theme="dark"] .form-group input {
+[data-theme="light"] .form-group input {
     background: #404040;
     border-color: #555;
 }
 
-[data-theme="dark"] .form-group input:focus {
+[data-theme="light"] .form-group input:focus {
     border-color: var(--primary-color);
 }
