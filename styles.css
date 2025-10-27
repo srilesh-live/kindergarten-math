@@ -1,14 +1,15 @@
-/* Updated: 2025-10-26 - Auth button theme fixes */
+/* Updated: 2025-10-26 - Minimal black & gray theme alignment
+   Design preference: Use shades of black/gray, minimal text/graphics */
 /* CSS Variables for theming */
 :root {
-    --primary-color: #4a90e2;
-    --primary-hover: #357abd;
-    --success-color: #7ed321;
-    --error-color: #d0021b;
+    --primary-color: #2a2a2a;
+    --primary-hover: #000000;
+    --success-color: #4a4a4a;
+    --error-color: #1a1a1a;
     --bg-color: #f8f9fa;
-    --text-color: #333;
+    --text-color: #1a1a1a;
     --text-secondary: #666;
-    --border-color: #e1e5e9;
+    --border-color: #e0e0e0;
     --sidebar-width: 250px;
     --right-sidebar-width: 220px;
     --header-height: 70px;
@@ -25,12 +26,12 @@
 
 /* Dark theme variables */
 [data-theme="dark"] {
-    --primary-color: #5aa3f0;
-    --success-color: #8ed944;
-    --error-color: #ff4757;
+    --primary-color: #f5f5f5;
+    --success-color: #b0b0b0;
+    --error-color: #ffffff;
     --bg-color: #1a1a1a;
-    --text-color: #e4e4e4;
-    --text-secondary: #999;
+    --text-color: #ffffff;
+    --text-secondary: #b0b0b0;
     --border-color: #404040;
     --status-bar-bg: #1e1e1e;
     --status-bar-text: #cccccc;

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Interactive kindergarten math practice - Sign in to save progress or continue as guest">
     <meta name="author" content="Kindergarten Math App">
-    <meta name="theme-color" content="#4a90e2">
+    <meta name="theme-color" content="#2a2a2a">
     
     <title>Welcome - Kindergarten Math</title>
     
@@ -13,198 +13,167 @@
     <link rel="stylesheet" href="styles.css">
     
     <style>
-        /* Landing page specific styles */
+        /* Landing page specific styles - Minimal black & gray theme
+           Design preference: Use shades of black/gray, minimal text/graphics */
+        :root {
+            --landing-bg: #f5f5f5;
+            --landing-card-bg: #ffffff;
+            --landing-text: #1a1a1a;
+            --landing-text-secondary: #666666;
+            --landing-border: #e0e0e0;
+            --landing-btn-primary: #2a2a2a;
+            --landing-btn-secondary: #666666;
+            --landing-hover: #000000;
+        }
+        
+        [data-theme="dark"] {
+            --landing-bg: #1a1a1a;
+            --landing-card-bg: #2a2a2a;
+            --landing-text: #ffffff;
+            --landing-text-secondary: #b0b0b0;
+            --landing-border: #404040;
+            --landing-btn-primary: #f5f5f5;
+            --landing-btn-secondary: #b0b0b0;
+            --landing-hover: #ffffff;
+        }
+        
         .landing-container {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--primary-color) 0%, #5aa3f0 100%);
+            background: var(--landing-bg);
             padding: 2rem;
         }
         
         .landing-card {
-            background: var(--bg-color);
-            border-radius: 1rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: var(--landing-card-bg);
+            border: 1px solid var(--landing-border);
+            border-radius: 0.5rem;
             padding: 3rem;
-            max-width: 500px;
+            max-width: 400px;
             width: 100%;
             text-align: center;
         }
         
-        .landing-logo {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
         .landing-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--landing-text);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
         }
         
         .landing-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
+            font-size: 0.95rem;
+            color: var(--landing-text-secondary);
             margin-bottom: 2.5rem;
-            line-height: 1.6;
+            font-weight: 300;
         }
         
         .landing-actions {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .landing-btn {
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: var(--transition);
-            cursor: pointer;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             gap: 0.75rem;
         }
         
+        .landing-btn {
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.95rem;
+            font-weight: 400;
+            text-decoration: none;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            border: 1px solid var(--landing-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
         .landing-btn-primary {
-            background: var(--primary-color);
-            color: white;
+            background: var(--landing-btn-primary);
+            color: var(--landing-card-bg);
+            border-color: var(--landing-btn-primary);
         }
         
         .landing-btn-primary:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+            background: var(--landing-hover);
+            border-color: var(--landing-hover);
         }
         
         .landing-btn-secondary {
             background: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
+            color: var(--landing-btn-secondary);
+            border-color: var(--landing-btn-secondary);
         }
         
         .landing-btn-secondary:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-1px);
+            background: var(--landing-btn-secondary);
+            color: var(--landing-card-bg);
         }
         
         .landing-btn-guest {
-            background: var(--bg-color);
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--landing-text-secondary);
+            border-color: var(--landing-border);
+            font-size: 0.9rem;
         }
         
         .landing-btn-guest:hover {
-            color: var(--text-color);
-            border-color: var(--text-secondary);
+            background: var(--landing-bg);
         }
         
-        .landing-features {
-            display: flex;
-            justify-content: space-around;
-            margin: 2rem 0;
-            padding: 1.5rem 0;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .landing-feature {
-            text-align: center;
-            flex: 1;
-        }
-        
-        .landing-feature-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .landing-feature-text {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+        .landing-info {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--landing-border);
+            font-size: 0.85rem;
+            color: var(--landing-text-secondary);
+            line-height: 1.4;
         }
         
         @media (max-width: 640px) {
             .landing-card {
                 padding: 2rem;
                 margin: 1rem;
+                max-width: 350px;
             }
             
             .landing-title {
-                font-size: 2rem;
-            }
-            
-            .landing-subtitle {
-                font-size: 1rem;
-            }
-            
-            .landing-features {
-                flex-direction: column;
-                gap: 1rem;
+                font-size: 1.75rem;
             }
             
             .landing-btn {
-                padding: 0.875rem 1.5rem;
-                font-size: 1rem;
+                padding: 0.75rem 1.25rem;
+                font-size: 0.9rem;
             }
-        }
-        
-        /* Dark theme support */
-        [data-theme="dark"] .landing-container {
-            background: linear-gradient(135deg, #2d3436 0%, #1a1a1a 100%);
-        }
-        
-        [data-theme="dark"] .landing-card {
-            border: 1px solid var(--border-color);
         }
     </style>
 </head>
 <body>
     <div class="landing-container">
         <div class="landing-card">
-            <div class="landing-logo">🧮</div>
             <h1 class="landing-title">Kindergarten Math</h1>
             <p class="landing-subtitle">
-                Practice arithmetic with interactive exercises designed for young learners
+                Interactive arithmetic practice for young learners
             </p>
-            
-            <div class="landing-features">
-                <div class="landing-feature">
-                    <div class="landing-feature-icon">➕</div>
-                    <div class="landing-feature-text">Addition & Subtraction</div>
-                </div>
-                <div class="landing-feature">
-                    <div class="landing-feature-icon">✖️</div>
-                    <div class="landing-feature-text">Multiplication & Division</div>
-                </div>
-                <div class="landing-feature">
-                    <div class="landing-feature-icon">🎯</div>
-                    <div class="landing-feature-text">Progress Tracking</div>
-                </div>
-            </div>
             
             <div class="landing-actions">
                 <button class="landing-btn landing-btn-primary" id="landing-signin">
-                    🔐 Sign In
+                    Sign In
                 </button>
                 <button class="landing-btn landing-btn-secondary" id="landing-signup">
-                    ✨ Create Account
+                    Create Account
                 </button>
                 <button class="landing-btn landing-btn-guest" id="landing-guest">
-                    👤 Continue as Guest
+                    Continue as Guest
                 </button>
             </div>
             
-            <div style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-secondary);">
-                <p><strong>Signed in users:</strong> Save progress, track statistics, sync across devices</p>
-                <p><strong>Guest mode:</strong> Practice immediately, no registration required</p>
+            <div class="landing-info">
+                Account holders save progress across sessions.<br>
+                Guest mode provides immediate access.
             </div>
         </div>
     </div>
