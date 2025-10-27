@@ -847,6 +847,26 @@ class MathGame {
             this.elements.counterDisplay.textContent = 
                 `${this.questionStats.currentQuestion}/${this.questionStats.totalQuestions}`;
         }
+        
+        // Update new progress elements
+        this.updateProgressIndicators();
+    }
+
+    /**
+     * Update the progress bar and text indicators
+     */
+    updateProgressIndicators() {
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        
+        if (progressFill) {
+            const percentage = (this.questionStats.currentQuestion / this.questionStats.totalQuestions) * 100;
+            progressFill.style.width = `${percentage}%`;
+        }
+        
+        if (progressText) {
+            progressText.textContent = `Question ${this.questionStats.currentQuestion} of ${this.questionStats.totalQuestions}`;
+        }
     }
 
     /**

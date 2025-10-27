@@ -44,24 +44,40 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="app-main" role="main">
-        <div class="problem-container">
-            <div class="problem" id="math-problem">
-                <span class="operand" id="operand1">5</span>
-                <span class="operation" id="operation">+</span>
-                <span class="operand" id="operand2">3</span>
-                <span class="equals">=</span>
-                <input 
-                    type="text" 
-                    id="answer-input" 
-                    class="answer-input" 
-                    inputmode="numeric"
-                    pattern="[0-9]*"
-                    autofocus
-                    autocomplete="off"
-                    maxlength="4"
-                    aria-label="Enter your answer"
-                >
+    <main class="app-main arithmetic-main" role="main">
+        <div class="arithmetic-container">
+            <!-- Math Expression Grid -->
+            <div class="math-expression" id="math-expression">
+                <div class="expression-row">
+                    <span class="operand" id="operand1">5</span>
+                    <span class="operation" id="operation">+</span>
+                    <span class="operand" id="operand2">3</span>
+                </div>
+                <div class="equals-row">
+                    <span class="equals">=</span>
+                </div>
+                <div class="answer-row">
+                    <input 
+                        type="text" 
+                        id="answer-input" 
+                        class="answer-input" 
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        autofocus
+                        autocomplete="off"
+                        maxlength="4"
+                        placeholder="?"
+                        aria-label="Enter your answer"
+                    >
+                </div>
+            </div>
+            
+            <!-- Progress Indicator -->
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 10%"></div>
+                </div>
+                <div class="progress-text" id="progress-text">Question 1 of 10</div>
             </div>
         </div>
     </main>
