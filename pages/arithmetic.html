@@ -31,7 +31,7 @@
             <button class="menu-btn" id="menu-btn" title="Menu" aria-label="Open menu">
                 <span class="material-icons">menu</span>
             </button>
-            <h1 class="app-title">Arithmetic Practice</h1>
+            <h1 class="app-title">Basic arithmetic</h1>
         </div>
         <div class="header-right">
             <!-- Header Action Buttons -->
@@ -126,53 +126,152 @@
         <div class="settings-container">
             <div class="settings-header">
                 <h2 class="settings-title">Settings</h2>
+                <button class="settings-close-btn" id="settings-close-btn" aria-label="Close settings">
+                    <i class="material-icons">close</i>
+                </button>
             </div>
             
-            <div class="settings-content">
-                <div class="setting-group">
-                    <h3 class="group-title">Operations</h3>
-                    <div class="operation-selector">
-                        <button class="op-btn active" data-operation="addition">+</button>
-                        <button class="op-btn" data-operation="subtraction">−</button>
-                        <button class="op-btn" data-operation="multiplication">×</button>
-                        <button class="op-btn" data-operation="division">÷</button>
+            <div class="settings-body">
+                <!-- Left Navigation Pane -->
+                <div class="settings-nav">
+                    <div class="settings-nav-item active" data-section="general">
+                        <i class="material-icons">tune</i>
+                        <span>General</span>
+                    </div>
+                    <div class="settings-nav-item" data-section="appearance">
+                        <i class="material-icons">palette</i>
+                        <span>Appearance</span>
+                    </div>
+                    <div class="settings-nav-item" data-section="arithmetic">
+                        <i class="material-icons">calculate</i>
+                        <span>Arithmetic</span>
+                    </div>
+                    <div class="settings-nav-item" data-section="number-sequences">
+                        <i class="material-icons">format_list_numbered</i>
+                        <span>Number Sequences</span>
                     </div>
                 </div>
                 
-                <div class="setting-group">
-                    <h3 class="group-title">Ranges</h3>
-                    <div class="range-grid">
-                        <div class="range-row">
-                            <label class="range-label">First</label>
-                            <div class="range-inputs">
-                                <input type="text" id="min-operand1" class="num-input" value="1" 
-                                       placeholder="Min" title="Minimum value (1-100)">
-                                <span class="range-separator">to</span>
-                                <input type="text" id="max-operand1" class="num-input" value="10" 
-                                       placeholder="Max" title="Maximum value (1-100)">
-                            </div>
+                <!-- Right Content Pane -->
+                <div class="settings-content">
+                    <!-- General Section -->
+                    <div class="settings-section active" id="general-section">
+                        <div class="settings-section-header">
+                            <h3>General Settings</h3>
+                            <p>Configure general application preferences</p>
                         </div>
-                        <div class="range-row">
-                            <label class="range-label">Second</label>
-                            <div class="range-inputs">
-                                <input type="text" id="min-operand2" class="num-input" value="1" 
-                                       placeholder="Min" title="Minimum value (1-100)">
-                                <span class="range-separator">to</span>
-                                <input type="text" id="max-operand2" class="num-input" value="10" 
-                                       placeholder="Max" title="Maximum value (1-100)">
+                        <div class="setting-group">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <label class="setting-label">Auto-save progress</label>
+                                    <span class="setting-description">Automatically save your progress during sessions</span>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="auto-save" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="setting-group">
-                    <h3 class="group-title">Questions</h3>
-                    <div class="range-row">
-                        <label class="range-label">Total</label>
-                        <div class="range-inputs">
-                            <input type="text" id="total-questions" class="num-input" value="10" 
-                                   placeholder="10-100" title="Total number of questions (10-100)" 
-                                   min="10" max="100">
+                    
+                    <!-- Appearance Section -->
+                    <div class="settings-section" id="appearance-section">
+                        <div class="settings-section-header">
+                            <h3>Appearance</h3>
+                            <p>Customize the visual appearance of the application</p>
+                        </div>
+                        <div class="setting-group">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <label class="setting-label">Theme</label>
+                                    <span class="setting-description">Choose between light and dark themes</span>
+                                </div>
+                                <div class="setting-control">
+                                    <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme" aria-label="Switch between light and dark theme">
+                                        <i class="material-icons" id="theme-icon">dark_mode</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Arithmetic Section -->
+                    <div class="settings-section" id="arithmetic-section">
+                        <div class="settings-section-header">
+                            <h3>Arithmetic Practice</h3>
+                            <p>Configure arithmetic practice settings</p>
+                        </div>
+                        
+                        <div class="setting-group">
+                            <div class="setting-item-full">
+                                <label class="setting-label">Operations</label>
+                                <div class="operation-selector">
+                                    <button class="op-btn active" data-operation="addition">+</button>
+                                    <button class="op-btn" data-operation="subtraction">−</button>
+                                    <button class="op-btn" data-operation="multiplication">×</button>
+                                    <button class="op-btn" data-operation="division">÷</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-group">
+                            <div class="setting-item-full">
+                                <label class="setting-label">Number Ranges</label>
+                                <div class="range-grid">
+                                    <div class="range-row">
+                                        <label class="range-label">First Number</label>
+                                        <div class="range-inputs">
+                                            <input type="text" id="min-operand1" class="num-input" value="1" 
+                                                   placeholder="Min" title="Minimum value (1-100)">
+                                            <span class="range-separator">to</span>
+                                            <input type="text" id="max-operand1" class="num-input" value="10" 
+                                                   placeholder="Max" title="Maximum value (1-100)">
+                                        </div>
+                                    </div>
+                                    <div class="range-row">
+                                        <label class="range-label">Second Number</label>
+                                        <div class="range-inputs">
+                                            <input type="text" id="min-operand2" class="num-input" value="1" 
+                                                   placeholder="Min" title="Minimum value (1-100)">
+                                            <span class="range-separator">to</span>
+                                            <input type="text" id="max-operand2" class="num-input" value="10" 
+                                                   placeholder="Max" title="Maximum value (1-100)">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-group">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <label class="setting-label">Total Questions</label>
+                                    <span class="setting-description">Number of questions per session (10-100)</span>
+                                </div>
+                                <div class="setting-control">
+                                    <input type="text" id="total-questions" class="setting-input" value="10" 
+                                           placeholder="10-100" title="Total number of questions (10-100)" 
+                                           min="10" max="100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Number Sequences Section -->
+                    <div class="settings-section" id="number-sequences-section">
+                        <div class="settings-section-header">
+                            <h3>Number Sequences</h3>
+                            <p>Configure number sequence practice settings</p>
+                        </div>
+                        <div class="setting-group">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <label class="setting-label">Coming Soon</label>
+                                    <span class="setting-description">Number sequence settings will be available soon</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -180,7 +279,7 @@
             
             <div class="settings-footer">
                 <button class="settings-btn-cancel" id="cancel-settings">Cancel</button>
-                <button class="settings-btn-save" id="save-settings">Save</button>
+                <button class="settings-btn-save" id="save-settings">Save Changes</button>
             </div>
         </div>
     </div>
@@ -204,7 +303,7 @@
             🏠 Home
         </div>
         <div class="menu-item active">
-            🔢 Arithmetic Practice
+            🔢 Basic arithmetic
         </div>
         <div class="menu-item" onclick="window.location.href='number-sequences.html'">
             🔄 Number Sequences

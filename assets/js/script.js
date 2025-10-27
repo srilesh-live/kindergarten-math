@@ -191,7 +191,9 @@ class MathGame {
     enableInput() {
         if (this.elements.answerInput) {
             this.elements.answerInput.disabled = false;
-            this.elements.answerInput.placeholder = '';
+            this.elements.answerInput.style.opacity = '1';
+            this.elements.answerInput.placeholder = '?';
+            this.elements.answerInput.focus();
         }
     }
 
@@ -201,7 +203,7 @@ class MathGame {
     disableInput() {
         if (this.elements.answerInput) {
             this.elements.answerInput.disabled = true;
-            this.elements.answerInput.placeholder = 'Timer paused - click play to continue';
+            this.elements.answerInput.style.opacity = '0.5';
         }
     }
 
@@ -327,6 +329,9 @@ class MathGame {
             themeToggle.addEventListener('click', this.toggleTheme.bind(this));
         }
 
+        // Settings navigation
+        this.setupSettingsNavigation();
+
         // Auto-apply on input changes
         this.bindAutoApplyEvents();
 
@@ -339,6 +344,37 @@ class MathGame {
                 e.stopPropagation();
             }
         });
+    }
+
+    /**
+     * Setup settings navigation for 2-pane layout
+     */
+    setupSettingsNavigation() {
+        const navItems = document.querySelectorAll('.settings-nav-item');
+        const sections = document.querySelectorAll('.settings-section');
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const sectionId = item.dataset.section;
+                
+                // Update nav items
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Update sections
+                sections.forEach(section => section.classList.remove('active'));
+                const targetSection = document.getElementById(`${sectionId}-section`);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+            });
+        });
+        
+        // Close button functionality
+        const closeBtn = document.getElementById('settings-close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', this.cancelSettings.bind(this));
+        }
     }
 
     /**
@@ -1050,6 +1086,12 @@ class MathGame {
         const arithmeticContainer = document.querySelector('.arithmetic-container');
         if (!arithmeticContainer) return;
 
+        // Hide timer controls on statistics page
+        const timerControls = document.querySelector('.timer-controls');
+        if (timerControls) {
+            timerControls.style.display = 'none';
+        }
+
         // Generate mistakes card - only show if there are mistakes
         const mistakesCard = this.mistakes.length > 0 ? `
             <div class="mistakes-card">
@@ -1091,6 +1133,12 @@ class MathGame {
      * Start a new session
      */
     startNewSession() {
+        // Show timer controls again
+        const timerControls = document.querySelector('.timer-controls');
+        if (timerControls) {
+            timerControls.style.display = 'flex';
+        }
+
         // Restore the arithmetic container (timer controls are now outside this container)
         const arithmeticContainer = document.querySelector('.arithmetic-container');
         if (arithmeticContainer) {
