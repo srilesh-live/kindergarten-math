@@ -24,9 +24,12 @@ jobs:
         run: |
           echo "Validating HTML files exist..."
           test -f index.html && echo "✅ index.html exists"
-          test -f app.html && echo "✅ app.html exists" 
-          test -f styles.css && echo "✅ styles.css exists"
-          test -f config.js && echo "✅ config.js exists"
+          test -f pages/arithmetic.html && echo "✅ pages/arithmetic.html exists" 
+          test -f pages/number-sequences.html && echo "✅ pages/number-sequences.html exists"
+          test -f assets/css/main.css && echo "✅ assets/css/main.css exists"
+          test -f assets/js/config.js && echo "✅ assets/js/config.js exists"
+          test -f assets/js/script.js && echo "✅ assets/js/script.js exists"
+          test -f assets/js/auth.js && echo "✅ assets/js/auth.js exists"
           echo "File validation complete"
           
       - name: Security scan
@@ -52,9 +55,9 @@ jobs:
       - name: Validate public config
         run: |
           echo "Validating configuration files..."
-          if [ -f "config.js" ]; then
-            echo "✅ config.js found - checking for public configuration"
-            grep -q "APP_CONFIG" config.js && echo "✅ Public configuration structure found"
+          if [ -f "assets/js/config.js" ]; then
+            echo "✅ assets/js/config.js found - checking for public configuration"
+            grep -q "APP_CONFIG" assets/js/config.js && echo "✅ Public configuration structure found"
           fi
           
   deployment-test:
@@ -74,9 +77,10 @@ jobs:
           
           echo "Testing file accessibility..."
           curl -f http://localhost:8080/index.html -o /dev/null && echo "✅ index.html accessible"
-          curl -f http://localhost:8080/app.html -o /dev/null && echo "✅ app.html accessible"  
-          curl -f http://localhost:8080/styles.css -o /dev/null && echo "✅ styles.css accessible"
-          curl -f http://localhost:8080/config.js -o /dev/null && echo "✅ config.js accessible"
+          curl -f http://localhost:8080/pages/arithmetic.html -o /dev/null && echo "✅ pages/arithmetic.html accessible"  
+          curl -f http://localhost:8080/pages/number-sequences.html -o /dev/null && echo "✅ pages/number-sequences.html accessible"
+          curl -f http://localhost:8080/assets/css/main.css -o /dev/null && echo "✅ assets/css/main.css accessible"
+          curl -f http://localhost:8080/assets/js/config.js -o /dev/null && echo "✅ assets/js/config.js accessible"
           
           echo "Stopping test server..."
           kill $SERVER_PID || true
@@ -102,7 +106,7 @@ jobs:
       - name: Lint JavaScript files
         run: |
           echo "Linting JavaScript files..."
-          for file in *.js; do
+          for file in assets/js/*.js; do
             if [ -f "$file" ]; then
               echo "Checking $file..."
               jshint "$file" || echo "⚠️  Issues found in $file (non-blocking)"

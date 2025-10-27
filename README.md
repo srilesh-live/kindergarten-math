@@ -20,25 +20,35 @@ A modern, accessible web application for kindergarten students to practice basic
 3. **Start practicing** math problems immediately!
 
 For deployment:
-1. Upload files to your web server
-2. Ensure `index.html`, `styles.css`, and `script.js` are in the same directory
+1. Upload all files and directories to your web server
+2. Maintain the directory structure with `assets/` folder
 3. Access via your domain
 
 ## 📁 File Structure
 
 ```
-static_version/
-├── index.html          # Main HTML structure
-├── styles.css          # All styling and themes
-├── script.js           # Application logic
-└── README.md           # This file
+kindergarten-math/
+├── index.html                      # Landing page
+├── assets/
+│   ├── css/
+│   │   └── main.css               # All styling and themes
+│   └── js/
+│       ├── script.js              # Main application logic
+│       ├── auth.js                # Authentication management
+│       ├── config.js              # Configuration settings
+│       └── user-data.js           # User data management
+├── pages/
+│   ├── arithmetic.html            # Math practice application
+│   └── number-sequences.html      # Number sequences (coming soon)
+├── docs/                          # Documentation files
+└── README.md                      # This file
 ```
 
 ## 🎨 Customization
 
 ### Adding New Themes
 
-In `styles.css`, add new theme variables:
+In `assets/css/main.css`, add new theme variables:
 
 ```css
 [data-theme="custom"] {
@@ -50,7 +60,7 @@ In `styles.css`, add new theme variables:
 
 ### Adding New Operations
 
-In `script.js`, extend the `generateNewProblem()` method:
+In `assets/js/script.js`, extend the `generateNewProblem()` method:
 
 ```javascript
 case 'your-operation':
@@ -62,7 +72,7 @@ case 'your-operation':
 
 ### Modifying Number Ranges
 
-Update the default configuration in `script.js`:
+Update the default configuration in `assets/js/script.js`:
 
 ```javascript
 this.config = {
