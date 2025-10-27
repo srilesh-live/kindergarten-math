@@ -745,7 +745,8 @@ class MathGame {
     showConfig() {
         this.loadCurrentConfigToForm();
         if (this.elements.configPanel) {
-            this.elements.configPanel.style.display = 'block';
+            this.elements.configPanel.style.display = 'flex';
+            this.elements.configPanel.classList.add('show');
             
             // Focus first input for accessibility
             const firstInput = this.elements.configPanel.querySelector('input, button');
@@ -761,6 +762,7 @@ class MathGame {
     hideConfig() {
         if (this.elements.configPanel) {
             this.elements.configPanel.style.display = 'none';
+            this.elements.configPanel.classList.remove('show');
             // Return focus to answer input
             this.elements.answerInput?.focus();
         }
