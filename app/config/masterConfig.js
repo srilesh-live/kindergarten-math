@@ -355,8 +355,8 @@ export const AI_CONFIG = {
 
 // Supabase Integration Configuration
 export const SUPABASE_CONFIG = {
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://your-project.supabase.co',
-    anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'your-anon-key',
+    url: 'https://your-project.supabase.co',
+    anonKey: 'your-anon-key',
     
     features: {
         authentication: true,
@@ -565,7 +565,7 @@ export const PERFORMANCE_CONFIG = {
 // Development & Testing Configuration
 export const DEV_CONFIG = {
     debug: {
-        enabled: process.env.NODE_ENV === 'development',
+        enabled: false, // Set to true for debugging in browser
         logLevel: 'info',
         showPerformance: true,
         mockData: false
