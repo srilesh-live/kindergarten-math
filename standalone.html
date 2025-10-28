@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kindergarten Math - Standalone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0f23, #1a1a2e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .loading-content {
+            text-align: center;
+            color: #e8eaed;
+        }
+        .app-container {
+            min-height: 100vh;
+            background: #0f0f23;
+            color: #e8eaed;
+            font-family: 'Arial', sans-serif;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-weight: 600;
+            min-height: 44px;
+            min-width: 44px;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        .btn-primary {
+            background: #9d4edd;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #c77dff;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #1e1e30;
+            color: #e8eaed;
+            border: 2px solid #252542;
+        }
+        .btn-secondary:hover {
+            background: #252542;
+            border-color: #9d4edd;
+        }
+        .age-group-btn.selected {
+            background: #9d4edd;
+            color: white;
+            transform: scale(1.05);
+        }
+        .hidden { display: none !important; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div style="font-size: 4rem; margin-bottom: 1.5rem; animation: bounce 1s infinite;">🧮</div>
+            <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem;">Kindergarten Math Adventure</h1>
+            <p style="font-size: 1.125rem; margin-bottom: 1.5rem;">Preparing your magical learning journey...</p>
+            <div style="width: 200px; height: 4px; background: #252542; border-radius: 2px; margin: 0 auto; overflow: hidden;">
+                <div id="progress-bar" style="width: 0%; height: 100%; background: #9d4edd; border-radius: 2px; transition: width 0.3s ease;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app-container hidden">
+        <div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="screen">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <div style="font-size: 5rem; margin-bottom: 1.5rem;">🌟</div>
+                    <h2 style="font-size: 3rem; font-weight: bold; margin-bottom: 1rem; background: linear-gradient(45deg, #9d4edd, #5e60ce); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                        Welcome to Math Adventure!
+                    </h2>
+                    <p style="font-size: 1.25rem; max-width: 600px; margin: 0 auto 2rem; color: #bdc1c6;">
+                        Embark on a magical journey of numbers, shapes, and patterns. 
+                        Our games adapt to your learning style for the perfect challenge every time!
+                    </p>
+                    
+                    <!-- Age group selection -->
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">How old are you?</h3>
+                        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                            <button class="age-group-btn btn btn-secondary" data-age="3-4" onclick="selectAge('3-4', this)">
+                                <div style="text-align: center;">
+                                    <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🐣</span>
+                                    <span>3-4 years</span>
+                                </div>
+                            </button>
+                            <button class="age-group-btn btn btn-secondary" data-age="4-5" onclick="selectAge('4-5', this)">
+                                <div style="text-align: center;">
+                                    <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🌱</span>
+                                    <span>4-5 years</span>
+                                </div>
+                            </button>
+                            <button class="age-group-btn btn btn-secondary" data-age="5-6" onclick="selectAge('5-6', this)">
+                                <div style="text-align: center;">
+                                    <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🌟</span>
+                                    <span>5-6 years</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Get started button -->
+                    <button id="get-started-btn" class="btn btn-primary" style="font-size: 1.25rem; padding: 1rem 2rem;" onclick="startGame()" disabled>
+                        Let's Start Learning! 🚀
+                    </button>
+                </div>
+                
+                <!-- Features overview -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 800px; margin: 0 auto;">
+                    <div style="background: #1e1e30; border-radius: 16px; padding: 1.5rem; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🧠</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Smart Learning</h3>
+                        <p style="color: #bdc1c6;">AI adapts to your pace and helps you learn better</p>
+                    </div>
+                    <div style="background: #1e1e30; border-radius: 16px; padding: 1.5rem; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎮</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Fun Games</h3>
+                        <p style="color: #bdc1c6;">Learn through play with colorful, engaging activities</p>
+                    </div>
+                    <div style="background: #1e1e30; border-radius: 16px; padding: 1.5rem; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Track Progress</h3>
+                        <p style="color: #bdc1c6;">See your improvement and celebrate achievements</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="game-screen" class="screen hidden">
+                <div style="text-align: center; padding: 2rem;">
+                    <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem;">🧮 Number Magic</h2>
+                    <p style="font-size: 1.25rem; margin-bottom: 2rem; color: #bdc1c6;">
+                        Great job selecting your age! The full game system is ready.
+                    </p>
+                    <p style="font-size: 1rem; margin-bottom: 2rem; color: #9aa0a6;">
+                        This standalone version confirms the basic interface works. 
+                        <br>The main app with full AI, games, and learning features is being debugged.
+                    </p>
+                    <button class="btn btn-primary" onclick="goBack()">
+                        🏠 Back to Welcome
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('🧮 Standalone Kindergarten Math Adventure loading...');
+        
+        let selectedAge = null;
+        let loadingProgress = 0;
+        
+        // Simulate loading progress
+        function updateProgress() {
+            loadingProgress += Math.random() * 20;
+            if (loadingProgress > 100) loadingProgress = 100;
+            
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
+                progressBar.style.width = loadingProgress + '%';
+            }
+            
+            if (loadingProgress < 100) {
+                setTimeout(updateProgress, 100 + Math.random() * 200);
+            } else {
+                setTimeout(showApp, 500);
+            }
+        }
+        
+        // Show the main app
+        function showApp() {
+            console.log('✅ Standalone app ready - showing interface');
+            const loading = document.getElementById('loading-screen');
+            const app = document.getElementById('app');
+            
+            if (loading) loading.classList.add('hidden');
+            if (app) app.classList.remove('hidden');
+        }
+        
+        // Handle age selection
+        function selectAge(age, button) {
+            console.log('Age selected:', age);
+            selectedAge = age;
+            
+            // Update visual selection
+            document.querySelectorAll('.age-group-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+            
+            // Enable start button
+            const startBtn = document.getElementById('get-started-btn');
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.style.opacity = '1';
+                startBtn.style.cursor = 'pointer';
+            }
+        }
+        
+        // Start the game
+        function startGame() {
+            if (!selectedAge) return;
+            
+            console.log('Starting game for age:', selectedAge);
+            
+            // Hide welcome, show game
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+        }
+        
+        // Go back to welcome
+        function goBack() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('welcome-screen').classList.remove('hidden');
+        }
+        
+        // Start loading when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded - starting progress simulation');
+            setTimeout(updateProgress, 500);
+        });
+        
+        // Fallback in case DOMContentLoaded already fired
+        if (document.readyState === 'loading') {
+            console.log('Document still loading...');
+        } else {
+            console.log('Document already loaded - starting immediately');
+            setTimeout(updateProgress, 500);
+        }
+    </script>
+</body>
+</html>
