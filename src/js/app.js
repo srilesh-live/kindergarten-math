@@ -5,10 +5,19 @@
  * Entry point for the application
  */
 
+console.log('📱 app.js: Starting module imports...');
+
 import { APP_CONFIG, UI_CONFIG } from './config.js';
+console.log('✅ app.js: Config imported successfully');
+
 import { UserManager } from './userManager.js';
+console.log('✅ app.js: UserManager imported successfully');
+
 import { AILearningEngine } from './aiLearningEngine.js';
+console.log('✅ app.js: AILearningEngine imported successfully');
+
 import { GameManager } from './gameManager.js';
+console.log('✅ app.js: GameManager imported successfully');
 
 /**
  * Main Application Class
@@ -1067,15 +1076,34 @@ class KindergartenMathApp {
     }
 }
 
+console.log('🔧 app.js: Creating application instance...');
+
 // Initialize application when DOM is loaded
 const app = new KindergartenMathApp();
 
 // Make app globally available for inline event handlers
 window.app = app;
 
+console.log('🚀 app.js: Starting app initialization...');
+
 // Start initialization
 app.init().catch(error => {
-    console.error('[App] Failed to initialize:', error);
+    console.error('❌ [App] Failed to initialize:', error);
+    
+    // Show error in the loading screen
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+        loadingScreen.innerHTML = `
+            <div class="loading-content text-center">
+                <div class="text-6xl mb-6">❌</div>
+                <h1 class="text-2xl font-bold mb-4 text-white">Oops! Something went wrong</h1>
+                <p class="text-base mb-6 text-gray-300">Error: ${error.message}</p>
+                <button onclick="window.location.reload()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                    🔄 Refresh Page
+                </button>
+            </div>
+        `;
+    }
 });
 
-console.log('[App] Application script loaded');
+console.log('✅ [App] Application script loaded successfully');

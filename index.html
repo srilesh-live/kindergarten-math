@@ -33,8 +33,52 @@
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="./tailwind.config.js"></script>
     <link rel="stylesheet" href="./src/styles/main.css">
+    
+    <!-- Configure Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'material': {
+                            'primary': '#1a1a2e',
+                            'secondary': '#16213e',
+                            'surface': '#1e1e30',
+                            'background': '#0f0f23',
+                            'variant': '#252542'
+                        },
+                        'accent': {
+                            'purple': '#9d4edd',
+                            'blue': '#5e60ce', 
+                            'teal': '#4cc9f0',
+                            'pink': '#f72585',
+                            'orange': '#fb8500',
+                            'green': '#06ffa5'
+                        },
+                        'pastel': {
+                            'purple': '#c77dff',
+                            'blue': '#7b68ee',
+                            'cyan': '#6dd5ed',
+                            'pink': '#ff9a9e', 
+                            'orange': '#feca57',
+                            'green': '#5fa8d3'
+                        },
+                        'text': {
+                            'primary': '#e8eaed',
+                            'secondary': '#bdc1c6',
+                            'muted': '#9aa0a6',
+                            'accent': '#c77dff'
+                        }
+                    },
+                    fontFamily: {
+                        'primary': ['Nunito', 'ui-sans-serif', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="font-primary bg-material-background text-text-primary antialiased">
     <!-- Skip to main content link for screen readers -->
@@ -462,21 +506,25 @@
     </div>
 
     <!-- Scripts -->
-    <script type="module" src="./src/js/app.js"></script>
-    
-    <!-- Service Worker Registration -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(registration => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch(registrationError => {
-                        console.log('SW registration failed: ', registrationError);
-                    });
+        console.log('🚀 Starting Kindergarten Math Adventure v3...');
+        
+        // Global error handler
+        window.addEventListener('error', (e) => {
+            console.error('❌ Global error:', e.error);
+            console.error('❌ Error details:', {
+                message: e.message,
+                filename: e.filename,
+                lineno: e.lineno,
+                colno: e.colno
             });
-        }
+        });
+        
+        // Module loading error handler
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('❌ Unhandled promise rejection:', e.reason);
+        });
     </script>
+    <script type="module" src="./src/js/app.js"></script>
 </body>
 </html>
