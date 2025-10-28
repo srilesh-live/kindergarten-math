@@ -149,6 +149,12 @@ export class KindergartenMathApp {
                 this.showGameSelection();
             }
             
+            // Hide the initial loading screen from index.html
+            const indexLoadingScreen = document.getElementById('loading-screen');
+            if (indexLoadingScreen) {
+                indexLoadingScreen.classList.add('hidden');
+            }
+            
             console.log('✅ Application initialized successfully');
             
         } catch (error) {
@@ -162,8 +168,9 @@ export class KindergartenMathApp {
      */
     async initializeBackendServices() {
         try {
-            // Check if backend is enabled
-            const enableCloudSync = import.meta.env?.VITE_ENABLE_CLOUD_SYNC !== 'false';
+            // Cloud sync is always enabled in this version
+            // Set to false to disable backend features
+            const enableCloudSync = true;
             
             if (!enableCloudSync) {
                 console.log('ℹ️ Cloud services disabled - running in offline mode');
