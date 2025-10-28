@@ -30,15 +30,20 @@ export class SupabaseClient {
 
             // Load Supabase client from CDN if not already loaded (with timeout)
             if (!window.supabase) {
-                const loaded = await Promise.race([
-                    this.loadSupabaseClient(),
-                    new Promise((_, reject) => 
-                        setTimeout(() => reject(new Error('Supabase CDN load timeout')), 5000)
-                    )
-                ]);
-                
-                if (!loaded) {
-                    console.warn('⚠️ Failed to load Supabase client from CDN');
+                try {
+                    const loaded = await Promise.race([
+                        this.loadSupabaseClient(),
+                        new Promise((_, reject) => 
+                            setTimeout(() => reject(new Error('Supabase CDN load timeout')), 10000)
+                        )
+                    ]);
+                    
+                    if (!loaded) {
+                        console.warn('⚠️ Failed to load Supabase client from CDN');
+                        return false;
+                    }
+                } catch (error) {
+                    console.warn('⚠️ Supabase CDN load failed:', error.message);
                     return false;
                 }
             }
@@ -82,6 +87,7 @@ export class SupabaseClient {
         return new Promise((resolve, reject) => {
             // Check if already loaded
             if (window.supabase) {
+                console.log('✅ Supabase client already loaded');
                 resolve(true);
                 return;
             }
@@ -92,8 +98,16 @@ export class SupabaseClient {
             script.async = true;
 
             script.onload = () => {
-                console.log('✅ Supabase client loaded from CDN');
-                resolve(true);
+                // Wait a bit for the library to initialize
+                setTimeout(() => {
+                    if (window.supabase) {
+                        console.log('✅ Supabase client loaded from CDN');
+                        resolve(true);
+                    } else {
+                        console.error('❌ Supabase loaded but window.supabase not available');
+                        reject(new Error('Supabase not exposed on window'));
+                    }
+                }, 100);
             };
 
             script.onerror = (error) => {
