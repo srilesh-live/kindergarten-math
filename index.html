@@ -3,223 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 Kindergarten Math Adventure - AI-Powered Learning</title>
+    <meta name="description" content="Kindergarten Math Adventure - AI-powered learning games for children aged 3-6. Dark Material Design theme with adaptive difficulty and offline support.">
+    <meta name="keywords" content="kindergarten, math, learning, games, children, education, AI, adaptive">
+    <meta name="author" content="Kindergarten Math Adventure">
     
-    <!-- Meta tags for PWA and SEO -->
-    <meta name="description" content="AI-powered math learning for kindergarten kids with beautiful dark theme and personalized guidance">
+    <!-- Theme and PWA -->
     <meta name="theme-color" content="#1a1a2e">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="color-scheme" content="dark">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" href="./icons/favicon.ico">
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Kindergarten Math Adventure">
+    <meta property="og:description" content="Fun, AI-powered math learning games for young children">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="./icons/og-image.png">
+    
+    <!-- Accessibility -->
+    <meta name="screen-reader" content="supported">
+    <meta name="high-contrast" content="supported">
+    
+    <title>Kindergarten Math Adventure</title>
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="./css/styles.css" as="style">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap" as="style">
+    <link rel="preload" href="./src/styles/main.css" as="style">
     
-    <!-- Stylesheets -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/styles.css">
-    
-    <!-- Supabase Client (CDN) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌟</text></svg>">
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./tailwind.config.js"></script>
+    <link rel="stylesheet" href="./src/styles/main.css">
 </head>
-<body>
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
+<body class="font-primary bg-material-background text-text-primary antialiased">
+    <!-- Skip to main content link for screen readers -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Offline banner -->
+    <div id="offline-banner" class="offline-banner" aria-live="polite">
+        <span>🌐 You're offline - some features may be limited</span>
+    </div>
+    
+    <!-- Loading screen -->
+    <div id="loading-screen" class="loading-screen" aria-label="Loading application">
         <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <h2 class="loading-title">🌟 Preparing Your Math Adventure</h2>
-            <p class="loading-subtitle">Loading AI-powered learning experience...</p>
+            <div class="text-6xl mb-6 animate-bounce">🧮</div>
+            <h1 class="loading-title">Kindergarten Math Adventure</h1>
+            <p class="loading-subtitle">Preparing your magical learning journey...</p>
             <div class="loading-progress">
-                <div class="loading-bar" id="loading-bar"></div>
+                <div class="loading-bar"></div>
             </div>
         </div>
     </div>
 
-    <!-- Main App Container -->
+    <!-- Main application container -->
     <div id="app" class="app-container hidden">
-        <!-- Top Navigation Bar -->
-        <nav class="top-nav" id="top-nav">
+        
+        <!-- Navigation bar -->
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
             <div class="nav-content">
-                <div class="nav-left">
-                    <button class="nav-button" id="back-button" style="display: none;">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M19 12H5M12 19l-7-7 7-7"/>
-                        </svg>
-                    </button>
-                    <h1 class="nav-title" id="nav-title">Math Adventure</h1>
-                </div>
-                <div class="nav-right">
-                    <div class="user-progress" id="user-progress">
-                        <div class="progress-ring">
-                            <svg class="progress-circle" viewBox="0 0 36 36">
-                                <circle class="progress-bg" cx="18" cy="18" r="16"/>
-                                <circle class="progress-fill" cx="18" cy="18" r="16" id="progress-circle"/>
-                            </svg>
-                            <span class="progress-text" id="progress-text">0%</span>
+                <div class="flex items-center gap-4">
+                    <!-- Logo and title -->
+                    <div class="flex items-center gap-3">
+                        <div class="text-3xl" role="img" aria-label="Math adventure logo">🧮</div>
+                        <div>
+                            <h1 class="text-lg font-bold text-text-primary">Math Adventure</h1>
+                            <p class="text-xs text-text-muted" id="user-greeting">Welcome, Explorer!</p>
                         </div>
                     </div>
-                    <button class="nav-button" id="settings-button">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <circle cx="12" cy="12" r="3"/>
-                            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
-                        </svg>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <!-- Network status indicator -->
+                    <div id="network-status" class="hidden nav-button" aria-label="Network status">
+                        <span id="network-icon">📶</span>
+                    </div>
+                    
+                    <!-- Settings button -->
+                    <button id="settings-btn" class="nav-button" aria-label="Open settings">
+                        <span>⚙️</span>
+                    </button>
+                    
+                    <!-- User menu button -->
+                    <button id="user-menu-btn" class="nav-button" aria-label="User menu">
+                        <span id="user-avatar">👶</span>
                     </button>
                 </div>
             </div>
         </nav>
 
-        <!-- Main Content Area -->
-        <main class="main-content" id="main-content">
+        <!-- Main content area -->
+        <main id="main-content" class="flex-1 min-h-screen pt-16">
+            
             <!-- Welcome Screen -->
             <section id="welcome-screen" class="screen active">
-                <div class="welcome-container">
-                    <div class="welcome-hero">
-                        <h1 class="welcome-title">
-                            <span class="title-line">Welcome to your</span>
-                            <span class="title-highlight">Math Adventure! 🌟</span>
-                        </h1>
-                        <p class="welcome-subtitle" id="ai-welcome-message">
-                            Ready to explore the magical world of numbers with your AI learning companion?
+                <div class="container mx-auto px-4 py-8">
+                    <!-- Hero section -->
+                    <div class="text-center mb-12">
+                        <div class="text-8xl mb-6 animate-bounce-in">🌟</div>
+                        <h2 class="heading-display mb-4">Welcome to Math Adventure!</h2>
+                        <p class="text-body max-w-2xl mx-auto mb-8">
+                            Embark on a magical journey of numbers, shapes, and patterns. 
+                            Our AI-powered games adapt to your learning style for the perfect challenge every time!
                         </p>
-                    </div>
-
-                    <!-- Age Selection -->
-                    <div class="age-selection">
-                        <h2 class="section-title">How old are you? 🎂</h2>
-                        <div class="age-buttons">
-                            <button class="age-button" data-age="3">3 years old</button>
-                            <button class="age-button" data-age="4">4 years old</button>
-                            <button class="age-button" data-age="5">5 years old</button>
-                            <button class="age-button" data-age="6">6 years old</button>
-                            <button class="age-button" data-age="7">7+ years old</button>
-                        </div>
-                    </div>
-
-                    <!-- Game Selection Grid -->
-                    <div class="games-grid" id="games-grid" style="display: none;">
-                        <h2 class="section-title">Choose your adventure! 🎮</h2>
                         
-                        <div class="game-card" data-game="arithmetic">
-                            <div class="game-icon">🧮</div>
-                            <h3 class="game-title">Number Magic</h3>
-                            <p class="game-description">Add and subtract with magical creatures!</p>
-                            <div class="game-difficulty">
-                                <span class="difficulty-badge adaptive">AI Adaptive</span>
+                        <!-- Age group selection -->
+                        <div class="mb-8">
+                            <h3 class="heading-small mb-4">How old are you?</h3>
+                            <div class="flex justify-center gap-4 flex-wrap">
+                                <button class="age-group-btn btn btn-secondary" data-age="3-4" aria-label="Age 3 to 4">
+                                    <span class="text-2xl mb-2 block">🐣</span>
+                                    <span>3-4 years</span>
+                                </button>
+                                <button class="age-group-btn btn btn-secondary" data-age="4-5" aria-label="Age 4 to 5">
+                                    <span class="text-2xl mb-2 block">🌱</span>
+                                    <span>4-5 years</span>
+                                </button>
+                                <button class="age-group-btn btn btn-secondary" data-age="5-6" aria-label="Age 5 to 6">
+                                    <span class="text-2xl mb-2 block">🌟</span>
+                                    <span>5-6 years</span>
+                                </button>
                             </div>
                         </div>
-
-                        <div class="game-card" data-game="time">
-                            <div class="game-icon">🕐</div>
-                            <h3 class="game-title">Time Wizard</h3>
-                            <p class="game-description">Learn to read clocks with enchanted timepieces!</p>
-                            <div class="game-difficulty">
-                                <span class="difficulty-badge adaptive">AI Adaptive</span>
-                            </div>
-                        </div>
-
-                        <div class="game-card" data-game="patterns">
-                            <div class="game-icon">🔮</div>
-                            <h3 class="game-title">Pattern Quest</h3>
-                            <p class="game-description">Discover secret sequences and magical patterns!</p>
-                            <div class="game-difficulty">
-                                <span class="difficulty-badge adaptive">AI Adaptive</span>
-                            </div>
-                        </div>
-
-                        <div class="game-card" data-game="shapes">
-                            <div class="game-icon">⭐</div>
-                            <h3 class="game-title">Shape Explorer</h3>
-                            <p class="game-description">Adventure through the land of magical shapes!</p>
-                            <div class="game-difficulty">
-                                <span class="difficulty-badge adaptive">AI Adaptive</span>
-                            </div>
-                        </div>
+                        
+                        <!-- Get started button -->
+                        <button id="get-started-btn" class="btn btn-primary btn-large" disabled>
+                            Let's Start Learning! 🚀
+                        </button>
                     </div>
-
-                    <!-- Statistics Preview -->
-                    <div class="stats-preview" id="stats-preview" style="display: none;">
-                        <h2 class="section-title">Your Progress 📊</h2>
-                        <div class="stats-card">
-                            <div class="stat-item">
-                                <span class="stat-number" id="total-questions">0</span>
-                                <span class="stat-label">Questions Solved</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number" id="accuracy-rate">0%</span>
-                                <span class="stat-label">Success Rate</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number" id="learning-streak">0</span>
-                                <span class="stat-label">Day Streak</span>
-                            </div>
+                    
+                    <!-- Features overview -->
+                    <div class="grid grid-cols-auto-fit-sm gap-6 max-w-4xl mx-auto">
+                        <div class="card text-center">
+                            <div class="text-4xl mb-4">🧠</div>
+                            <h3 class="heading-small mb-2">Smart Learning</h3>
+                            <p class="text-body">AI adapts to your pace and helps you learn better</p>
+                        </div>
+                        <div class="card text-center">
+                            <div class="text-4xl mb-4">🎮</div>
+                            <h3 class="heading-small mb-2">Fun Games</h3>
+                            <p class="text-body">Learn through play with colorful, engaging activities</p>
+                        </div>
+                        <div class="card text-center">
+                            <div class="text-4xl mb-4">📊</div>
+                            <h3 class="heading-small mb-2">Track Progress</h3>
+                            <p class="text-body">See your improvement and celebrate achievements</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Game Screen -->
+            <!-- Game Selection Screen -->
+            <section id="game-selection-screen" class="screen">
+                <div class="container mx-auto px-4 py-8">
+                    <div class="text-center mb-8">
+                        <h2 class="heading-large mb-4">Choose Your Adventure!</h2>
+                        <p class="text-body">Pick a game to start your learning journey</p>
+                    </div>
+                    
+                    <!-- Available games grid -->
+                    <div id="available-games" class="game-grid mb-8">
+                        <!-- Games will be populated by JavaScript -->
+                    </div>
+                    
+                    <!-- Locked games (for guests) -->
+                    <div id="locked-games" class="hidden">
+                        <div class="text-center mb-6">
+                            <h3 class="heading-medium mb-2">🔒 More Adventures Await!</h3>
+                            <p class="text-body mb-4">Sign in to unlock all games and track your progress</p>
+                            <button id="show-signin-btn" class="btn btn-primary">Sign In to Unlock</button>
+                        </div>
+                        <div id="locked-games-grid" class="game-grid opacity-50">
+                            <!-- Locked games will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- User progress overview -->
+                    <div id="progress-overview" class="hidden card p-6 mt-8">
+                        <h3 class="heading-medium mb-4">Your Progress</h3>
+                        <div id="progress-stats" class="stats-grid">
+                            <!-- Progress stats will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Game Play Screen -->
             <section id="game-screen" class="screen">
-                <div class="game-container">
-                    <!-- Game Header -->
-                    <div class="game-header">
-                        <div class="game-info">
-                            <h2 class="game-name" id="current-game-name">Number Magic</h2>
-                            <div class="game-stats">
-                                <div class="stat">
-                                    <span class="stat-icon">🎯</span>
-                                    <span id="questions-count">Question 1 of 10</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-icon">⏱️</span>
-                                    <span id="time-elapsed">0:00</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-icon">✨</span>
-                                    <span id="score-display">0 points</span>
-                                </div>
-                            </div>
+                <div class="container mx-auto px-4 py-8 max-w-4xl">
+                    
+                    <!-- Game header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <button id="pause-game-btn" class="btn btn-secondary" aria-label="Pause game">
+                            ⏸️ Pause
+                        </button>
+                        
+                        <div class="text-center">
+                            <h2 id="game-title" class="heading-medium mb-1">Number Magic</h2>
+                            <div class="text-caption" id="game-progress">Question 1 of 10</div>
                         </div>
+                        
+                        <button id="quit-game-btn" class="btn btn-secondary" aria-label="Quit game">
+                            ❌ Quit
+                        </button>
                     </div>
-
-                    <!-- AI Encouragement Panel -->
-                    <div class="ai-panel" id="ai-panel">
-                        <div class="ai-avatar">🤖</div>
-                        <div class="ai-message" id="ai-message">
-                            Ready to explore the magical world of numbers? 🌟
-                        </div>
-                    </div>
-
-                    <!-- Question Area -->
-                    <div class="question-area" id="question-area">
-                        <div class="question-content">
-                            <h3 class="question-text" id="question-text">Loading your personalized question...</h3>
-                            <div class="question-visual" id="question-visual">
-                                <!-- Dynamic visual elements will be inserted here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Answer Area -->
-                    <div class="answer-area" id="answer-area">
-                        <div class="answer-options" id="answer-options">
-                            <!-- Dynamic answer options will be inserted here -->
-                        </div>
-                        <div class="number-input" id="number-input" style="display: none;">
-                            <input type="number" class="number-field" id="number-field" placeholder="Your answer">
-                            <button class="submit-button" id="submit-answer">Submit ✨</button>
-                        </div>
-                    </div>
-
-                    <!-- Progress Bar -->
+                    
+                    <!-- Progress bar -->
                     <div class="progress-container">
                         <div class="progress-bar">
-                            <div class="progress-fill" id="game-progress"></div>
+                            <div id="game-progress-fill" class="progress-fill" style="width: 10%"></div>
                         </div>
-                        <div class="progress-label">
-                            <span id="progress-label">Getting started...</span>
+                        <div class="progress-text">
+                            <span id="accuracy-display">Accuracy: 100%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Question container -->
+                    <div id="question-container" class="question-container">
+                        <h3 id="question-text" class="question-text">Loading question...</h3>
+                        
+                        <!-- Visual representation area -->
+                        <div id="question-visual" class="question-visual" aria-label="Visual representation">
+                            <!-- Visuals will be populated by JavaScript -->
+                        </div>
+                        
+                        <!-- Answer options -->
+                        <div id="answer-options" class="answer-grid" role="group" aria-label="Answer choices">
+                            <!-- Answer buttons will be populated by JavaScript -->
+                        </div>
+                        
+                        <!-- Hint button -->
+                        <div class="text-center mt-4">
+                            <button id="hint-btn" class="btn btn-secondary hidden" aria-label="Get hint">
+                                💡 Need a Hint?
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Feedback Panel -->
+                    <div id="ai-feedback-panel" class="ai-panel hidden" role="region" aria-label="Learning feedback">
+                        <div class="flex items-start gap-4">
+                            <div class="ai-avatar" aria-hidden="true">🤖</div>
+                            <div class="flex-1">
+                                <div id="ai-message" class="ai-message">Great work! Keep it up!</div>
+                                <div id="ai-encouragement" class="text-caption mt-2 text-accent-green hidden"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -227,153 +256,214 @@
 
             <!-- Results Screen -->
             <section id="results-screen" class="screen">
-                <div class="results-container">
-                    <div class="results-hero">
-                        <div class="results-icon" id="results-icon">🎉</div>
-                        <h2 class="results-title" id="results-title">Amazing Work!</h2>
-                        <p class="results-message" id="results-message">You completed your math adventure!</p>
+                <div class="container mx-auto px-4 py-8 max-w-2xl text-center">
+                    <div class="mb-8">
+                        <div id="results-emoji" class="text-8xl mb-6 animate-bounce-in">🎉</div>
+                        <h2 id="results-title" class="heading-large mb-4">Fantastic Work!</h2>
+                        <p id="results-message" class="text-body mb-6">You're getting better at math every day!</p>
                     </div>
-
-                    <div class="results-stats">
-                        <div class="result-stat">
-                            <div class="result-number" id="final-score">0</div>
-                            <div class="result-label">Total Score</div>
-                        </div>
-                        <div class="result-stat">
-                            <div class="result-number" id="correct-answers">0/0</div>
-                            <div class="result-label">Correct Answers</div>
-                        </div>
-                        <div class="result-stat">
-                            <div class="result-number" id="time-taken">0:00</div>
-                            <div class="result-label">Time Taken</div>
-                        </div>
-                        <div class="result-stat">
-                            <div class="result-number" id="accuracy-percent">0%</div>
-                            <div class="result-label">Accuracy</div>
+                    
+                    <!-- Game statistics -->
+                    <div id="results-stats" class="stats-grid mb-8">
+                        <!-- Stats will be populated by JavaScript -->
+                    </div>
+                    
+                    <!-- Achievements -->
+                    <div id="achievements-section" class="hidden mb-8">
+                        <h3 class="heading-medium mb-4">New Achievements! 🏆</h3>
+                        <div id="achievements-list" class="flex flex-wrap justify-center gap-2">
+                            <!-- Achievements will be populated by JavaScript -->
                         </div>
                     </div>
-
-                    <!-- AI Insights -->
-                    <div class="ai-insights" id="ai-insights">
-                        <h3 class="insights-title">🤖 AI Learning Insights</h3>
-                        <div class="insight-cards">
-                            <div class="insight-card strength">
-                                <div class="insight-icon">💪</div>
-                                <div class="insight-content">
-                                    <h4>Your Strength</h4>
-                                    <p id="strength-insight">You're excellent at addition problems!</p>
-                                </div>
-                            </div>
-                            <div class="insight-card improvement">
-                                <div class="insight-icon">📈</div>
-                                <div class="insight-content">
-                                    <h4>Growth Area</h4>
-                                    <p id="improvement-insight">Practice counting backwards for subtraction!</p>
-                                </div>
-                            </div>
-                            <div class="insight-card suggestion">
-                                <div class="insight-icon">💡</div>
-                                <div class="insight-content">
-                                    <h4>Next Challenge</h4>
-                                    <p id="suggestion-insight">Ready to try some time-telling adventures?</p>
-                                </div>
-                            </div>
+                    
+                    <!-- AI Learning Insights -->
+                    <div id="learning-insights" class="ai-panel mb-8 hidden">
+                        <h3 class="heading-small mb-3">🧠 Learning Insights</h3>
+                        <div id="insights-content">
+                            <!-- Insights will be populated by JavaScript -->
                         </div>
                     </div>
-
-                    <!-- Action Buttons -->
-                    <div class="results-actions">
-                        <button class="action-button primary" id="play-again-button">
-                            <span class="button-icon">🔄</span>
-                            Play Again
+                    
+                    <!-- Action buttons -->
+                    <div class="flex flex-col gap-4">
+                        <button id="play-again-btn" class="btn btn-primary btn-large">
+                            🔄 Play Again
                         </button>
-                        <button class="action-button secondary" id="try-different-game">
-                            <span class="button-icon">🎮</span>
-                            Try Different Game
+                        <button id="try-different-game-btn" class="btn btn-secondary">
+                            🎮 Try Different Game
                         </button>
-                        <button class="action-button tertiary" id="view-progress">
-                            <span class="button-icon">📊</span>
-                            View Full Progress
+                        <button id="back-to-games-btn" class="btn btn-secondary">
+                            🏠 Back to Games
                         </button>
                     </div>
                 </div>
             </section>
-        </main>
 
-        <!-- Settings Modal -->
-        <div id="settings-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Settings ⚙️</h2>
-                    <button class="modal-close" id="close-settings">✕</button>
+            <!-- Settings Screen -->
+            <section id="settings-screen" class="screen">
+                <div class="container mx-auto px-4 py-8 max-w-2xl">
+                    <div class="flex items-center mb-8">
+                        <button id="close-settings-btn" class="nav-button mr-4" aria-label="Close settings">
+                            ←
+                        </button>
+                        <h2 class="heading-large">Settings</h2>
+                    </div>
+                    
+                    <!-- Settings groups -->
+                    <div class="space-y-8">
+                        
+                        <!-- Account settings -->
+                        <div class="settings-group">
+                            <h3 class="settings-title">Account</h3>
+                            <div id="account-settings">
+                                <!-- Will be populated based on user type -->
+                            </div>
+                        </div>
+                        
+                        <!-- Game preferences -->
+                        <div class="settings-group">
+                            <h3 class="settings-title">Game Preferences</h3>
+                            
+                            <div class="settings-item">
+                                <label class="settings-label" for="age-group-select">Age Group</label>
+                                <select id="age-group-select" class="form-select settings-control">
+                                    <option value="3-4">3-4 years</option>
+                                    <option value="4-5">4-5 years</option>
+                                    <option value="5-6">5-6 years</option>
+                                </select>
+                            </div>
+                            
+                            <div class="settings-item">
+                                <label class="settings-label" for="sound-toggle">Sound Effects</label>
+                                <div class="settings-control">
+                                    <button id="sound-toggle" class="toggle-switch" role="switch" aria-checked="true">
+                                        <div class="toggle-thumb"></div>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-item">
+                                <label class="settings-label" for="animations-toggle">Animations</label>
+                                <div class="settings-control">
+                                    <button id="animations-toggle" class="toggle-switch checked" role="switch" aria-checked="true">
+                                        <div class="toggle-thumb"></div>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-item">
+                                <label class="settings-label" for="hints-toggle">Show Hints</label>
+                                <div class="settings-control">
+                                    <button id="hints-toggle" class="toggle-switch checked" role="switch" aria-checked="true">
+                                        <div class="toggle-thumb"></div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Accessibility -->
+                        <div class="settings-group">
+                            <h3 class="settings-title">Accessibility</h3>
+                            
+                            <div class="settings-item">
+                                <label class="settings-label" for="font-size-select">Text Size</label>
+                                <select id="font-size-select" class="form-select settings-control">
+                                    <option value="small">Small</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="large">Large</option>
+                                </select>
+                            </div>
+                            
+                            <div class="settings-item">
+                                <label class="settings-label" for="high-contrast-toggle">High Contrast</label>
+                                <div class="settings-control">
+                                    <button id="high-contrast-toggle" class="toggle-switch" role="switch" aria-checked="false">
+                                        <div class="toggle-thumb"></div>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-item">
+                                <label class="settings-label" for="reduced-motion-toggle">Reduce Motion</label>
+                                <div class="settings-control">
+                                    <button id="reduced-motion-toggle" class="toggle-switch" role="switch" aria-checked="false">
+                                        <div class="toggle-thumb"></div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- About -->
+                        <div class="settings-group">
+                            <h3 class="settings-title">About</h3>
+                            <div class="card p-4">
+                                <h4 class="heading-small mb-2">Kindergarten Math Adventure v3</h4>
+                                <p class="text-caption mb-3">AI-powered learning games for children aged 3-6</p>
+                                <p class="text-caption text-text-muted">
+                                    Created with ❤️ for young learners everywhere
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div class="setting-group">
-                        <h3 class="setting-title">Sound & Effects</h3>
-                        <div class="setting-item">
-                            <label class="setting-label">Sound Effects</label>
-                            <div class="toggle-switch">
-                                <input type="checkbox" id="sound-toggle" checked>
-                                <span class="toggle-slider"></span>
-                            </div>
-                        </div>
-                    </div>
+            </section>
 
-                    <div class="setting-group">
-                        <h3 class="setting-title">Learning Preferences</h3>
-                        <div class="setting-item">
-                            <label class="setting-label">AI Difficulty Adaptation</label>
-                            <select class="setting-select" id="difficulty-preference">
-                                <option value="adaptive">Smart Adaptive (Recommended)</option>
-                                <option value="easy">Always Easy</option>
-                                <option value="medium">Always Medium</option>
-                                <option value="challenge">Extra Challenge</option>
-                            </select>
-                        </div>
-                        <div class="setting-item">
-                            <label class="setting-label">Encouragement Level</label>
-                            <select class="setting-select" id="encouragement-level">
-                                <option value="high">Lots of Encouragement</option>
-                                <option value="medium" selected>Balanced</option>
-                                <option value="minimal">Minimal</option>
-                            </select>
-                        </div>
-                    </div>
+        </main>
+    </div>
 
-                    <div class="setting-group">
-                        <h3 class="setting-title">Privacy & Data</h3>
-                        <div class="setting-item">
-                            <label class="setting-label">Save Progress</label>
-                            <div class="toggle-switch">
-                                <input type="checkbox" id="save-progress-toggle" checked>
-                                <span class="toggle-slider"></span>
-                            </div>
-                        </div>
-                        <p class="setting-note">
-                            Your data is stored locally and optionally synced for progress tracking.
-                            No personal information is collected.
-                        </p>
-                    </div>
+    <!-- Modals -->
+    
+    <!-- Pause Modal -->
+    <div id="pause-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pause-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="pause-modal-title" class="modal-title">Game Paused</h3>
+                <button class="modal-close" aria-label="Close modal">✕</button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="text-6xl mb-4">⏸️</div>
+                <p class="text-body mb-6">Take a break! Your progress is saved.</p>
+                <div class="space-y-3">
+                    <button id="resume-game-btn" class="btn btn-primary btn-large w-full">
+                        ▶️ Resume Game
+                    </button>
+                    <button id="quit-to-games-btn" class="btn btn-secondary w-full">
+                        🏠 Back to Games
+                    </button>
                 </div>
             </div>
         </div>
-
-        <!-- Offline Banner -->
-        <div id="offline-banner" class="offline-banner" style="display: none;">
-            <div class="offline-content">
-                <span class="offline-icon">📱</span>
-                <span class="offline-text">You're offline - your progress will sync when you're back online!</span>
+    </div>
+    
+    <!-- Sign In Modal -->
+    <div id="signin-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="signin-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="signin-modal-title" class="modal-title">Sign In</h3>
+                <button class="modal-close" aria-label="Close modal">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-6">
+                    <div class="text-4xl mb-3">🚀</div>
+                    <p class="text-body">Sign in to unlock all games and track your learning progress!</p>
+                </div>
+                
+                <!-- Sign in form placeholder -->
+                <div class="space-y-4">
+                    <div class="text-center">
+                        <p class="text-caption text-text-muted">Authentication will be implemented with Supabase</p>
+                        <button id="demo-signin-btn" class="btn btn-primary mt-4">
+                            Demo Sign In (Development)
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
-    <script type="module" src="./js/config.js"></script>
-    <script type="module" src="./js/ai-phrases.js"></script>
-    <script type="module" src="./js/supabase-manager.js"></script>
-    <script type="module" src="./js/game-engine.js"></script>
-    <script type="module" src="./js/app.js"></script>
-
+    <script type="module" src="./src/js/app.js"></script>
+    
     <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
