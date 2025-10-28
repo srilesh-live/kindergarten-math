@@ -21,9 +21,26 @@ export class SupabaseClient {
      */
     async init() {
         try {
-            // Load Supabase client from CDN if not already loaded
+            // Check if Supabase is configured
+            if (SUPABASE_CONFIG.url === 'https://your-project.supabase.co' || 
+                SUPABASE_CONFIG.anonKey === 'your-anon-key') {
+                console.log('ℹ️ Supabase not configured - skipping backend initialization');
+                return false;
+            }
+
+            // Load Supabase client from CDN if not already loaded (with timeout)
             if (!window.supabase) {
-                await this.loadSupabaseClient();
+                const loaded = await Promise.race([
+                    this.loadSupabaseClient(),
+                    new Promise((_, reject) => 
+                        setTimeout(() => reject(new Error('Supabase CDN load timeout')), 5000)
+                    )
+                ]);
+                
+                if (!loaded) {
+                    console.warn('⚠️ Failed to load Supabase client from CDN');
+                    return false;
+                }
             }
 
             // Create Supabase client
@@ -34,8 +51,15 @@ export class SupabaseClient {
                 SUPABASE_CONFIG.options
             );
 
-            // Get current session
-            const { data: { session }, error } = await this.client.auth.getSession();
+            // Get current session (with timeout)
+            const sessionResult = await Promise.race([
+                this.client.auth.getSession(),
+                new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Session check timeout')), 3000)
+                )
+            ]);
+            
+            const { data: { session } = {}, error } = sessionResult || {};
             
             if (session && !error) {
                 this.currentUser = session.user;
@@ -46,7 +70,7 @@ export class SupabaseClient {
 
             return true;
         } catch (error) {
-            console.error('❌ Failed to initialize Supabase client:', error);
+            console.warn('⚠️ Supabase client initialization failed (continuing without backend):', error.message);
             return false;
         }
     }

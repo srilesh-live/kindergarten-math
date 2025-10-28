@@ -22,6 +22,11 @@ export class CloudSyncManager {
     async init() {
         this.supabase = supabaseClient.getClient();
 
+        if (!this.supabase) {
+            console.log('ℹ️ Cloud sync disabled (Supabase not available)');
+            return;
+        }
+
         // Set up auto-sync (every 5 minutes)
         if (this.autoSyncEnabled) {
             this.startAutoSync(5 * 60 * 1000); // 5 minutes

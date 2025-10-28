@@ -20,6 +20,11 @@ export class LeaderboardManager {
     async init() {
         this.supabase = supabaseClient.getClient();
 
+        if (!this.supabase) {
+            console.log('ℹ️ Leaderboard disabled (Supabase not available)');
+            return;
+        }
+
         // Subscribe to real-time leaderboard updates
         this.subscribeToUpdates();
 
@@ -30,6 +35,8 @@ export class LeaderboardManager {
      * Subscribe to real-time leaderboard updates
      */
     subscribeToUpdates() {
+        if (!this.supabase) return;
+        
         this.realtimeChannel = this.supabase
             .channel(CHANNELS.LEADERBOARD)
             .on(

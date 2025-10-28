@@ -17,28 +17,46 @@ export class AuthManager {
      * Initialize authentication manager
      */
     async init() {
-        // Initialize Supabase client
-        await supabaseClient.init();
-        this.supabase = supabaseClient.getClient();
-
-        // Set up auth state listener
-        this.supabase.auth.onAuthStateChange((event, session) => {
-            console.log('Auth state changed:', event);
-            this.currentSession = session;
+        try {
+            // Initialize Supabase client (with timeout)
+            const initialized = await Promise.race([
+                supabaseClient.init(),
+                new Promise(resolve => setTimeout(() => resolve(false), 5000))
+            ]);
             
-            if (session) {
-                supabaseClient.setCurrentUser(session.user);
-            } else {
-                supabaseClient.setCurrentUser(null);
+            if (!initialized) {
+                console.log('ℹ️ Auth manager running in offline mode (Supabase not available)');
+                return;
+            }
+            
+            this.supabase = supabaseClient.getClient();
+
+            if (!this.supabase) {
+                console.log('ℹ️ Auth manager running in offline mode');
+                return;
             }
 
-            // Notify all listeners
-            this.authStateCallbacks.forEach(callback => {
-                callback(event, session);
-            });
-        });
+            // Set up auth state listener
+            this.supabase.auth.onAuthStateChange((event, session) => {
+                console.log('Auth state changed:', event);
+                this.currentSession = session;
+                
+                if (session) {
+                    supabaseClient.setCurrentUser(session.user);
+                } else {
+                    supabaseClient.setCurrentUser(null);
+                }
 
-        console.log('✅ Auth manager initialized');
+                // Notify all listeners
+                this.authStateCallbacks.forEach(callback => {
+                    callback(event, session);
+                });
+            });
+
+            console.log('✅ Auth manager initialized');
+        } catch (error) {
+            console.warn('⚠️ Auth manager initialization failed (offline mode):', error.message);
+        }
     }
 
     /**
