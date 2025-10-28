@@ -645,6 +645,7 @@ export class KindergartenMathApp {
      * Select a game and show configuration
      */
     selectGame(game) {
+        console.log('🎮 Game selected:', game.id, game.name);
         this.currentGame = game;
         this.showGameConfig(game);
     }
@@ -653,6 +654,7 @@ export class KindergartenMathApp {
      * Show game configuration screen
      */
     showGameConfig(game) {
+        console.log('⚙️ Showing game config for:', game.name);
         this.state = APP_STATES.GAME_CONFIG;
         
         const ageGroups = Object.keys(game.config.ageGroups);
