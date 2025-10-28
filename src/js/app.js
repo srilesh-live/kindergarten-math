@@ -46,35 +46,48 @@ class KindergartenMathApp {
      */
     async init() {
         try {
-            console.log('[App] Starting application initialization');
+            console.log('🔧 [App] Starting application initialization');
             
             // Wait for DOM to be ready
+            console.log('📄 [App] Checking DOM ready state...');
             if (document.readyState === 'loading') {
+                console.log('⏳ [App] Waiting for DOM to load...');
                 await new Promise(resolve => {
                     document.addEventListener('DOMContentLoaded', resolve);
                 });
             }
+            console.log('✅ [App] DOM is ready');
             
             // Cache DOM elements
+            console.log('🔍 [App] Caching DOM elements...');
             this.cacheElements();
+            console.log('✅ [App] DOM elements cached');
             
             // Initialize core systems
+            console.log('⚙️ [App] Initializing core systems...');
             await this.initializeSystems();
+            console.log('✅ [App] Core systems initialized');
             
             // Set up event listeners
+            console.log('👂 [App] Setting up event listeners...');
             this.setupEventListeners();
+            console.log('✅ [App] Event listeners set up');
             
             // Apply initial preferences
+            console.log('🎨 [App] Applying user preferences...');
             this.applyUserPreferences();
+            console.log('✅ [App] User preferences applied');
             
             // Hide loading screen and show app
+            console.log('🎬 [App] Showing application UI...');
             this.showApp();
             
             this.isInitialized = true;
-            console.log('[App] Application initialized successfully');
+            console.log('🎉 [App] Application initialized successfully!');
             
         } catch (error) {
-            console.error('[App] Initialization failed:', error);
+            console.error('💥 [App] Initialization failed:', error);
+            console.error('📍 [App] Error stack:', error.stack);
             this.showErrorState(error);
         }
     }
@@ -1024,6 +1037,16 @@ class KindergartenMathApp {
     }
 
     /**
+     * Force show app (for debugging/fallback)
+     */
+    forceShowApp() {
+        console.log('[App] Force showing app (fallback)');
+        this.elements.loadingScreen?.classList.add('hidden');
+        this.elements.app?.classList.remove('hidden');
+        this.showScreen('welcome');
+    }
+
+    /**
      * Error handling
      */
     showError(message) {
@@ -1085,6 +1108,25 @@ const app = new KindergartenMathApp();
 window.app = app;
 
 console.log('🚀 app.js: Starting app initialization...');
+
+// Fallback timeout in case initialization hangs
+setTimeout(() => {
+    const loadingScreen = document.getElementById('loading-screen');
+    const appElement = document.getElementById('app');
+    
+    if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+        console.warn('⚠️ [App] Initialization timeout - forcing app display');
+        if (window.app && window.app.forceShowApp) {
+            window.app.forceShowApp();
+        } else {
+            // Manual fallback
+            loadingScreen.classList.add('hidden');
+            if (appElement) {
+                appElement.classList.remove('hidden');
+            }
+        }
+    }
+}, 10000); // 10 second timeout
 
 // Start initialization
 app.init().catch(error => {
