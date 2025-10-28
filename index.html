@@ -220,6 +220,44 @@
         /* Utilities */
         .hidden { display: none !important; }
         
+        /* Navigation - initially hidden */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: none; /* Hidden by default in fallback mode */
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e8eaed;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.25rem;
+        }
+        
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #9d4edd;
+        }
+        
         /* Offline banner */
         .offline-banner {
             position: fixed;
@@ -237,6 +275,23 @@
         
         .offline-banner.show {
             transform: translateY(0);
+        }
+        
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #9d4edd;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 1001;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
         }
     </style>
 </head>
@@ -298,7 +353,7 @@
         </nav>
 
         <!-- Main content area -->
-        <main id="main-content" class="flex-1 min-h-screen pt-16">
+        <main id="main-content" class="flex-1 min-h-screen">
             
             <!-- Welcome Screen -->
             <section id="welcome-screen" class="screen active">
@@ -720,6 +775,13 @@
             console.log('🎯 Initializing fallback app with basic functionality...');
             
             let selectedAge = null;
+            
+            // Hide navigation and other elements not needed in fallback mode
+            const navbar = document.querySelector('.navbar');
+            const offlineBanner = document.getElementById('offline-banner');
+            
+            if (navbar) navbar.style.display = 'none';
+            if (offlineBanner) offlineBanner.style.display = 'none';
             
             // Show welcome screen
             showScreen('welcome');
