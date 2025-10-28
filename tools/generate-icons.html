@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .icon-card {
+            text-align: center;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        .icon-card img {
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .icon-card p {
+            margin: 10px 0 0;
+            font-size: 14px;
+            color: #666;
+        }
+        button {
+            background: #9d4edd;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #7209b7;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e0f2fe;
+            border-radius: 6px;
+            color: #0369a1;
+        }
+        .instructions {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #92400e;
+        }
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin: 8px 0;
+            color: #78350f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 PWA Icon Generator</h1>
+        
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Click "Load SVG Icon" to preview the icon</li>
+                <li>Click "Generate All Icons" to create PNG files at all required sizes</li>
+                <li>Right-click each generated icon and "Save image as..." to your icons folder</li>
+                <li>Required sizes: 72x72, 96x96, 128x128, 144x144, 152x152, 192x192, 384x384, 512x512</li>
+            </ol>
+        </div>
+        
+        <button onclick="loadSVG()">📥 Load SVG Icon</button>
+        <button onclick="generateAllIcons()">🎨 Generate All Icons</button>
+        
+        <div class="status" id="status" style="display: none;"></div>
+        
+        <div class="preview" id="preview"></div>
+    </div>
+
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        let svgContent = null;
+
+        async function loadSVG() {
+            try {
+                const response = await fetch('../icons/icon.svg');
+                svgContent = await response.text();
+                
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = '✅ SVG loaded successfully! Ready to generate icons.';
+                statusEl.style.display = 'block';
+                statusEl.style.background = '#d1fae5';
+                statusEl.style.color = '#065f46';
+                
+                // Show preview
+                const preview = document.getElementById('preview');
+                preview.innerHTML = `
+                    <div class="icon-card">
+                        <img src="../icons/icon.svg" alt="Original SVG">
+                        <p>Original SVG<br>512x512</p>
+                    </div>
+                `;
+            } catch (error) {
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = '❌ Failed to load SVG: ' + error.message;
+                statusEl.style.display = 'block';
+                statusEl.style.background = '#fee2e2';
+                statusEl.style.color = '#991b1b';
+            }
+        }
+
+        async function generateAllIcons() {
+            if (!svgContent) {
+                alert('Please load the SVG first!');
+                return;
+            }
+            
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = '🎨 Generating icons...';
+            statusEl.style.display = 'block';
+            statusEl.style.background = '#e0f2fe';
+            statusEl.style.color = '#0369a1';
+            
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+            
+            for (const size of sizes) {
+                const dataUrl = await svgToPng(svgContent, size);
+                
+                const card = document.createElement('div');
+                card.className = 'icon-card';
+                card.innerHTML = `
+                    <img src="${dataUrl}" alt="${size}x${size}" style="width: ${Math.min(size, 128)}px; height: ${Math.min(size, 128)}px;">
+                    <p><strong>icon-${size}x${size}.png</strong><br>${size}x${size}</p>
+                    <button onclick="downloadIcon('${dataUrl}', 'icon-${size}x${size}.png')" style="font-size: 12px; padding: 6px 12px;">
+                        💾 Download
+                    </button>
+                `;
+                preview.appendChild(card);
+            }
+            
+            statusEl.textContent = `✅ Generated ${sizes.length} icons! Click download buttons to save each one.`;
+            statusEl.style.background = '#d1fae5';
+            statusEl.style.color = '#065f46';
+        }
+
+        function svgToPng(svgContent, size) {
+            return new Promise((resolve, reject) => {
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                
+                const img = new Image();
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0, size, size);
+                    resolve(canvas.toDataURL('image/png'));
+                };
+                img.onerror = reject;
+                
+                const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(blob);
+                img.src = url;
+            });
+        }
+
+        function downloadIcon(dataUrl, filename) {
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Auto-load SVG on page load
+        window.addEventListener('load', loadSVG);
+    </script>
+</body>
+</html>

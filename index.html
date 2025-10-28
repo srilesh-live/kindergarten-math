@@ -304,6 +304,9 @@
         <span>🌐 You're offline - some features may be limited</span>
     </div>
     
+    <!-- Screen reader announcer for dynamic content -->
+    <div id="aria-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    
     <!-- Loading screen -->
     <div id="loading-screen" class="loading-screen" aria-label="Loading application">
         <div class="loading-content">
@@ -914,28 +917,33 @@
         }
     </script>
     
+    <!-- Link to theme CSS -->
+    <link rel="stylesheet" href="./app/ui/theme.css">
+    
     <!-- Try loading the full module system with error handling -->
     <script type="module">
         console.log('📦 Attempting to load full module system...');
         
         try {
-            // Test if modules work at all
-            import('./src/js/config.js')
-                .then(config => {
-                    console.log('✅ Config module loaded successfully');
-                    
-                    // If config loads, try loading the full app
-                    return import('./src/js/app.js');
-                })
+            // Import the new main application
+            import('./app/main.js')
                 .then(() => {
-                    console.log('✅ Full module system loaded successfully');
+                    console.log('✅ Full application loaded successfully');
+                    
+                    // Hide loading screen when app is ready
+                    setTimeout(() => {
+                        const loadingScreen = document.getElementById('loading-screen');
+                        if (loadingScreen) {
+                            loadingScreen.classList.add('hidden');
+                        }
+                    }, 1000);
                 })
                 .catch(error => {
                     console.warn('⚠️ Module loading failed, using fallback:', error.message);
                     
                     // If modules fail, make sure fallback is activated
                     setTimeout(() => {
-                        if (!window.app || !window.app.isInitialized) {
+                        if (!window.mathApp || !window.mathApp.state) {
                             console.log('🔄 Modules failed - forcing fallback activation');
                             activateFallbackMode();
                         }
