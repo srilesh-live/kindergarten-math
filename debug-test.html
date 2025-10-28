@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test - Module Loading</title>
+</head>
+<body>
+    <h1>Testing Module Imports</h1>
+    <div id="results"></div>
+    
+    <script type="module">
+        const results = document.getElementById('results');
+        
+        try {
+            console.log('Testing config.js import...');
+            const { APP_CONFIG } = await import('./src/js/config.js');
+            console.log('✅ Config imported:', APP_CONFIG);
+            results.innerHTML += '<p>✅ Config: OK</p>';
+            
+            console.log('Testing GAMES config...');
+            console.log('Available games:', Object.keys(APP_CONFIG.GAMES));
+            results.innerHTML += `<p>✅ Games config: ${Object.keys(APP_CONFIG.GAMES).join(', ')}</p>`;
+            
+            console.log('Testing UserManager import...');
+            const { UserManager } = await import('./src/js/userManager.js');
+            console.log('✅ UserManager imported');
+            results.innerHTML += '<p>✅ UserManager: OK</p>';
+            
+            console.log('Testing AILearningEngine import...');
+            const { AILearningEngine } = await import('./src/js/aiLearningEngine.js');
+            console.log('✅ AILearningEngine imported');
+            results.innerHTML += '<p>✅ AILearningEngine: OK</p>';
+            
+            console.log('Testing GameManager import...');
+            const { GameManager } = await import('./src/js/gameManager.js');
+            console.log('✅ GameManager imported');
+            results.innerHTML += '<p>✅ GameManager: OK</p>';
+            
+            console.log('Testing BaseGame import...');
+            const { BaseGame } = await import('./src/js/games/BaseGame.js');
+            console.log('✅ BaseGame imported');
+            results.innerHTML += '<p>✅ BaseGame: OK</p>';
+            
+            console.log('Testing NumberMagicGame import...');
+            const { NumberMagicGame } = await import('./src/js/games/NumberMagicGame.js');
+            console.log('✅ NumberMagicGame imported');
+            results.innerHTML += '<p>✅ NumberMagicGame: OK</p>';
+            
+            results.innerHTML += '<p><strong>🎉 All modules loaded successfully!</strong></p>';
+            
+        } catch (error) {
+            console.error('❌ Import failed:', error);
+            results.innerHTML += `<p>❌ Error: ${error.message}</p>`;
+        }
+    </script>
+</body>
+</html>
