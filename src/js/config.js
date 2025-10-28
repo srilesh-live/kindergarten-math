@@ -42,8 +42,8 @@ export const APP_CONFIG = {
     }
   },
   
-  // Game configuration
-  games: {
+  // Game configuration  
+  GAMES: {
     number_magic: {
       name: 'Number Magic',
       icon: '🧮',

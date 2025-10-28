@@ -684,5 +684,4 @@ export class AILearningEngine {
     }
 }
 
-// Export for use in other modules
-export default AILearningEngine;
+// No default export needed - class is already exported at declaration
