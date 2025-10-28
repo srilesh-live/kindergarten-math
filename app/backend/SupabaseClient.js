@@ -82,7 +82,7 @@ export class SupabaseClient {
         return new Promise((resolve, reject) => {
             // Check if already loaded
             if (window.supabase) {
-                resolve();
+                resolve(true);
                 return;
             }
 
@@ -93,7 +93,7 @@ export class SupabaseClient {
 
             script.onload = () => {
                 console.log('✅ Supabase client loaded from CDN');
-                resolve();
+                resolve(true);
             };
 
             script.onerror = (error) => {
