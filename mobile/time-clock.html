@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Time & Clock Practice - Learn to tell time with interactive games">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <title>Time & Clock Practice - Math Games</title>
+    
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#eff6ff', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' },
+                        success: { 50: '#f0fdf4', 500: '#10b981', 600: '#059669' },
+                        error: { 50: '#fef2f2', 500: '#ef4444', 600: '#dc2626' },
+                        orange: { 50: '#fff7ed', 500: '#f97316', 600: '#ea580c' },
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    animation: {
+                        'bounce-gentle': 'bounce 1s ease-in-out infinite',
+                        'pulse-ring': 'pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slide-up 0.3s ease-out',
+                        'slide-down': 'slide-down 0.3s ease-out',
+                        'fade-in': 'fade-in 0.2s ease-out',
+                        'scale-up': 'scale-up 0.2s ease-out',
+                        'wiggle': 'wiggle 0.5s ease-in-out',
+                        'tick': 'tick 1s linear infinite',
+                        'rotate-hour': 'rotate-hour 43200s linear infinite',
+                        'rotate-minute': 'rotate-minute 3600s linear infinite',
+                    },
+                    keyframes: {
+                        'pulse-ring': {
+                            '0%': { transform: 'scale(0.8)', opacity: '1' },
+                            '100%': { transform: 'scale(2.4)', opacity: '0' },
+                        },
+                        'slide-up': {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        'slide-down': {
+                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        'fade-in': {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        'scale-up': {
+                            '0%': { transform: 'scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        'wiggle': {
+                            '0%, 100%': { transform: 'rotate(0deg)' },
+                            '25%': { transform: 'rotate(-3deg)' },
+                            '75%': { transform: 'rotate(3deg)' },
+                        },
+                        'tick': {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(6deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Mobile-specific styles */
+        .touch-action-pan-y { touch-action: pan-y; }
+        .no-select { user-select: none; -webkit-user-select: none; }
+        
+        /* iOS safe areas */
+        .safe-top { padding-top: env(safe-area-inset-top); }
+        .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+        
+        /* Clock hand styles */
+        .clock-hand {
+            transform-origin: bottom center;
+            transition: transform 0.3s ease-out;
+            cursor: grab;
+        }
+        
+        .clock-hand:active {
+            cursor: grabbing;
+        }
+        
+        .clock-hand.dragging {
+            transform-origin: bottom center;
+            z-index: 10;
+        }
+        
+        /* Time input styles */
+        .time-input {
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+        .time-input::-webkit-outer-spin-button,
+        .time-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        /* Digital display styles */
+        .digital-display {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(145deg, #000, #333);
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        /* Progress bar animation */
+        .progress-bar {
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Feedback animations */
+        .feedback-correct {
+            animation: pulse 0.5s ease-in-out;
+        }
+        
+        .feedback-incorrect {
+            animation: wiggle 0.5s ease-in-out;
+        }
+        
+        /* SVG responsive scaling */
+        .clock-svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen safe-top safe-bottom">
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-40 safe-top">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between h-14 sm:h-16">
+                <div class="flex items-center space-x-3">
+                    <button onclick="goHome()" class="p-2 rounded-xl text-gray-600 hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                        <span class="material-icons-round">arrow_back</span>
+                    </button>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-900">Time & Clock</h1>
+                        <div class="flex items-center space-x-2 text-xs text-gray-500">
+                            <span id="question-counter">Question 1 of 10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    <!-- Score Display -->
+                    <div class="hidden sm:flex items-center space-x-3 text-sm">
+                        <div class="flex items-center space-x-1 text-success-600">
+                            <span class="material-icons-round text-base">check_circle</span>
+                            <span id="correct-count">0</span>
+                        </div>
+                        <div class="flex items-center space-x-1 text-error-500">
+                            <span class="material-icons-round text-base">cancel</span>
+                            <span id="incorrect-count">0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Settings Button -->
+                    <button onclick="showSettings()" class="p-2 rounded-xl text-gray-600 hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                        <span class="material-icons-round">tune</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-200 h-1">
+            <div id="progress-bar" class="progress-bar bg-gradient-to-r from-orange-500 to-red-600 h-1" style="width: 10%"></div>
+        </div>
+    </header>
+    
+    <!-- Main Game Area -->
+    <main class="flex-1 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6">
+            <!-- Mobile Score Display -->
+            <div class="flex sm:hidden items-center justify-center space-x-6 mb-6">
+                <div class="flex items-center space-x-2 bg-success-50 text-success-700 px-3 py-2 rounded-full">
+                    <span class="material-icons-round text-sm">check_circle</span>
+                    <span id="mobile-correct-count" class="font-semibold">0</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-error-50 text-error-600 px-3 py-2 rounded-full">
+                    <span class="material-icons-round text-sm">cancel</span>
+                    <span id="mobile-incorrect-count" class="font-semibold">0</span>
+                </div>
+            </div>
+            
+            <!-- Question Display -->
+            <div class="text-center mb-8">
+                <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-8 mx-auto max-w-lg">
+                    <div id="question-text" class="text-xl sm:text-2xl font-bold text-gray-900 mb-6 animate-slide-down">
+                        What time is shown on the clock?
+                    </div>
+                    
+                    <!-- Clock Display -->
+                    <div class="flex justify-center mb-6">
+                        <div class="relative">
+                            <svg id="analog-clock" class="clock-svg w-64 h-64 sm:w-80 sm:h-80" viewBox="0 0 240 240">
+                                <!-- Clock face -->
+                                <circle cx="120" cy="120" r="110" fill="white" stroke="#e5e7eb" stroke-width="4"/>
+                                
+                                <!-- Hour markers -->
+                                <g id="hour-markers" class="stroke-gray-400" stroke-width="3">
+                                    <!-- Major hour markers -->
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(0 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(30 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(60 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(90 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(120 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(150 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(180 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(210 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(240 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(270 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(300 120 120)"/>
+                                    <line x1="120" y1="20" x2="120" y2="35" transform="rotate(330 120 120)"/>
+                                </g>
+                                
+                                <!-- Minute markers -->
+                                <g id="minute-markers" class="stroke-gray-300 hidden" stroke-width="1">
+                                    <!-- 60 minute markers (excluding hour positions) -->
+                                </g>
+                                
+                                <!-- Numbers -->
+                                <g id="hour-numbers" class="fill-gray-700 font-bold text-base">
+                                    <text x="120" y="32" text-anchor="middle" dy="0.35em">12</text>
+                                    <text x="179" y="52" text-anchor="middle" dy="0.35em">1</text>
+                                    <text x="221" y="92" text-anchor="middle" dy="0.35em">2</text>
+                                    <text x="230" y="126" text-anchor="middle" dy="0.35em">3</text>
+                                    <text x="221" y="160" text-anchor="middle" dy="0.35em">4</text>
+                                    <text x="179" y="200" text-anchor="middle" dy="0.35em">5</text>
+                                    <text x="120" y="218" text-anchor="middle" dy="0.35em">6</text>
+                                    <text x="61" y="200" text-anchor="middle" dy="0.35em">7</text>
+                                    <text x="19" y="160" text-anchor="middle" dy="0.35em">8</text>
+                                    <text x="10" y="126" text-anchor="middle" dy="0.35em">9</text>
+                                    <text x="19" y="92" text-anchor="middle" dy="0.35em">10</text>
+                                    <text x="61" y="52" text-anchor="middle" dy="0.35em">11</text>
+                                </g>
+                                
+                                <!-- Clock hands -->
+                                <g id="clock-hands">
+                                    <!-- Hour hand -->
+                                    <line id="hour-hand" 
+                                          class="clock-hand" 
+                                          x1="120" y1="120" x2="120" y2="70" 
+                                          stroke="#374151" stroke-width="6" 
+                                          stroke-linecap="round"/>
+                                    
+                                    <!-- Minute hand -->
+                                    <line id="minute-hand" 
+                                          class="clock-hand" 
+                                          x1="120" y1="120" x2="120" y2="35" 
+                                          stroke="#6b7280" stroke-width="4" 
+                                          stroke-linecap="round"/>
+                                </g>
+                                
+                                <!-- Center dot -->
+                                <circle cx="120" cy="120" r="8" fill="#374151"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Answer Input Section -->
+            <div class="max-w-md mx-auto mb-8">
+                <!-- Digital Time Display (for read-the-time mode) -->
+                <div id="digital-display-section" class="hidden mb-6">
+                    <div class="bg-black rounded-2xl p-6 text-center">
+                        <div class="digital-display text-4xl sm:text-5xl font-mono font-bold py-4 px-6 rounded-xl">
+                            <span id="digital-time">12:00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Time Input (for set-the-time mode) -->
+                <div id="time-input-section" class="bg-white rounded-2xl shadow-lg p-6">
+                    <label class="block text-center text-gray-700 text-lg font-medium mb-4">
+                        What time is it?
+                    </label>
+                    
+                    <div class="flex items-center justify-center space-x-3">
+                        <div class="flex items-center space-x-2 bg-gray-50 rounded-xl px-4 py-3">
+                            <input 
+                                type="number" 
+                                id="hour-input"
+                                class="time-input w-16 text-2xl font-bold text-center border-0 bg-transparent focus:outline-none"
+                                placeholder="12"
+                                min="1"
+                                max="12"
+                            >
+                            <span class="text-2xl font-bold text-gray-500">:</span>
+                            <input 
+                                type="number" 
+                                id="minute-input"
+                                class="time-input w-16 text-2xl font-bold text-center border-0 bg-transparent focus:outline-none"
+                                placeholder="00"
+                                min="0"
+                                max="59"
+                            >
+                        </div>
+                        
+                        <button 
+                            onclick="submitTime()"
+                            id="submit-time-btn"
+                            class="px-6 py-4 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            <span class="material-icons-round">send</span>
+                        </button>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <p class="text-sm text-gray-500">Enter the time shown (use 12-hour format)</p>
+                    </div>
+                </div>
+                
+                <!-- Interactive Clock Section (for set-the-clock mode) -->
+                <div id="interactive-section" class="hidden bg-white rounded-2xl shadow-lg p-6">
+                    <div class="text-center mb-4">
+                        <label class="text-gray-700 text-lg font-medium">
+                            Set the clock to show: <span id="target-time" class="font-bold text-orange-600">3:15</span>
+                        </label>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-sm text-gray-500 mb-4">Drag the clock hands to set the correct time</p>
+                        <button 
+                            onclick="checkClockAnswer()"
+                            id="check-clock-btn"
+                            class="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl active:scale-95 transition-all"
+                        >
+                            Check Answer
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Feedback Section -->
+            <div id="feedback-section" class="hidden text-center">
+                <div id="feedback-content" class="bg-white rounded-2xl shadow-lg p-6 max-w-md mx-auto">
+                    <!-- Feedback content will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 opacity-0 invisible transition-all duration-300">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-gray-900">Clock Settings</h3>
+                        <button onclick="closeSettings()" class="p-2 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100">
+                            <span class="material-icons-round">close</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6 space-y-6">
+                    <!-- Difficulty Level -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-3">Difficulty Level</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="difficulty" value="easy" class="mr-3 text-orange-600">
+                                <span class="text-gray-700">Easy (Hour only)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="difficulty" value="medium" class="mr-3 text-orange-600" checked>
+                                <span class="text-gray-700">Medium (15-minute intervals)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="difficulty" value="hard" class="mr-3 text-orange-600">
+                                <span class="text-gray-700">Hard (5-minute intervals)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Game Mode -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-3">Game Mode</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="game-mode" value="read-clock" class="mr-3 text-orange-600" checked>
+                                <span class="text-gray-700">Read the Clock</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="game-mode" value="set-clock" class="mr-3 text-orange-600">
+                                <span class="text-gray-700">Set the Clock</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="game-mode" value="digital-time" class="mr-3 text-orange-600">
+                                <span class="text-gray-700">Digital Time</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Clock Style -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-3">Clock Display</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center justify-between">
+                                <span class="text-gray-700">Show Numbers</span>
+                                <input type="checkbox" id="show-numbers-toggle" class="w-5 h-5 text-orange-600 rounded" checked>
+                            </label>
+                            <label class="flex items-center justify-between">
+                                <span class="text-gray-700">Show Minute Markers</span>
+                                <input type="checkbox" id="show-minutes-toggle" class="w-5 h-5 text-orange-600 rounded">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 border-t border-gray-200">
+                    <button onclick="saveSettings()" class="w-full py-3 bg-orange-600 text-white rounded-xl font-semibold hover:bg-orange-700 active:scale-98 transition-all">
+                        Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game Scripts -->
+    <script src="assets/js/time-clock-game.js"></script>
+</body>
+</html>
