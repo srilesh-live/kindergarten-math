@@ -149,10 +149,17 @@ export class KindergartenMathApp {
                 this.showGameSelection();
             }
             
-            // Hide the initial loading screen from index.html
+            // Hide the initial loading screen from index.html and show app
             const indexLoadingScreen = document.getElementById('loading-screen');
             if (indexLoadingScreen) {
                 indexLoadingScreen.classList.add('hidden');
+                indexLoadingScreen.style.display = 'none';
+            }
+            
+            // Ensure app container is visible
+            if (this.appContainer) {
+                this.appContainer.classList.remove('hidden');
+                this.appContainer.style.display = 'block';
             }
             
             console.log('✅ Application initialized successfully');
